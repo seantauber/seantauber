@@ -9,6 +9,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [Data Science](#data-science)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
+- [Other](#other)
 - [How This Landing Page Works](#how-this-landing-page-works) (Fork to create your own GitHub landing page like this)
 
 ## Generative AI
@@ -45,7 +46,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 
 ### Data Visualization
 - [gradio](https://github.com/gradio) - Build and share delightful machine learning apps, all in Python.
-  
+
 ### Data Analysis
 - [dspy](https://github.com/dspy) - DSPy: The framework for programming—not prompting—foundation models.
 - [haystack](https://github.com/haystack) - LLM orchestration framework to build customizable, production-ready LLM applications.
