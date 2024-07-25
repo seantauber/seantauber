@@ -41,7 +41,7 @@ def update_readme_with_llm(current_readme, starred_repos):
     """
 
      
-    client = OpenAI(api_key)
+    client = OpenAI()
     
     response = client.chat.completions.create(
         model="gpt-4o",  # Using a model with larger context
