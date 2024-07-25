@@ -14,63 +14,60 @@ def get_starred_repos(username):
     response = requests.get(url, headers=headers)
     return response.json()
 
-def categorize_repos(repos):
+def update_readme_with_llm(current_readme, starred_repos):
     # Prepare the input for the LLM
-    repo_info = "\n".join([f"{repo['name']}: {repo['description']}" for repo in repos])
+    repo_info = "\n".join([f"{repo['name']}: {repo['description']}" for repo in starred_repos])
+    current_date = datetime.now().strftime("%Y-%m-%d")
     
     prompt = f"""
-    Categorize the following GitHub repositories into relevant categories for AI and Data Science. 
-    Create appropriate category names and group the repositories under them. 
-    Here are the repositories:
+    You are tasked with updating a GitHub README.md file. Here's what you need to do:
 
+    1. The current README content is provided below, enclosed in triple backticks.
+    2. A list of all currently starred repositories is provided after that, also enclosed in triple backticks.
+    3. Replace the contents of the repositories currently in the README with the repositories from the current star list.
+    4. Reorganize the repositories into categories, with a strong bias towards changing as little as possible of the category structure of the original README file.
+    5. Update the "Last edited" field of the README with the current date: {current_date}.
+    6. All parts of the README that are not part of the list of repositories (explanations about how this repo works, overviews of what the repo is, user info such as LinkedIn, etc.) should remain unchanged.
+
+    Current README:
+    ```
+    {current_readme}
+    ```
+
+    Current starred repositories:
+    ```
     {repo_info}
+    ```
 
-    Provide the output in JSON format with category names as keys and lists of repository names as values.
+    Please provide the updated README content, maintaining its original structure as much as possible while incorporating the new repository information. Don't add any comments. Return only the contents of the markdown readme file.
     """
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo-16k",  # Using a model with larger context
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that categorizes GitHub repositories."},
+            {"role": "system", "content": "You are a helpful assistant that updates GitHub README files."},
             {"role": "user", "content": prompt}
         ]
     )
 
-    # Parse the JSON response
-    categories = json.loads(response.choices[0].message.content)
-    return categories
+    return response.choices[0].message.content
 
-def update_readme(repos, categories):
-    with open('README.md', 'r') as file:
-        content = file.read()
-
-    # Update the starred repos section
-    start_marker = "## My Starred Repositories\n"
-    end_marker = "## "
-    pattern = re.compile(f'{re.escape(start_marker)}.*?{re.escape(end_marker)}', re.DOTALL)
+def main():
+    username = "seantauber"  # Replace with your GitHub username
     
-    new_content = start_marker + "\n"
-    for category, repo_names in categories.items():
-        new_content += f"### {category}\n"
-        for repo_name in repo_names:
-            repo = next((r for r in repos if r['name'] == repo_name), None)
-            if repo:
-                new_content += f"- [{repo['name']}]({repo['html_url']}): {repo['description']}\n"
-        new_content += "\n"
-    new_content += end_marker
-
-    updated_content = pattern.sub(new_content, content)
-
-    # Update the last edited date
-    today = datetime.now().strftime("%Y-%m-%d")
-    date_pattern = re.compile(r'Last edited: \d{4}-\d{2}-\d{2}')
-    updated_content = date_pattern.sub(f'Last edited: {today}', updated_content)
-
+    # Read current README
+    with open('README.md', 'r') as file:
+        current_readme = file.read()
+    
+    # Get starred repos
+    starred_repos = get_starred_repos(username)
+    
+    # Update README using LLM
+    updated_readme = update_readme_with_llm(current_readme, starred_repos)
+    
+    # Write updated README
     with open('README.md', 'w') as file:
-        file.write(updated_content)
+        file.write(updated_readme)
 
 if __name__ == "__main__":
-    username = "seantauber"  # Replace with your GitHub username
-    repos = get_starred_repos(username)
-    categories = categorize_repos(repos)
-    update_readme(repos, categories)
+    main()
