@@ -25,8 +25,9 @@ def update_readme_with_llm(current_readme, starred_repos):
     3. Replace the contents of the repositories currently in the README with the repositories from the current star list.
     4. Reorganize the repositories into categories, with a strong bias towards changing as little as possible of the category structure of the original README file.
     5. If there are repos that you are unable to classify with reasonable certainty, place them in a catch-all "Other" category. This should be the final category in the document.
-    6. Update the "Last edited" field of the README with the current date: {current_date}.
-    7. All parts of the README that are not part of the list of repositories (explanations about how this repo works, overviews of what the repo is, user info such as LinkedIn, etc.) should remain unchanged.
+    6. Update the table of contents to accurately reflect all of the category sections in the document including links to those sections.
+    7. Update the "Last edited" field of the README with the current date: {current_date}.
+    8. All parts of the README that are not part of the list of repositories or table of contents(explanations about how this repo works, overviews of what the repo is, user info such as LinkedIn, etc.) should remain unchanged.
 
     Current README:
     ```
