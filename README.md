@@ -9,7 +9,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [Data Science](#data-science)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
-- [Want your own GitHub landing page like this? How This Landing Page Works](#how-this-landing-page-works)
+- [How This Landing Page Works](#how-this-landing-page-works) (Fork to create your own GitHub landing page like this)
 
 ## Generative AI
 
