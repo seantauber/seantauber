@@ -2,6 +2,7 @@ import requests
 import re
 from datetime import datetime
 import openai
+from openai import OpenAI
 import os
 import json
 
@@ -42,7 +43,8 @@ def update_readme_with_llm(current_readme, starred_repos):
     Please provide the updated README content, maintaining its original structure as much as possible while incorporating the new repository information. Don't add any comments. Return only the contents of the markdown readme file.
     """
 
-    response = openai.ChatCompletion.create(
+    client = OpenAI()
+    response = client.chat.completions.create(
         model="gpt-4o",  # Using a model with larger context
         messages=[
             {"role": "system", "content": "You are a helpful assistant that updates GitHub README files."},
