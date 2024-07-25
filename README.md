@@ -36,7 +36,8 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 ### Autonomous Agents
 - [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
 - [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
-  
+- [gpt-researcher](https://github.com/gpt-researcher) - GPT based autonomous agent that does online comprehensive research on any given topic.
+
 ### Reinforcement Learning
 - [crewAI](https://github.com/crewAI) - Framework for orchestrating role-playing, autonomous AI agents.
 
@@ -58,6 +59,19 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 ## AI Ethics & Responsible AI
 
 - [artkit](https://github.com/artkit) - Automated prompt-based testing and evaluation of Gen AI applications.
+
+## Other
+
+- [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3
+- [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise
+- [resume.md](https://github.com/resume.md) - Write your resume in Markdown, style it with CSS, output to HTML and PDF
+- [markdown-resume](https://github.com/markdown-resume) - A simple, elegant, and fast workflow to write resumes and CVs in Markdown.
+- [online-resume](https://github.com/online-resume) - A minimalist Jekyll theme for your resume.
+- [DevResume-Theme](https://github.com/DevResume-Theme) - DevResume - Bootstrap 5 Resume/CV Theme for Software Developers
+- [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization)
+- [google-chat-samples](https://github.com/google-chat-samples) - Chat Bot Samples for Google Chat.
+- [operating-system](https://github.com/operating-system) - Home Assistant Operating System
+- [whisper-playground](https://github.com/whisper-playground) - Build real time speech2text web apps using OpenAI's Whisper
 
 ## How This Landing Page Works
 
