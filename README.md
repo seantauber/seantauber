@@ -14,49 +14,50 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 ## Generative AI
 
 ### Large Language Models (LLMs)
-- [🤗 Hugging Face Transformers](https://github.com/huggingface/transformers) - State-of-the-art Natural Language Processing for PyTorch and TensorFlow 2.0.
-- [OpenAI GPT-3](https://github.com/openai/gpt-3) - Language Models are Few-Shot Learners.
-- [Google BERT](https://github.com/google-research/bert) - TensorFlow code and pre-trained models for BERT.
+- [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
+- [AGiXT](https://github.com/AGiXT) - A dynamic AI Agent Automation Platform that seamlessly orchestrates instruction management and complex task execution across diverse AI providers.
 
 ### Image Generation
-- [DALL-E](https://github.com/openai/DALL-E) - PyTorch package for the discrete VAE used for DALL·E.
-- [Stable Diffusion](https://github.com/CompVis/stable-diffusion) - A latent text-to-image diffusion model.
+- [Stable-Diffusion](https://github.com/Stable-Diffusion) - Stable Diffusion, SDXL, LoRA Training, DreamBooth Training, Automatic1111 Web UI, and more.
 
 ### Audio Generation
-- [Jukebox](https://github.com/openai/jukebox) - A generative model for music.
-- [TTS](https://github.com/coqui-ai/TTS) - Deep learning toolkit for Text-to-Speech, battle-tested in research and production.
+- [audiocraft](https://github.com/audiocraft) - A library for audio processing and generation with deep learning, featuring MusicGen and EnCodec.
+
+### Chat Applications
+- [ai-chat-protocol](https://github.com/ai-chat-protocol) - A library + API spec for easily streaming generative AI output to your chat applications.
+- [chatgpt_telegram_bot](https://github.com/chatgpt_telegram_bot) - Telegram bot with ChatGPT, Python-based, using OpenAI's API.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
-- [TensorFlow](https://github.com/tensorflow/tensorflow) - An open source machine learning framework for everyone.
-- [PyTorch](https://github.com/pytorch/pytorch) - Tensors and Dynamic neural networks in Python with strong GPU acceleration.
+- [playwright-python](https://github.com/playwright-python) - Python version of the Playwright testing and automation library.
+- [gptrpg](https://github.com/gptrpg) - A demo of an GPT-based agent existing in an RPG-like environment.
 
+### Autonomous Agents
+- [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
+- [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
+  
 ### Reinforcement Learning
-- [OpenAI Gym](https://github.com/openai/gym) - A toolkit for developing and comparing reinforcement learning algorithms.
-- [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3) - Reliable implementations of reinforcement learning algorithms.
+- [crewAI](https://github.com/crewAI) - Framework for orchestrating role-playing, autonomous AI agents.
 
 ## Data Science
 
 ### Data Visualization
-- [Plotly](https://github.com/plotly/plotly.py) - The interactive graphing library for Python.
-- [Seaborn](https://github.com/mwaskom/seaborn) - Statistical data visualization using matplotlib.
-
+- [gradio](https://github.com/gradio) - Build and share delightful machine learning apps, all in Python.
+  
 ### Data Analysis
-- [Pandas](https://github.com/pandas-dev/pandas) - Flexible and powerful data analysis / manipulation library for Python.
-- [Scikit-learn](https://github.com/scikit-learn/scikit-learn) - Machine Learning in Python.
+- [dspy](https://github.com/dspy) - DSPy: The framework for programming—not prompting—foundation models.
+- [haystack](https://github.com/haystack) - LLM orchestration framework to build customizable, production-ready LLM applications.
 
 ## MLOps & AI Infrastructure
 
-- [MLflow](https://github.com/mlflow/mlflow) - Open source platform for the machine learning lifecycle.
-- [Kubeflow](https://github.com/kubeflow/kubeflow) - Machine Learning Toolkit for Kubernetes.
-- [DVC](https://github.com/iterative/dvc) - Data Version Control | Git for Data & Models | ML Experiments Management.
+- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, with tools to build on AI.
+- [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
+- [reor](https://github.com/reor) - Private & local AI personal knowledge management app.
 
 ## AI Ethics & Responsible AI
 
-- [AI Fairness 360](https://github.com/Trusted-AI/AIF360) - Fairness metrics for datasets and machine learning models.
-- [Ethical AI](https://github.com/EthicalML/ethical-ai) - A practical guide to building more ethical AI systems.
-
+- [artkit](https://github.com/artkit) - Automated prompt-based testing and evaluation of Gen AI applications.
 
 ## How This Landing Page Works
 
