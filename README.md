@@ -73,6 +73,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last updated: [Current Date]*
+📊 *Last updated: [July 25, 2024]*
 
-🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/yourusername) | 🐦 Follow me on [Twitter](https://twitter.com/yourusername)
+🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
