@@ -43,7 +43,7 @@ def update_readme_with_llm(current_readme, starred_repos):
     """
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-16k",  # Using a model with larger context
+        model="gpt-4o",  # Using a model with larger context
         messages=[
             {"role": "system", "content": "You are a helpful assistant that updates GitHub README files."},
             {"role": "user", "content": prompt}
