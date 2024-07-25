@@ -24,10 +24,15 @@ def update_readme(repos):
     # Replace the old content with new content
     updated_content = pattern.sub(new_content, content)
 
+    # Update the last edited date
+    today = datetime.now().strftime("%Y-%m-%d")
+    date_pattern = re.compile(r'Last edited: \d{4}-\d{2}-\d{2}')
+    updated_content = date_pattern.sub(f'Last edited: {today}', updated_content)
+
     with open('README.md', 'w') as file:
         file.write(updated_content)
 
 if __name__ == "__main__":
-    username = "YourGitHubUsername"  # Replace with your GitHub username
+    username = "seantauber"  # Replace with your GitHub username
     repos = get_starred_repos(username)
     update_readme(repos)
