@@ -6,8 +6,6 @@ from openai import OpenAI
 import os
 import json
 
-# Set up OpenAI API key
-openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 def get_starred_repos(username):
     url = f"https://api.github.com/users/{username}/starred"
@@ -43,7 +41,11 @@ def update_readme_with_llm(current_readme, starred_repos):
     Please provide the updated README content, maintaining its original structure as much as possible while incorporating the new repository information. Don't add any comments. Return only the contents of the markdown readme file.
     """
 
-    client = OpenAI()
+    
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY")
+    )
+    
     response = client.chat.completions.create(
         model="gpt-4o",  # Using a model with larger context
         messages=[
