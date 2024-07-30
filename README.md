@@ -73,6 +73,8 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [google-chat-samples](https://github.com/google-chat-samples) - Chat Bot Samples for Google Chat.
 - [operating-system](https://github.com/operating-system) - Home Assistant Operating System.
 - [whisper-playground](https://github.com/whisper-playground) - Build real time speech2text web apps using OpenAI's Whisper.
+- [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
+- [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 
 ## How This Landing Page Works
 
@@ -117,6 +119,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last updated: [July 29, 2024]*
+📊 *Last updated: [July 30, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
