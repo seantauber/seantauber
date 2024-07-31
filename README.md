@@ -55,7 +55,6 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 
 - [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, with tools to build on AI.
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
-- [reor](https://github.com/reor) - Private & local AI personal knowledge management app.
 
 ## AI Ethics & Responsible AI
 
@@ -72,7 +71,6 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
 - [google-chat-samples](https://github.com/google-chat-samples) - Chat Bot Samples for Google Chat.
 - [operating-system](https://github.com/operating-system) - Home Assistant Operating System.
-- [whisper-playground](https://github.com/whisper-playground) - Build real time speech2text web apps using OpenAI's Whisper.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 
@@ -119,6 +117,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last updated: [July 30, 2024]*
+📊 *Last updated: [July 31, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
