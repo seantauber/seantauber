@@ -38,8 +38,6 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
 - [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
 - [gpt-researcher](https://github.com/gpt-researcher) - GPT based autonomous agent that does online comprehensive research on any given topic.
-
-### Reinforcement Learning
 - [crewAI](https://github.com/crewAI) - Framework for orchestrating role-playing, autonomous AI agents.
 
 ## Data Science
@@ -117,6 +115,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last updated: [July 31, 2024]*
+📊 *Last updated: [August 1, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
