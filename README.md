@@ -32,7 +32,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 
 ### Machine Learning Frameworks
 - [playwright-python](https://github.com/playwright-python) - Python version of the Playwright testing and automation library.
-- [gptrpg](https://github.com/gptrpg) - A demo of an GPT-based agent existing in an RPG-like environment.
+- [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
 
 ### Autonomous Agents
 - [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
@@ -115,6 +115,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last updated: [August 1, 2024]*
+📊 *Last updated: [August 2, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
