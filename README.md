@@ -1,3 +1,4 @@
+```markdown
 # 🚀 Awesome GenAI, AI, and Data Science Resources
 
 Welcome to my curated list of cutting-edge and interesting repositories in the fields of Generative AI, Artificial Intelligence, and Data Science. As a technical product manager specializing in these areas, I've compiled this list to help developers, researchers, and enthusiasts stay up-to-date with the latest advancements and tools.
@@ -115,6 +116,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last updated: [August 2, 2024]*
+📊 *Last edited: [August 3, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
+```
