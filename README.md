@@ -52,7 +52,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 
 ## MLOps & AI Infrastructure
 
-- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, with tools to build on AI.
+- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, to use and to build on.
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
 
 ## AI Ethics & Responsible AI
@@ -116,7 +116,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [August 5, 2024]*
+📊 *Last edited: [August 6, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
 ```
