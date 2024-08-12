@@ -16,8 +16,8 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 ## Generative AI
 
 ### Large Language Models (LLMs)
-- [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
 - [AGiXT](https://github.com/AGiXT) - A dynamic AI Agent Automation Platform that seamlessly orchestrates instruction management and complex task execution across diverse AI providers.
+- [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
 
 ### Image Generation
 - [Stable-Diffusion](https://github.com/Stable-Diffusion) - Stable Diffusion, SDXL, LoRA Training, DreamBooth Training, Automatic1111 Web UI, and more.
@@ -116,7 +116,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [August 11, 2024]*
+📊 *Last edited: [August 12, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
 ```
