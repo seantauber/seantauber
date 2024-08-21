@@ -10,6 +10,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [Data Science](#data-science)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
+- [Resume Tools](#resume-tools)
 - [Other](#other)
 - [How This Landing Page Works](#how-this-landing-page-works) (Fork to create your own GitHub landing page like this)
 
@@ -59,14 +60,17 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 
 - [artkit](https://github.com/artkit) - Automated prompt-based testing and evaluation of Gen AI applications.
 
-## Other
+## Resume Tools
 
-- [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
-- [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
 - [resume.md](https://github.com/resume.md) - Write your resume in Markdown, style it with CSS, output to HTML and PDF.
 - [markdown-resume](https://github.com/markdown-resume) - A simple, elegant, and fast workflow to write resumes and CVs in Markdown.
 - [online-resume](https://github.com/online-resume) - A minimalist Jekyll theme for your resume.
 - [DevResume-Theme](https://github.com/DevResume-Theme) - DevResume - Bootstrap 5 Resume/CV Theme for Software Developers.
+
+## Other
+
+- [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
+- [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
 - [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
 - [google-chat-samples](https://github.com/google-chat-samples) - Chat Bot Samples for Google Chat.
 - [operating-system](https://github.com/operating-system) - Home Assistant Operating System.
@@ -116,7 +120,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [August 20, 2024]*
+📊 *Last edited: [August 21, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
 ```
