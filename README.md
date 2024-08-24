@@ -82,11 +82,8 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 This GitHub landing page is dynamically updated to showcase my latest interests and discoveries in the fields of AI, Machine Learning, and Data Science. Here's how it works:
 
 1. **Automated Updates**: The repository list you see above is automatically updated daily using GitHub Actions.
-
 2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
-
 3. **AI-Powered Organization**: An AI model (GPT-3.5-turbo) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
-
 4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating, keeping the content fresh with minimal effort.
 
 ### How to Implement This for Your Own GitHub
@@ -120,7 +117,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [August 23, 2024]*
+📊 *Last edited: [August 24, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
 ```
