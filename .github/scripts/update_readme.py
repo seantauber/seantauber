@@ -28,6 +28,7 @@ def update_readme_with_llm(current_readme, starred_repos):
     6. Update the table of contents to accurately reflect all of the category sections in the document including links to those sections.
     7. Update the "Last edited" field of the README with the current date: {current_date}.
     8. All parts of the README that are not part of the list of repositories or table of contents(explanations about how this repo works, overviews of what the repo is, user info such as LinkedIn, etc.) should remain unchanged.
+    9. Make sure the updated README does not contain triple ticks indication markdown at the beginning or end of the file because this will cause it to not render properly as markdown once it's written into the new README.md
 
     Current README:
     ```
