@@ -10,7 +10,6 @@ This GitHub landing page is dynamically updated to showcase my latest interests 
 2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
 3. **AI-Powered Organization**: An AI model (GPT-3.5-turbo) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
 4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo and it will automatically be categorized and added to this document.
-**Scroll to the bottom for info on how to implement this for yourself**
 
 ## 📚 Table of Contents
 
