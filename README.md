@@ -1,6 +1,13 @@
 # 🤖 GenAI, AI, and Data Science Resources
-** This document is updated automatially using GenAI - Scroll down for details on how it works **
 
+## How This Landing Page Works
+
+This GitHub landing page is dynamically updated to showcase my latest interests and discoveries in the fields of AI, Machine Learning, and Data Science. Here's how it works:
+
+1. **Automated Updates**: The repository list you see above is automatically updated daily using GitHub Actions.
+2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
+3. **AI-Powered Organization**: An AI model (GPT-3.5-turbo) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
+4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo and it will automatically be categorized and added to this document.
 Welcome to my curated list of cutting-edge and interesting repositories in the fields of Generative AI, Artificial Intelligence, and Data Science. As a technical product manager specializing in these areas, I've compiled this list to help developers, researchers, and enthusiasts stay up-to-date with the latest advancements and tools.
 
 ## 📚 Table of Contents
@@ -77,16 +84,7 @@ Welcome to my curated list of cutting-edge and interesting repositories in the f
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 
-## How This Landing Page Works
-
-This GitHub landing page is dynamically updated to showcase my latest interests and discoveries in the fields of AI, Machine Learning, and Data Science. Here's how it works:
-
-1. **Automated Updates**: The repository list you see above is automatically updated daily using GitHub Actions.
-2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
-3. **AI-Powered Organization**: An AI model (GPT-3.5-turbo) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
-4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating, keeping the content fresh with minimal effort.
-
-### How to Implement This for Your Own GitHub
+## How to Implement This Landing Page On Your Own GitHub
 
 If you'd like to create a similar landing page for your GitHub profile:
 
