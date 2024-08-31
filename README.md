@@ -8,10 +8,12 @@ This GitHub landing page is **automatically updated every day by AI** to showcas
 
 Here's how it works:
 
-1. **Automated Updates**: The repository list you see above is automatically updated daily using GitHub Actions.
+1. **Automated Updates**: The repository list you see below is automatically updated daily using GitHub Actions that I've set up to run the AI pipeline.
 2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
 3. **AI-Powered Organization**: An AI model (GPT-3.5-turbo) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
-4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo and it will automatically be categorized and added to this document.
+4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo and it will automatically be categorized and added to this document. When I remove a repo from my starred list, the AI automatically removes it from this page.
+
+**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this and how to group my starred repos into those categories. It also reassess and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what cateogories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM.
 
 ## 📚 Table of Contents
 
