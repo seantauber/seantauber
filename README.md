@@ -1,10 +1,10 @@
 # 🤖 GenAI, AI, and Data Science Resources
 
-Welcome to my curated list of cutting-edge and interesting repositories in the fields of Generative AI, Artificial Intelligence, and Data Science. As a technical product manager specializing in these areas, I've compiled this list to help developers, researchers, and enthusiasts stay up-to-date with the latest advancements and tools.
+Welcome to my AI GENERATED list of interesting repositories in the fields of Generative AI, Artificial Intelligence, and Data Science. As a technical product manager specializing in these areas, I've compiled this list to help developers, researchers, and enthusiasts stay up-to-date with the latest advancements and tools.
 
 ## How This Landing Page Works
 
-This GitHub landing page is dynamically updated to showcase my latest interests and discoveries in the fields of AI, Machine Learning, and Data Science. Here's how it works:
+This GitHub landing page is **automatically updated every day by AI** to showcase my latest interests and discoveries in the fields of AI, Machine Learning, and Data Science. Here's how it works:
 
 1. **Automated Updates**: The repository list you see above is automatically updated daily using GitHub Actions.
 2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
