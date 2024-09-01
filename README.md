@@ -65,7 +65,7 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, to use and to build on.
+- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
 
 ## AI Ethics & Responsible AI
@@ -120,6 +120,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [August 31, 2024]*
+📊 *Last edited: [September 1, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
