@@ -13,7 +13,7 @@ Here's how it works:
 3. **AI-Powered Organization**: An AI model (GPT-3.5-turbo) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
 4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo and it will automatically be categorized and added to this document. When I remove a repo from my starred list, the AI automatically removes it from this page.
 
-**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this and how to group my starred repos into those categories. It also reassess and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what cateogories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM.
+**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this and how to group my starred repos into those categories. It also reassess and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what categories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM.
 
 ## 📚 Table of Contents
 
@@ -31,12 +31,7 @@ Here's how it works:
 ### Large Language Models (LLMs)
 - [AGiXT](https://github.com/AGiXT) - A dynamic AI Agent Automation Platform that seamlessly orchestrates instruction management and complex task execution across diverse AI providers.
 - [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
-
-### Image Generation
-- [Stable-Diffusion](https://github.com/Stable-Diffusion) - Stable Diffusion, SDXL, LoRA Training, DreamBooth Training, Automatic1111 Web UI, and more.
-
-### Audio Generation
-- [audiocraft](https://github.com/audiocraft) - A library for audio processing and generation with deep learning, featuring MusicGen and EnCodec.
+- [GenerativeAI](https://github.com/GenerativeAI) - GenAI & LLM usecases and applications.
 
 ### Chat Applications
 - [ai-chat-protocol](https://github.com/ai-chat-protocol) - A library + API spec for easily streaming generative AI output to your chat applications.
@@ -88,6 +83,7 @@ Here's how it works:
 - [operating-system](https://github.com/operating-system) - Home Assistant Operating System.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
+- [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -120,6 +116,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 2, 2024]*
+📊 *Last edited: [September 3, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
