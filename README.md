@@ -18,8 +18,14 @@ Here's how it works:
 ## 📚 Table of Contents
 
 - [Generative AI](#generative-ai)
+  - [Large Language Models (LLMs)](#large-language-models-llms)
+  - [Chat Applications](#chat-applications)
 - [Artificial Intelligence](#artificial-intelligence)
+  - [Machine Learning Frameworks](#machine-learning-frameworks)
+  - [Autonomous Agents](#autonomous-agents)
 - [Data Science](#data-science)
+  - [Data Visualization](#data-visualization)
+  - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
 - [Resume Tools](#resume-tools)
@@ -116,6 +122,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 4, 2024]*
+📊 *Last edited: [September 5, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
