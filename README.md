@@ -30,7 +30,9 @@ Here's how it works:
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
 - [Resume Tools](#resume-tools)
 - [Other](#other)
-- [How This Landing Page Works](#how-this-landing-page-works) (Fork to create your own GitHub landing page like this)
+- [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
+- [🌟 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ## Generative AI
 
@@ -122,6 +124,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 10, 2024]*
+📊 *Last edited: [September 11, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
