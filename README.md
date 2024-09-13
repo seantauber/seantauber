@@ -37,19 +37,24 @@ Here's how it works:
 ## Generative AI
 
 ### Large Language Models (LLMs)
+
 - [AGiXT](https://github.com/AGiXT) - A dynamic AI Agent Automation Platform that seamlessly orchestrates instruction management and complex task execution across diverse AI providers.
 - [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
 - [GenerativeAI](https://github.com/GenerativeAI) - GenAI & LLM usecases and applications.
+- [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
 
 ### Chat Applications
+
 - [ai-chat-protocol](https://github.com/ai-chat-protocol) - A library + API spec for easily streaming generative AI output to your chat applications.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
+
 - [playwright-python](https://github.com/playwright-python) - Python version of the Playwright testing and automation library.
 
 ### Autonomous Agents
+
 - [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
 - [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
 - [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
@@ -58,10 +63,14 @@ Here's how it works:
 ## Data Science
 
 ### Data Visualization
+
 - [gradio](https://github.com/gradio) - Build and share delightful machine learning apps, all in Python.
 
 ### Data Analysis
+
 - [haystack](https://github.com/haystack) - LLM orchestration framework to build customizable, production-ready LLM applications.
+- [llama_index](https://github.com/llama_index) - LlamaIndex is a data framework for your LLM applications.
+- [paper-qa](https://github.com/paper-qa) - High accuracy RAG for answering questions from scientific documents with citations.
 
 ## MLOps & AI Infrastructure
 
