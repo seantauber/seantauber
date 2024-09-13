@@ -43,18 +43,16 @@ Here's how it works:
 
 ### Chat Applications
 - [ai-chat-protocol](https://github.com/ai-chat-protocol) - A library + API spec for easily streaming generative AI output to your chat applications.
-- [chatgpt_telegram_bot](https://github.com/chatgpt_telegram_bot) - Telegram bot with ChatGPT, Python-based, using OpenAI's API.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 - [playwright-python](https://github.com/playwright-python) - Python version of the Playwright testing and automation library.
-- [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
 
 ### Autonomous Agents
 - [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
 - [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
-- [gpt-researcher](https://github.com/gpt-researcher) - GPT based autonomous agent that does online comprehensive research on any given topic.
+- [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
 - [crewAI](https://github.com/crewAI) - Framework for orchestrating role-playing, autonomous AI agents.
 
 ## Data Science
@@ -63,7 +61,6 @@ Here's how it works:
 - [gradio](https://github.com/gradio) - Build and share delightful machine learning apps, all in Python.
 
 ### Data Analysis
-- [dspy](https://github.com/dspy) - DSPy: The framework for programming—not prompting—foundation models.
 - [haystack](https://github.com/haystack) - LLM orchestration framework to build customizable, production-ready LLM applications.
 
 ## MLOps & AI Infrastructure
@@ -88,7 +85,6 @@ Here's how it works:
 - [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
 - [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
 - [google-chat-samples](https://github.com/google-chat-samples) - Chat Bot Samples for Google Chat.
-- [operating-system](https://github.com/operating-system) - Home Assistant Operating System.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
@@ -124,6 +120,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 12, 2024]*
+📊 *Last edited: [September 13, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
