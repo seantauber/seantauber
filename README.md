@@ -42,6 +42,7 @@ Here's how it works:
 - [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
 - [GenerativeAI](https://github.com/GenerativeAI) - GenAI & LLM usecases and applications.
 - [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
+- [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
 
 ### Chat Applications
 
@@ -59,6 +60,7 @@ Here's how it works:
 - [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
 - [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
 - [crewAI](https://github.com/crewAI) - Framework for orchestrating role-playing, autonomous AI agents.
+- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.
 
 ## Data Science
 
@@ -74,7 +76,6 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
 
 ## AI Ethics & Responsible AI
@@ -129,6 +130,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 14, 2024]*
+📊 *Last edited: [September 15, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
