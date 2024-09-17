@@ -94,7 +94,6 @@ Here's how it works:
 - [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
 - [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
 - [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
-- [google-chat-samples](https://github.com/google-chat-samples) - Chat Bot Samples for Google Chat.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
@@ -130,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 16, 2024]*
+📊 *Last edited: [September 17, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
