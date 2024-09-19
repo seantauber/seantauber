@@ -43,6 +43,7 @@ Here's how it works:
 - [GenerativeAI](https://github.com/GenerativeAI) - GenAI & LLM usecases and applications.
 - [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
 - [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
+- [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
 
 ### Chat Applications
 
@@ -70,13 +71,13 @@ Here's how it works:
 
 ### Data Analysis
 
-- [haystack](https://github.com/haystack) - LLM orchestration framework to build customizable, production-ready LLM applications.
 - [llama_index](https://github.com/llama_index) - LlamaIndex is a data framework for your LLM applications.
 - [paper-qa](https://github.com/paper-qa) - High accuracy RAG for answering questions from scientific documents with citations.
 
 ## MLOps & AI Infrastructure
 
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
+- [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
 
 ## AI Ethics & Responsible AI
 
@@ -92,11 +93,10 @@ Here's how it works:
 ## Other
 
 - [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
-- [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
-- [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
+- [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 18, 2024]*
+📊 *Last edited: [September 19, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
