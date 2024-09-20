@@ -24,7 +24,6 @@ Here's how it works:
   - [Machine Learning Frameworks](#machine-learning-frameworks)
   - [Autonomous Agents](#autonomous-agents)
 - [Data Science](#data-science)
-  - [Data Visualization](#data-visualization)
   - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
@@ -48,6 +47,7 @@ Here's how it works:
 ### Chat Applications
 
 - [ai-chat-protocol](https://github.com/ai-chat-protocol) - A library + API spec for easily streaming generative AI output to your chat applications.
+- [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
 
 ## Artificial Intelligence
 
@@ -65,10 +65,6 @@ Here's how it works:
 
 ## Data Science
 
-### Data Visualization
-
-- [gradio](https://github.com/gradio) - Build and share delightful machine learning apps, all in Python.
-
 ### Data Analysis
 
 - [llama_index](https://github.com/llama_index) - LlamaIndex is a data framework for your LLM applications.
@@ -78,6 +74,8 @@ Here's how it works:
 
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
 - [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
+- [vectara-ingest](https://github.com/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
+- [py-vectara-agentic](https://github.com/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
 
 ## AI Ethics & Responsible AI
 
@@ -88,15 +86,14 @@ Here's how it works:
 - [resume.md](https://github.com/resume.md) - Write your resume in Markdown, style it with CSS, output to HTML and PDF.
 - [markdown-resume](https://github.com/markdown-resume) - A simple, elegant, and fast workflow to write resumes and CVs in Markdown.
 - [online-resume](https://github.com/online-resume) - A minimalist Jekyll theme for your resume.
-- [DevResume-Theme](https://github.com/DevResume-Theme) - DevResume - Bootstrap 5 Resume/CV Theme for Software Developers.
 
 ## Other
 
 - [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
-- [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
-- [whisperX](https://github.com/whisperX) - WhisperX: Automatic Speech Recognition with Word-level Timestamps (& Diarization).
+- [moshi](https://github.com/moshi) - None.
+- [IF](https://github.com/IF) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +126,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 19, 2024]*
+📊 *Last edited: [September 20, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
