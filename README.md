@@ -22,7 +22,7 @@ Here's how it works:
   - [Chat Applications](#chat-applications)
 - [Artificial Intelligence](#artificial-intelligence)
   - [Machine Learning Frameworks](#machine-learning-frameworks)
-  - [Autonomous Agents](#autonomous-agents)
+  - [Chatbots & Assistance](#chatbots--assistance)
 - [Data Science](#data-science)
   - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
@@ -55,13 +55,13 @@ Here's how it works:
 
 - [playwright-python](https://github.com/playwright-python) - Python version of the Playwright testing and automation library.
 
-### Autonomous Agents
+### Chatbots & Assistance
 
-- [babyagi](https://github.com/babyagi) - BabyAGI, an autonomous AI agent with task prioritization and task execution capabilities.
-- [Teenage-AGI](https://github.com/Teenage-AGI) - Teenage-AGI project with advanced AI agents.
-- [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
-- [crewAI](https://github.com/crewAI) - Framework for orchestrating role-playing, autonomous AI agents.
-- [AutoGPT](https://github.com/AutoGPT) - The vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.
+- [LibreChat](https://github.com/LibreChat) - Enhanced ChatGPT Clone with multiple model integrations and security features.
+- [dify](https://github.com/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
+- [Flowise](https://github.com/Flowise) - Drag & drop UI to build your customized LLM flow.
+- [llm-answer-engine](https://github.com/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
+- [danswer](https://github.com/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
 
 ## Data Science
 
@@ -94,6 +94,9 @@ Here's how it works:
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [moshi](https://github.com/moshi) - None.
 - [IF](https://github.com/IF) - None.
+- [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
+- [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
+- [Teenage-AGI](https://github.com/Teenage-AGI) - Advanced AI agents in a simulated environment.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -126,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 20, 2024]*
+📊 *Last edited: [September 21, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
