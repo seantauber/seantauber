@@ -27,7 +27,6 @@ Here's how it works:
   - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
-- [Resume Tools](#resume-tools)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
 - [🌟 Contributing](#-contributing)
@@ -58,7 +57,7 @@ Here's how it works:
 ### Chatbots & Assistance
 
 - [LibreChat](https://github.com/LibreChat) - Enhanced ChatGPT Clone with multiple model integrations and security features.
-- [dify](https://github.com/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
+- [Dify](https://github.com/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
 - [Flowise](https://github.com/Flowise) - Drag & drop UI to build your customized LLM flow.
 - [llm-answer-engine](https://github.com/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
 - [danswer](https://github.com/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
@@ -81,12 +80,6 @@ Here's how it works:
 
 - [artkit](https://github.com/artkit) - Automated prompt-based testing and evaluation of Gen AI applications.
 
-## Resume Tools
-
-- [resume.md](https://github.com/resume.md) - Write your resume in Markdown, style it with CSS, output to HTML and PDF.
-- [markdown-resume](https://github.com/markdown-resume) - A simple, elegant, and fast workflow to write resumes and CVs in Markdown.
-- [online-resume](https://github.com/online-resume) - A minimalist Jekyll theme for your resume.
-
 ## Other
 
 - [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
@@ -96,7 +89,8 @@ Here's how it works:
 - [IF](https://github.com/IF) - None.
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
-- [Teenage-AGI](https://github.com/Teenage-AGI) - Advanced AI agents in a simulated environment.
+- [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
+- [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +123,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: [September 21, 2024]*
+📊 *Last edited: [September 22, 2024]*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
