@@ -88,9 +88,8 @@ Here's how it works:
 - [moshi](https://github.com/moshi) - None.
 - [IF](https://github.com/IF) - None.
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
-- [gptrpg](https://github.com/gptrpg) - A demo of a GPT-based agent existing in an RPG-like environment.
-- [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
+- [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -123,6 +122,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 23, 2024*
+📊 *Last edited: September 24, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
