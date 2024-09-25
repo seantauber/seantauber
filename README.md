@@ -36,12 +36,13 @@ Here's how it works:
 
 ### Large Language Models (LLMs)
 
-- [AGiXT](https://github.com/AGiXT) - A dynamic AI Agent Automation Platform that seamlessly orchestrates instruction management and complex task execution across diverse AI providers.
-- [open-webui](https://github.com/open-webui) - User-friendly WebUI for LLMs (Formerly Ollama WebUI).
 - [GenerativeAI](https://github.com/GenerativeAI) - GenAI & LLM usecases and applications.
 - [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
-- [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
+- [create-llama](https://github.com/create-llama) - The easiest way to get started with LlamaIndex.
+- [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
 - [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
+- [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
+- [finetune-Qwen2-VL](https://github.com/finetune-Qwen2-VL) - None.
 
 ### Chat Applications
 
@@ -52,7 +53,7 @@ Here's how it works:
 
 ### Machine Learning Frameworks
 
-- [playwright-python](https://github.com/playwright-python) - Python version of the Playwright testing and automation library.
+- [LitServe](https://github.com/LitServe) - Lightning-fast serving engine for AI models. Flexible. Easy. Enterprise-scale.
 
 ### Chatbots & Assistance
 
@@ -72,7 +73,6 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
-- [ragapp](https://github.com/ragapp) - The easiest way to use Agentic RAG in any enterprise.
 - [vectara-ingest](https://github.com/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
 - [py-vectara-agentic](https://github.com/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
 
@@ -82,7 +82,7 @@ Here's how it works:
 
 ## Other
 
-- [llama-fs](https://github.com/llama-fs) - A self-organizing file system with llama 3.
+- [UltimateTab](https://github.com/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [moshi](https://github.com/moshi) - None.
@@ -122,6 +122,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 24, 2024*
+📊 *Last edited: September 25, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
