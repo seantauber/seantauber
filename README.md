@@ -72,7 +72,6 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
 - [vectara-ingest](https://github.com/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
 - [py-vectara-agentic](https://github.com/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
 
@@ -90,6 +89,7 @@ Here's how it works:
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
+- [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -122,6 +122,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 25, 2024*
+📊 *Last edited: September 26, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
