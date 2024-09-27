@@ -41,12 +41,10 @@ Here's how it works:
 - [create-llama](https://github.com/create-llama) - The easiest way to get started with LlamaIndex.
 - [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
 - [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
-- [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
 - [finetune-Qwen2-VL](https://github.com/finetune-Qwen2-VL) - None.
 
 ### Chat Applications
 
-- [ai-chat-protocol](https://github.com/ai-chat-protocol) - A library + API spec for easily streaming generative AI output to your chat applications.
 - [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
 
 ## Artificial Intelligence
@@ -58,10 +56,10 @@ Here's how it works:
 ### Chatbots & Assistance
 
 - [LibreChat](https://github.com/LibreChat) - Enhanced ChatGPT Clone with multiple model integrations and security features.
-- [Dify](https://github.com/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
-- [Flowise](https://github.com/Flowise) - Drag & drop UI to build your customized LLM flow.
-- [llm-answer-engine](https://github.com/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
 - [danswer](https://github.com/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
+- [llm-answer-engine](https://github.com/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
+- [Flowise](https://github.com/Flowise) - Drag & drop UI to build your customized LLM flow.
+- [dify](https://github.com/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
 
 ## Data Science
 
@@ -82,14 +80,14 @@ Here's how it works:
 ## Other
 
 - [UltimateTab](https://github.com/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
-- [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
-- [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
-- [moshi](https://github.com/moshi) - None.
-- [IF](https://github.com/IF) - None.
+- [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
-- [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
-- [mactop](https://github.com/mactop) - Apple Silicon Monitor Top written in pure Golang.
+- [moshi](https://github.com/moshi) - None.
+- [IF](https://github.com/IF) - None.
+- [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
+- [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
+- [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -122,6 +120,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 26, 2024*
+📊 *Last edited: September 27, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
