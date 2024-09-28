@@ -42,6 +42,7 @@ Here's how it works:
 - [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
 - [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
 - [finetune-Qwen2-VL](https://github.com/finetune-Qwen2-VL) - None.
+- [llama-stack](https://github.com/llama-stack) - Model components of the Llama Stack APIs.
 
 ### Chat Applications
 
@@ -67,11 +68,14 @@ Here's how it works:
 
 - [llama_index](https://github.com/llama_index) - LlamaIndex is a data framework for your LLM applications.
 - [paper-qa](https://github.com/paper-qa) - High accuracy RAG for answering questions from scientific documents with citations.
+- [pandas-ai](https://github.com/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs and RAG.
+- [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
 
 ## MLOps & AI Infrastructure
 
 - [vectara-ingest](https://github.com/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
 - [py-vectara-agentic](https://github.com/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
+- [MLOps-Basics](https://github.com/MLOps-Basics) - None.
 
 ## AI Ethics & Responsible AI
 
@@ -84,7 +88,6 @@ Here's how it works:
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [moshi](https://github.com/moshi) - None.
-- [IF](https://github.com/IF) - None.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
@@ -120,6 +123,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 27, 2024*
+📊 *Last edited: September 28, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
