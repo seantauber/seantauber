@@ -79,7 +79,7 @@ Here's how it works:
 
 ## AI Ethics & Responsible AI
 
-- [artkit](https://github.com/artkit) - Automated prompt-based testing and evaluation of Gen AI applications.
+Nothing to show here at the moment.
 
 ## Other
 
@@ -89,7 +89,6 @@ Here's how it works:
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [moshi](https://github.com/moshi) - None.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
-- [piecemaker](https://github.com/piecemaker) - Create jigsaw puzzle pieces.
 - [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -123,6 +122,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 28, 2024*
+📊 *Last edited: September 29, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
