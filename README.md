@@ -26,7 +26,6 @@ Here's how it works:
 - [Data Science](#data-science)
   - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [AI Ethics & Responsible AI](#ai-ethics--responsible-ai)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
 - [🌟 Contributing](#-contributing)
@@ -77,10 +76,6 @@ Here's how it works:
 - [py-vectara-agentic](https://github.com/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
 - [MLOps-Basics](https://github.com/MLOps-Basics) - None.
 
-## AI Ethics & Responsible AI
-
-Nothing to show here at the moment.
-
 ## Other
 
 - [UltimateTab](https://github.com/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
@@ -90,6 +85,7 @@ Nothing to show here at the moment.
 - [moshi](https://github.com/moshi) - None.
 - [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
+- [qa-mdt](https://github.com/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -122,6 +118,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 29, 2024*
+📊 *Last edited: September 30, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
