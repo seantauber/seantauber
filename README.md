@@ -65,9 +65,9 @@ Here's how it works:
 
 ### Data Analysis
 
+- [pandas-ai](https://github.com/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs (GPT 3.5 / 4, Anthropic, VertexAI) and RAG.
 - [llama_index](https://github.com/llama_index) - LlamaIndex is a data framework for your LLM applications.
 - [paper-qa](https://github.com/paper-qa) - High accuracy RAG for answering questions from scientific documents with citations.
-- [pandas-ai](https://github.com/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs and RAG.
 - [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
 
 ## MLOps & AI Infrastructure
@@ -83,9 +83,10 @@ Here's how it works:
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [moshi](https://github.com/moshi) - None.
-- [jigsaw-generator](https://github.com/jigsaw-generator) - Software for creating jigsaw puzzles using LaTeX, with output similar to Tarsia's Formulator software.
 - [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
 - [qa-mdt](https://github.com/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
+- [autogen](https://github.com/autogen) - A programming framework for agentic AI 🤖.
+- [insanely-fast-whisper](https://github.com/insanely-fast-whisper) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -118,6 +119,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: September 30, 2024*
+📊 *Last edited: October 01, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
