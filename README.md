@@ -35,8 +35,6 @@ Here's how it works:
 
 ### Large Language Models (LLMs)
 
-- [GenerativeAI](https://github.com/GenerativeAI) - GenAI & LLM usecases and applications.
-- [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
 - [create-llama](https://github.com/create-llama) - The easiest way to get started with LlamaIndex.
 - [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
 - [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
@@ -87,6 +85,7 @@ Here's how it works:
 - [qa-mdt](https://github.com/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
 - [autogen](https://github.com/autogen) - A programming framework for agentic AI 🤖.
 - [insanely-fast-whisper](https://github.com/insanely-fast-whisper) - None.
+- [example-agents](https://github.com/example-agents) - Examples of AI Agents that can be built on SwarmZero.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -119,6 +118,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 05, 2024*
+📊 *Last edited: October 06, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
