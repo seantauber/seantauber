@@ -86,6 +86,7 @@ Here's how it works:
 - [autogen](https://github.com/autogen) - A programming framework for agentic AI 🤖.
 - [insanely-fast-whisper](https://github.com/insanely-fast-whisper) - None.
 - [example-agents](https://github.com/example-agents) - Examples of AI Agents that can be built on SwarmZero.
+- [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -118,6 +119,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 06, 2024*
+📊 *Last edited: October 07, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
