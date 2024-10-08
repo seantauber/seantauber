@@ -19,7 +19,6 @@ Here's how it works:
 
 - [Generative AI](#generative-ai)
   - [Large Language Models (LLMs)](#large-language-models-llms)
-  - [Chat Applications](#chat-applications)
 - [Artificial Intelligence](#artificial-intelligence)
   - [Machine Learning Frameworks](#machine-learning-frameworks)
   - [Chatbots & Assistance](#chatbots--assistance)
@@ -40,10 +39,6 @@ Here's how it works:
 - [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
 - [finetune-Qwen2-VL](https://github.com/finetune-Qwen2-VL) - None.
 - [llama-stack](https://github.com/llama-stack) - Model components of the Llama Stack APIs.
-
-### Chat Applications
-
-- [gpt-assistants-api-ui](https://github.com/gpt-assistants-api-ui) - OpenAI Assistants API chat UI that supports file upload/download and Streaming API.
 
 ## Artificial Intelligence
 
@@ -76,16 +71,17 @@ Here's how it works:
 
 ## Other
 
+- [Auto_Jobs_Applier_AIHawk](https://github.com/Auto_Jobs_Applier_AIHawk) - Auto_Jobs_Applier_AIHawk is a tool that automates the jobs application process.
+- [example-agents](https://github.com/example-agents) - Examples of AI Agents that can be built on SwarmZero.
+- [autogen](https://github.com/autogen) - A programming framework for agentic AI 🤖.
+- [insanely-fast-whisper](https://github.com/insanely-fast-whisper) - None.
+- [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
+- [qa-mdt](https://github.com/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
 - [UltimateTab](https://github.com/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
 - [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
 - [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [moshi](https://github.com/moshi) - None.
-- [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
-- [qa-mdt](https://github.com/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
-- [autogen](https://github.com/autogen) - A programming framework for agentic AI 🤖.
-- [insanely-fast-whisper](https://github.com/insanely-fast-whisper) - None.
-- [example-agents](https://github.com/example-agents) - Examples of AI Agents that can be built on SwarmZero.
 - [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -119,6 +115,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 07, 2024*
+📊 *Last edited: October 08, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
