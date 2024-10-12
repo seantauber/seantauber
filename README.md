@@ -44,7 +44,7 @@ Here's how it works:
 
 ### Machine Learning Frameworks
 
-- [LitServe](https://github.com/LitServe) - Lightning-fast serving engine for AI models. Flexible. Easy. Enterprise-scale.
+- [LitServe](https://github.com/LitServe) - Lightning-fast serving engine for any AI model of any size. Flexible. Easy. Enterprise-scale.
 
 ### Chatbots & Assistance
 
@@ -115,6 +115,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 11, 2024*
+📊 *Last edited: October 12, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
