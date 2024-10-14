@@ -70,6 +70,7 @@ Here's how it works:
 
 ## Other
 
+- [openai/swarm](https://github.com/openai/swarm) - Educational framework exploring ergonomic, lightweight multi-agent orchestration.
 - [Auto_Jobs_Applier_AIHawk](https://github.com/feder-cr/Auto_Jobs_Applier_AIHawk) - Auto_Jobs_Applier_AIHawk is a tool that automates the jobs application process.
 - [example-agents](https://github.com/hivenetwork-ai/example-agents) - Examples of AI Agents that can be built on SwarmZero.
 - [autogen](https://github.com/microsoft/autogen) - A programming framework for agentic AI 🤖.
