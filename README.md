@@ -34,55 +34,54 @@ Here's how it works:
 
 ### Large Language Models (LLMs)
 
-- [create-llama](https://github.com/create-llama) - The easiest way to get started with LlamaIndex.
-- [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
-- [llamacoder](https://github.com/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
-- [finetune-Qwen2-VL](https://github.com/finetune-Qwen2-VL) - None.
-- [llama-stack](https://github.com/llama-stack) - Model components of the Llama Stack APIs.
+- [create-llama](https://github.com/run-llama/create-llama) - The easiest way to get started with LlamaIndex.
+- [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/pavannagula/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
+- [llamacoder](https://github.com/Nutlope/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
+- [finetune-Qwen2-VL](https://github.com/zhangfaen/finetune-Qwen2-VL) - None.
+- [llama-stack](https://github.com/meta-llama/llama-stack) - Model components of the Llama Stack APIs.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
-- [LitServe](https://github.com/LitServe) - Lightning-fast serving engine for any AI model of any size. Flexible. Easy. Enterprise-scale.
+- [LitServe](https://github.com/Lightning-AI/LitServe) - Lightning-fast serving engine for any AI model of any size. Flexible. Easy. Enterprise-scale.
 
 ### Chatbots & Assistance
 
-- [LibreChat](https://github.com/LibreChat) - Enhanced ChatGPT Clone with multiple model integrations and security features.
-- [danswer](https://github.com/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
-- [llm-answer-engine](https://github.com/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
-- [Flowise](https://github.com/Flowise) - Drag & drop UI to build your customized LLM flow.
-- [dify](https://github.com/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
+- [LibreChat](https://github.com/danny-avila/LibreChat) - Enhanced ChatGPT Clone with multiple model integrations and security features.
+- [danswer](https://github.com/danswer-ai/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
+- [llm-answer-engine](https://github.com/developersdigest/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
+- [Flowise](https://github.com/FlowiseAI/Flowise) - Drag & drop UI to build your customized LLM flow.
+- [dify](https://github.com/langgenius/dify) - Dify is an open-source LLM app development platform that combines AI workflows, RAG pipeline, and model management.
 
 ## Data Science
 
 ### Data Analysis
 
-- [pandas-ai](https://github.com/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs (GPT 3.5 / 4, Anthropic, VertexAI) and RAG.
-- [llama_index](https://github.com/llama_index) - LlamaIndex is a data framework for your LLM applications.
-- [paper-qa](https://github.com/paper-qa) - High accuracy RAG for answering questions from scientific documents with citations.
-- [kotaemon](https://github.com/kotaemon) - An open-source RAG-based tool for chatting with your documents.
+- [pandas-ai](https://github.com/Sinaptik-AI/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs (GPT 3.5 / 4, Anthropic, VertexAI) and RAG.
+- [llama_index](https://github.com/run-llama/llama_index) - LlamaIndex is a data framework for your LLM applications.
+- [kotaemon](https://github.com/Cinnamon/kotaemon) - An open-source RAG-based tool for chatting with your documents.
 
 ## MLOps & AI Infrastructure
 
-- [vectara-ingest](https://github.com/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
-- [py-vectara-agentic](https://github.com/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
-- [MLOps-Basics](https://github.com/MLOps-Basics) - None.
+- [vectara-ingest](https://github.com/vectara/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
+- [py-vectara-agentic](https://github.com/vectara/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
+- [MLOps-Basics](https://github.com/graviraja/MLOps-Basics) - None.
 
 ## Other
 
-- [Auto_Jobs_Applier_AIHawk](https://github.com/Auto_Jobs_Applier_AIHawk) - Auto_Jobs_Applier_AIHawk is a tool that automates the jobs application process.
-- [example-agents](https://github.com/example-agents) - Examples of AI Agents that can be built on SwarmZero.
-- [autogen](https://github.com/autogen) - A programming framework for agentic AI 🤖.
-- [insanely-fast-whisper](https://github.com/insanely-fast-whisper) - None.
-- [crawl4ai](https://github.com/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
-- [qa-mdt](https://github.com/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
-- [UltimateTab](https://github.com/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
-- [fabric](https://github.com/fabric) - An open-source framework for augmenting humans using AI.
-- [awesome-llm-webapps](https://github.com/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
-- [chatbot-ui](https://github.com/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
-- [moshi](https://github.com/moshi) - None.
-- [ai-toolkit](https://github.com/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
+- [Auto_Jobs_Applier_AIHawk](https://github.com/feder-cr/Auto_Jobs_Applier_AIHawk) - Auto_Jobs_Applier_AIHawk is a tool that automates the jobs application process.
+- [example-agents](https://github.com/hivenetwork-ai/example-agents) - Examples of AI Agents that can be built on SwarmZero.
+- [autogen](https://github.com/microsoft/autogen) - A programming framework for agentic AI 🤖.
+- [insanely-fast-whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) - None.
+- [crawl4ai](https://github.com/unclecode/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
+- [qa-mdt](https://github.com/ivcylc/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
+- [UltimateTab](https://github.com/BenoitBellegarde/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
+- [fabric](https://github.com/danielmiessler/fabric) - An open-source framework for augmenting humans using AI.
+- [awesome-llm-webapps](https://github.com/snowfort-ai/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
+- [chatbot-ui](https://github.com/mckaywrigley/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
+- [moshi](https://github.com/kyutai-labs/moshi) - None.
+- [ai-toolkit](https://github.com/ostris/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
