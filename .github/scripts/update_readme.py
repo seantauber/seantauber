@@ -5,7 +5,6 @@ from openai import OpenAI
 import os
 import json
 
-
 def get_starred_repos(username):
     url = f"https://api.github.com/users/{username}/starred"
     headers = {"Authorization": f"token {os.environ['GITHUB_TOKEN']}"}
@@ -14,7 +13,7 @@ def get_starred_repos(username):
 
 def update_readme_with_llm(current_readme, starred_repos):
     # Prepare the input for the LLM
-    repo_info = "\n".join([f"{repo['name']}: {repo['description']}" for repo in starred_repos])
+    repo_info = "\n".join([f"{repo['full_name']}: {repo['description']} - {repo['html_url']}" for repo in starred_repos])
     current_date = datetime.now().strftime("%Y-%m-%d")
     
     prompt = f"""
@@ -29,6 +28,7 @@ def update_readme_with_llm(current_readme, starred_repos):
     7. Update the "Last edited" field of the README with the current date: {current_date}.
     8. All parts of the README that are not part of the list of repositories or table of contents(explanations about how this repo works, overviews of what the repo is, user info such as LinkedIn, etc.) should remain unchanged.
     9. Make sure the updated README does not contain triple ticks indication markdown at the beginning or end of the file because this will cause it to not render properly as markdown once it's written into the new README.md
+    10. For each repository, use the full URL provided to create a proper markdown link. The format should be: [repository name](full URL)
 
     Current README:
     ```
@@ -43,11 +43,10 @@ def update_readme_with_llm(current_readme, starred_repos):
     Please provide the updated README content, maintaining its original structure as much as possible while incorporating the new repository information. Don't add any comments. Return only the contents of the markdown readme file.
     """
 
-     
     client = OpenAI()
     
     response = client.chat.completions.create(
-        model="gpt-4o",  # Using a model with larger context
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that updates GitHub README files."},
             {"role": "user", "content": prompt}
