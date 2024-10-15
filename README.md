@@ -166,7 +166,6 @@ git push origin main
 # You can modify the README.md template to fit your personal brand and interests.
 # The GitHub Action will automatically update it with your latest starred repositories daily.
 
-
 **Note**: This landing page uses OpenAI's GPT-4o model. Make sure you comply with OpenAI's use-case policies and monitor your API usage to manage costs.
 
 ---
@@ -181,6 +180,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 14, 2024*
+📊 *Last edited: October 15, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
