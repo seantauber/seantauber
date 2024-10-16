@@ -39,6 +39,7 @@ Here's how it works:
 - [llamacoder](https://github.com/Nutlope/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
 - [finetune-Qwen2-VL](https://github.com/zhangfaen/finetune-Qwen2-VL) - None.
 - [llama-stack](https://github.com/meta-llama/llama-stack) - Model components of the Llama Stack APIs.
+- [LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) - Implementing a ChatGPT-like LLM in PyTorch from scratch, step by step.
 
 ## Artificial Intelligence
 
@@ -59,14 +60,12 @@ Here's how it works:
 ### Data Analysis
 
 - [pandas-ai](https://github.com/Sinaptik-AI/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs (GPT 3.5 / 4, Anthropic, VertexAI) and RAG.
-- [llama_index](https://github.com/run-llama/llama_index) - LlamaIndex is a data framework for your LLM applications.
-- [kotaemon](https://github.com/Cinnamon/kotaemon) - An open-source RAG-based tool for chatting with your documents.
 
 ## MLOps & AI Infrastructure
 
+- [MLOps-Basics](https://github.com/graviraja/MLOps-Basics) - None.
 - [vectara-ingest](https://github.com/vectara/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
 - [py-vectara-agentic](https://github.com/vectara/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
-- [MLOps-Basics](https://github.com/graviraja/MLOps-Basics) - None.
 
 ## Other
 
@@ -83,6 +82,7 @@ Here's how it works:
 - [chatbot-ui](https://github.com/mckaywrigley/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [moshi](https://github.com/kyutai-labs/moshi) - None.
 - [ai-toolkit](https://github.com/ostris/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
+- [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -142,6 +142,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 15, 2024*
+📊 *Last edited: October 16, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
