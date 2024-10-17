@@ -36,10 +36,10 @@ Here's how it works:
 
 - [create-llama](https://github.com/run-llama/create-llama) - The easiest way to get started with LlamaIndex.
 - [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/pavannagula/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
-- [llamacoder](https://github.com/Nutlope/llamacoder) - Open source Claude Artifacts – built with Llama 3.1 405B.
-- [finetune-Qwen2-VL](https://github.com/zhangfaen/finetune-Qwen2-VL) - None.
 - [llama-stack](https://github.com/meta-llama/llama-stack) - Model components of the Llama Stack APIs.
 - [LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) - Implementing a ChatGPT-like LLM in PyTorch from scratch, step by step.
+- [dynamic-few-shot-llamaindex-workflow](https://github.com/rsrohan99/dynamic-few-shot-llamaindex-workflow) - None.
+- [finetune-Qwen2-VL](https://github.com/zhangfaen/finetune-Qwen2-VL) - None.
 
 ## Artificial Intelligence
 
@@ -65,7 +65,6 @@ Here's how it works:
 
 - [MLOps-Basics](https://github.com/graviraja/MLOps-Basics) - None.
 - [vectara-ingest](https://github.com/vectara/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
-- [py-vectara-agentic](https://github.com/vectara/py-vectara-agentic) - A python library for creating AI assistants with Vectara, using Agentic RAG.
 
 ## Other
 
@@ -76,13 +75,12 @@ Here's how it works:
 - [insanely-fast-whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) - None.
 - [crawl4ai](https://github.com/unclecode/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
 - [qa-mdt](https://github.com/ivcylc/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
+- [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
 - [UltimateTab](https://github.com/BenoitBellegarde/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
 - [fabric](https://github.com/danielmiessler/fabric) - An open-source framework for augmenting humans using AI.
 - [awesome-llm-webapps](https://github.com/snowfort-ai/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
 - [chatbot-ui](https://github.com/mckaywrigley/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
 - [moshi](https://github.com/kyutai-labs/moshi) - None.
-- [ai-toolkit](https://github.com/ostris/ai-toolkit) - Various AI scripts. Mostly Stable Diffusion stuff.
-- [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -142,6 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 16, 2024*
+📊 *Last edited: October 17, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
