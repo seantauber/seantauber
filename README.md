@@ -25,6 +25,7 @@ Here's how it works:
 - [Data Science](#data-science)
   - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
+- [Agentic Frameworks](#agentic-frameworks)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
 - [🌟 Contributing](#-contributing)
@@ -64,23 +65,27 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [MLOps-Basics](https://github.com/graviraja/MLOps-Basics) - None.
-- [vectara-ingest](https://github.com/vectara/vectara-ingest) - An open source framework to crawl data sources and ingest into Vectara.
+
+## Agentic Frameworks
+
+- [Agent-S](https://github.com/simular-ai/Agent-S) - Agent S: an open agentic framework that uses computers like a human.
+- [TapeAgents](https://github.com/ServiceNow/TapeAgents) - A framework facilitating all stages of the LLM Agent development lifecycle.
+- [example-agents](https://github.com/hivenetwork-ai/example-agents) - Examples of AI Agents that can be built on SwarmZero.
+- [autogen](https://github.com/microsoft/autogen) - A programming framework for agentic AI 🤖.
 
 ## Other
 
 - [openai/swarm](https://github.com/openai/swarm) - Educational framework exploring ergonomic, lightweight multi-agent orchestration.
 - [Auto_Jobs_Applier_AIHawk](https://github.com/feder-cr/Auto_Jobs_Applier_AIHawk) - Auto_Jobs_Applier_AIHawk is a tool that automates the jobs application process.
-- [example-agents](https://github.com/hivenetwork-ai/example-agents) - Examples of AI Agents that can be built on SwarmZero.
-- [autogen](https://github.com/microsoft/autogen) - A programming framework for agentic AI 🤖.
 - [insanely-fast-whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) - None.
 - [crawl4ai](https://github.com/unclecode/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
 - [qa-mdt](https://github.com/ivcylc/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
 - [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
 - [UltimateTab](https://github.com/BenoitBellegarde/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
 - [fabric](https://github.com/danielmiessler/fabric) - An open-source framework for augmenting humans using AI.
-- [awesome-llm-webapps](https://github.com/snowfort-ai/awesome-llm-webapps) - A collection of open source, actively maintained web apps for LLM applications.
-- [chatbot-ui](https://github.com/mckaywrigley/chatbot-ui) - Come join the best place on the internet to learn AI skills. Use code "chatbotui" for an extra 20% off.
-- [moshi](https://github.com/kyutai-labs/moshi) - None.
+- [niledatabase/niledatabase](https://github.com/niledatabase/niledatabase) - PostgreSQL reengineered for multi-tenant apps.
+- [openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
+- [Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - A collection of tutorials and implementations for Prompt Engineering techniques.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -140,6 +145,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 17, 2024*
+📊 *Last edited: October 18, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
