@@ -1,37 +1,39 @@
-name: Update README with Starred Repos
+name: Update README with Starred Repos and Editor Summaries
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Update README
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      run: |
-        python scripts/update_readme.py
+      - name: Update README and Editor Summaries
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}  # Use the GitHub username of the actor
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python update_readme.py  # Adjust the path if necessary
 
-    - name: Commit and push if changed
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add -A
-        git commit -m "Update README with starred repos" || exit 0
-        git push
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md EDITOR_SUMMARIES.md  # Explicitly add relevant files
+          git commit -m "Automated update: README and Editor Summaries" || echo "No changes to commit"
+          git push

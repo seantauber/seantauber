@@ -1,36 +1,45 @@
-# 🤖 GenAI, AI, and Data Science Resources
+# ⭐ GitHub Starred Repositories Tracker
 
-Welcome to my AI GENERATED list of interesting repositories in the fields of Generative AI, Artificial Intelligence, and Data Science. As an AI Engineer & Product Development Specialist in these areas, I've compiled this list to help developers, researchers, and enthusiasts stay up-to-date with the latest advancements and tools.
-
-## How This Landing Page Works
-
-This GitHub landing page is **automatically updated every day by AI** to showcase my latest interests and discoveries in the fields of AI, Machine Learning, and Data Science.
-
-Here's how it works:
-
-1. **Automated Updates**: The repository list you see below is automatically updated daily using GitHub Actions that I've set up to run the AI pipeline.
-2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
-3. **AI-Powered Organization**: An AI model (GPT-4o) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
-4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo and it will automatically be categorized and added to this document. When I remove a repo from my starred list, the AI automatically removes it from this page.
-
-**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this and how to group my starred repos into those categories. It also reassesses and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what categories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM.
+![GitHub Repo stars](https://img.shields.io/github/stars/seantauber/starred-repos-tracker?style=social)
 
 ## 📚 Table of Contents
+- [⭐ GitHub Starred Repositories Tracker](#-github-starred-repositories-tracker)
+  - [📚 Table of Contents](#-table-of-contents)
+  - [Introduction](#introduction)
+  - [⭐ Starred Repositories](#-starred-repositories)
+  - [Generative AI](#generative-ai)
+    - [Large Language Models (LLMs)](#large-language-models-llms)
+  - [Artificial Intelligence](#artificial-intelligence)
+    - [Machine Learning Frameworks](#machine-learning-frameworks)
+    - [Chatbots \& Assistance](#chatbots--assistance)
+  - [Data Science](#data-science)
+    - [Data Analysis](#data-analysis)
+  - [MLOps \& AI Infrastructure](#mlops--ai-infrastructure)
+  - [Agentic Frameworks](#agentic-frameworks)
+  - [Other](#other)
+  - [🔧 Implementation Details](#-implementation-details)
+    - [Architecture Overview](#architecture-overview)
+    - [Multi-Agent System](#multi-agent-system)
+  - [Setup and Installation](#setup-and-installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation Steps](#installation-steps)
+    - [Usage](#usage)
+    - [Customization](#customization)
+    - [📂 Developer Guide](#-developer-guide)
+    - [🌟 Contributing](#-contributing)
+    - [📄 License](#-license)
 
-- [Generative AI](#generative-ai)
-  - [Large Language Models (LLMs)](#large-language-models-llms)
-- [Artificial Intelligence](#artificial-intelligence)
-  - [Machine Learning Frameworks](#machine-learning-frameworks)
-  - [Chatbots & Assistance](#chatbots--assistance)
-- [Data Science](#data-science)
-  - [Data Analysis](#data-analysis)
-- [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [Agentic Frameworks](#agentic-frameworks)
-- [Other](#other)
-- [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
-- [🌟 Contributing](#-contributing)
-- [📄 License](#-license)
+## Introduction
 
+Welcome to the **GitHub Starred Repositories Tracker**! This project automates the process of updating your GitHub `README.md` with your latest starred repositories. By leveraging OpenAI's advanced language models and a structured multi-agent system, this tool ensures your repository list remains current, well-organized, and insightful.
+
+This tracker serves as a practical example of implementing generative AI solutions to streamline and enhance personal projects, demonstrating effective use of automation and AI-driven data processing.
+
+## ⭐ Starred Repositories
+
+Here is the curated list of my starred repositories:
+
+<!-- Starred Repositories Section Start -->
 ## Generative AI
 
 ### Large Language Models (LLMs)
@@ -87,64 +96,153 @@ Here's how it works:
 - [Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - A collection of tutorials and implementations for Prompt Engineering techniques.
 - [weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications.
 
-## How to Implement This Landing Page On Your Own GitHub
-
-This project automatically updates the README with your GitHub starred repositories using a Python script and GitHub Actions.
-``` python
-# 1. Clone the repository:
-git clone https://github.com/your-username/github-genai-list.git
-cd github-genai-list
-
-# 2. Set up your environment:
-# Ensure you have Python 3.x installed. You can check your version with:
-python --version
-
-# 3. Install dependencies:
-# First, make sure pip is up-to-date:
-python -m pip install --upgrade pip
-# Then install the required dependencies:
-pip install -r requirements.txt
-
-# 4. Set up GitHub secrets:
-# Go to your GitHub repository settings, and under Secrets and variables > Actions, create the following secrets:
-# GITHUB_TOKEN: Your personal access token for GitHub API.
-# OPENAI_API_KEY: Your API key for OpenAI (if applicable for LLM updates).
-# PAT: A GitHub Personal Access Token with appropriate permissions
-
-# 5. Update the script:
-# In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username.
-
-# 6. Configure the GitHub Action:
-# The workflow is already set up in .github/workflows/update-readme.yml.
-# It runs daily at midnight (UTC) or can be triggered manually via the GitHub Actions tab.
-
-# 7. Running locally (optional):
-# You can also run the script manually to test it locally:
-python scripts/update_readme.py
-
-# 8. Commit and push changes:
-git add .
-git commit -m "Updated project structure"
-git push origin main
-
-# 9. Customize the README:
-# You can modify the README.md template to fit your personal brand and interests.
-# The GitHub Action will automatically update it with your latest starred repositories daily.
-```
-**Note**: This landing page uses OpenAI's GPT-4o model. Make sure you comply with OpenAI's use-case policies and monitor your API usage to manage costs.
-
----
-
-## 🌟 Contributing
-
-Feel free to open a pull request if you have any suggestions for additions or improvements to this list. Let's collaborate to keep this resource up-to-date and valuable for the community!
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+<!-- Starred Repositories Section End -->
 
 ---
 
 📊 *Last edited: October 20, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
+
+
+## 🔧 Implementation Details
+
+### Architecture Overview
+
+The **GitHub Starred Repositories Tracker** employs a **multi-agent system** powered by OpenAI's GPT-4 model with **Structured Outputs**. This architecture ensures that each component of the workflow operates efficiently and reliably, maintaining the integrity and organization of your `README.md`.
+
+### Multi-Agent System
+
+The system is composed of the following specialized agents:
+
+1. **Triaging Agent**
+   - **Role:** Acts as the coordinator, assessing tasks and delegating them to appropriate agents.
+   - **Responsibilities:**
+     - Evaluate incoming tasks or update triggers.
+     - Delegate tasks to specialized agents based on the nature of the update.
+
+2. **Fetching Agent**
+   - **Role:** Retrieves your starred repositories from the GitHub API.
+   - **Responsibilities:**
+     - Fetch the latest list of starred repositories.
+     - Ensure data integrity and handle API interactions.
+
+3. **Processing Agent**
+   - **Role:** Cleans and enriches the fetched repository data.
+   - **Responsibilities:**
+     - Remove duplicates and handle missing values.
+     - Calculate metrics such as star growth rate and activity level.
+
+4. **Curation Agent**
+   - **Role:** Assigns tags and scores to repositories.
+   - **Responsibilities:**
+     - Categorize repositories based on relevance and topics.
+     - Calculate popularity and trending scores to prioritize listings.
+
+5. **Editor Agent**
+   - **Role:** Aligns new repositories with the existing README structure.
+   - **Responsibilities:**
+     - Merge new curated data with existing entries.
+     - Maintain consistency in categorization and tagging.
+     - Generate editor's notes explaining changes and decisions.
+
+6. **ReadmeUpdater Agent**
+   - **Role:** Updates the `README.md` with the latest repository information.
+   - **Responsibilities:**
+     - Insert or update repository sections in the README.
+     - Update the table of contents to reflect new categories.
+     - Append links to archived editor notes.
+
+7. **Archive Agent**
+   - **Role:** Maintains a historical log of editor summaries.
+   - **Responsibilities:**
+     - Archive each editor's note with timestamps.
+     - Provide a historical reference for changes made over time.
+
+## Setup and Installation
+
+### Prerequisites
+
+- **Python 3.8+**
+- **GitHub Personal Access Token (PAT):** Required to access the GitHub API.
+- **OpenAI API Key:** Needed to utilize OpenAI's GPT-4 model.
+
+### Installation Steps
+
+1. **Clone the Repository**
+
+```bash
+git clone https://github.com/seantauber/starred-repos-tracker.git
+cd starred-repos-tracker
+```
+
+2. **Create a Virtual Environment**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. **Install Dependencies**
+
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configure Environment Variables**
+
+Create a `.env` file in the project root with the following content:
+
+```env
+GITHUB_TOKEN=your_github_personal_access_token
+OPENAI_API_KEY=your_openai_api_key
+```
+
+Security Note: Ensure that the `.env` file is added to `.gitignore` to prevent accidental commits of sensitive information.
+
+5. **Initialize the Agents**
+
+The agents are modular and can be extended with additional capabilities as needed. By default, they come with predefined functionalities tailored to this project.
+
+### Usage
+To update your `README.md` with the latest starred repositories, execute the main script:
+
+```bash
+python update_readme.py`
+```
+
+This script orchestrates the multi-agent workflow:
+
+1. Triaging Agent assesses the update task.
+2. Fetching Agent retrieves your starred repositories.
+3. Processing Agent cleans and enriches the data.
+4. Curation Agent categorizes and scores the repositories.
+5. Editor Agent aligns new data with the existing README.
+6. ReadmeUpdater Agent updates the README.md.
+7. Archive Agent logs the editor's notes for historical reference.
+
+### Customization
+
+The system is designed for extensibility. You can initialize agents with additional capabilities or modify existing ones to suit your specific needs. Refer to the [Developer Guide](docs/developer_guide.md) for detailed instructions on extending and customizing the agents.
+
+### 📂 Developer Guide
+
+For an in-depth understanding of the project's architecture, agent implementations, and customization options, please refer to the [Developer Guide](docs/developer_guide.md).
+
+### 🌟 Contributing
+
+Contributions are welcome! If you have suggestions or improvements, feel free to open an issue or submit a pull request.
+
+### 📄 License
+
+This project is licensed under the MIT License.
+
+Explanation of the Updates
+This project utilizes a structured multi-agent system powered by OpenAI's GPT-4 to automate the updating of your GitHub README.md. By fetching, processing, curating, and aligning your starred repositories, the system ensures your repository list remains current and well-organized. Detailed explanations of each agent's role and the workflow are provided above.
+
+Final Notes
+The GitHub Starred Repositories Tracker serves as both a practical tool for maintaining an updated list of repositories and a demonstration of effective generative AI solutions. By leveraging structured outputs and a modular multi-agent architecture, this project showcases the potential of AI-driven automation in personal and professional settings.
+
+For any questions or support, please feel free to reach *out*
+
+For a comprehensive developer-oriented documentation, please visit the [Developer Guide](docs/developer_guide.md).
