@@ -70,6 +70,7 @@ Here's how it works:
 - [TapeAgents](https://github.com/ServiceNow/TapeAgents) - A framework facilitating all stages of the LLM Agent development lifecycle.
 - [example-agents](https://github.com/hivenetwork-ai/example-agents) - Examples of AI Agents that can be built on SwarmZero.
 - [autogen](https://github.com/microsoft/autogen) - A programming framework for agentic AI 🤖.
+- [GENAI-CareerAssistant-Multiagent](https://github.com/amanv1906/GENAI-CareerAssistant-Multiagent) - GenAI career assistant.
 
 ## Other
 
@@ -84,7 +85,6 @@ Here's how it works:
 - [niledatabase/niledatabase](https://github.com/niledatabase/niledatabase) - PostgreSQL reengineered for multi-tenant apps.
 - [openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
 - [Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - A collection of tutorials and implementations for Prompt Engineering techniques.
-- [GENAI-CareerAssistant-Multiagent](https://github.com/amanv1906/GENAI-CareerAssistant-Multiagent) - GenAI career assistant.
 - [weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -145,6 +145,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 19, 2024*
+📊 *Last edited: October 20, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
