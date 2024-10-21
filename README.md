@@ -47,10 +47,10 @@ Here's how it works:
 ### Machine Learning Frameworks
 
 - [LitServe](https://github.com/Lightning-AI/LitServe) - Lightning-fast serving engine for any AI model of any size. Flexible. Easy. Enterprise-scale.
+- [BitNet](https://github.com/microsoft/BitNet) - Official inference framework for 1-bit LLMs.
 
 ### Chatbots & Assistance
 
-- [LibreChat](https://github.com/danny-avila/LibreChat) - Enhanced ChatGPT Clone with multiple model integrations and security features.
 - [danswer](https://github.com/danswer-ai/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
 - [llm-answer-engine](https://github.com/developersdigest/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
 
@@ -86,10 +86,12 @@ Here's how it works:
 - [openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
 - [Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - A collection of tutorials and implementations for Prompt Engineering techniques.
 - [weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications.
+- [Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
 This project automatically updates the README with your GitHub starred repositories using a Python script and GitHub Actions.
+
 ``` python
 # 1. Clone the repository:
 git clone https://github.com/your-username/github-genai-list.git
@@ -131,6 +133,7 @@ git push origin main
 # You can modify the README.md template to fit your personal brand and interests.
 # The GitHub Action will automatically update it with your latest starred repositories daily.
 ```
+
 **Note**: This landing page uses OpenAI's GPT-4o model. Make sure you comply with OpenAI's use-case policies and monitor your API usage to manage costs.
 
 ---
@@ -145,6 +148,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 20, 2024*
+📊 *Last edited: October 21, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
