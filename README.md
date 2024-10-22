@@ -21,9 +21,6 @@ Here's how it works:
   - [Large Language Models (LLMs)](#large-language-models-llms)
 - [Artificial Intelligence](#artificial-intelligence)
   - [Machine Learning Frameworks](#machine-learning-frameworks)
-  - [Chatbots & Assistance](#chatbots--assistance)
-- [Data Science](#data-science)
-  - [Data Analysis](#data-analysis)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [Agentic Frameworks](#agentic-frameworks)
 - [Other](#other)
@@ -35,58 +32,49 @@ Here's how it works:
 
 ### Large Language Models (LLMs)
 
-- [create-llama](https://github.com/run-llama/create-llama) - The easiest way to get started with LlamaIndex.
-- [User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant](https://github.com/pavannagula/User-Centric-RAG-Using-Llamaindex-Multi-Agent-System-and-Qdrant) - Customize the RAG application with user preferences over LLMs, Embeddings, Search types, and Reranking Models.
-- [llama-stack](https://github.com/meta-llama/llama-stack) - Model components of the Llama Stack APIs.
-- [LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) - Implementing a ChatGPT-like LLM in PyTorch from scratch, step by step.
 - [dynamic-few-shot-llamaindex-workflow](https://github.com/rsrohan99/dynamic-few-shot-llamaindex-workflow) - None.
-- [finetune-Qwen2-VL](https://github.com/zhangfaen/finetune-Qwen2-VL) - None.
+- [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) - Implementing a ChatGPT-like LLM in PyTorch from scratch, step by step.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
-- [LitServe](https://github.com/Lightning-AI/LitServe) - Lightning-fast serving engine for any AI model of any size. Flexible. Easy. Enterprise-scale.
 - [BitNet](https://github.com/microsoft/BitNet) - Official inference framework for 1-bit LLMs.
-
-### Chatbots & Assistance
-
-- [danswer](https://github.com/danswer-ai/danswer) - Gen-AI Chat for Teams, designed to leverage unique team knowledge.
-- [llm-answer-engine](https://github.com/developersdigest/llm-answer-engine) - Build a Perplexity-Inspired Answer Engine using various modern technologies.
-
-## Data Science
-
-### Data Analysis
-
-- [pandas-ai](https://github.com/Sinaptik-AI/pandas-ai) - Chat with your database (SQL, CSV, pandas, polars, mongodb, noSQL, etc). PandasAI makes data analysis conversational using LLMs (GPT 3.5 / 4, Anthropic, VertexAI) and RAG.
 
 ## MLOps & AI Infrastructure
 
-- [MLOps-Basics](https://github.com/graviraja/MLOps-Basics) - None.
+- [weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications.
+- [phidata](https://github.com/phidatahq/phidata) - Build AI Agents with memory, knowledge, tools and reasoning.
+- [ollama](https://github.com/ollama/ollama) - Get up and running with Llama 3.2, Mistral, Gemma 2, and other large language models.
 
 ## Agentic Frameworks
 
 - [Agent-S](https://github.com/simular-ai/Agent-S) - Agent S: an open agentic framework that uses computers like a human.
 - [TapeAgents](https://github.com/ServiceNow/TapeAgents) - A framework facilitating all stages of the LLM Agent development lifecycle.
-- [example-agents](https://github.com/hivenetwork-ai/example-agents) - Examples of AI Agents that can be built on SwarmZero.
-- [autogen](https://github.com/microsoft/autogen) - A programming framework for agentic AI 🤖.
 - [GENAI-CareerAssistant-Multiagent](https://github.com/amanv1906/GENAI-CareerAssistant-Multiagent) - GenAI career assistant.
+- [agentic_patterns](https://github.com/neural-maze/agentic_patterns) - Implementing the 4 agentic patterns from scratch.
 
 ## Other
 
-- [openai/swarm](https://github.com/openai/swarm) - Educational framework exploring ergonomic, lightweight multi-agent orchestration.
-- [Auto_Jobs_Applier_AIHawk](https://github.com/feder-cr/Auto_Jobs_Applier_AIHawk) - Auto_Jobs_Applier_AIHawk is a tool that automates the jobs application process.
-- [insanely-fast-whisper](https://github.com/Vaibhavs10/insanely-fast-whisper) - None.
-- [crawl4ai](https://github.com/unclecode/crawl4ai) - Open-source LLM Friendly Web Crawler & Scrapper.
-- [qa-mdt](https://github.com/ivcylc/qa-mdt) - SOTA Text-to-music (TTM) Generation (OpenMusic).
-- [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
-- [UltimateTab](https://github.com/BenoitBellegarde/UltimateTab) - Enhanced, ads-free and fast responsive interface to browse guitar tabs scraped from Ultimate Guitar.
-- [fabric](https://github.com/danielmiessler/fabric) - An open-source framework for augmenting humans using AI.
+- [docker/genai-stack](https://github.com/docker/genai-stack) - Langchain + Docker + Neo4j + Ollama.
+- [jadwcjaylove/awesome-mac](https://github.com/jaywcjlove/awesome-mac) - Collect premium software in various categories.
+- [trimstray/the-book-of-secret-knowledge](https://github.com/trimstray/the-book-of-secret-knowledge) - A collection of inspiring lists.
+- [vinta/awesome-python](https://github.com/vinta/awesome-python) - An opinionated list of awesome Python frameworks, libraries, and resources.
+- [norvig/pytudes](https://github.com/norvig/pytudes) - Python programs to perfect particular skills.
+- [TheAlgorithms/Python](https://github.com/TheAlgorithms/Python) - All Algorithms implemented in Python.
+- [yt-dlp/yt-dlp](https://github.com/yt-dlp/yt-dlp) - A feature-rich command-line audio/video downloader.
+- [microsoft/playwright-python](https://github.com/microsoft/playwright-python) - Python version of the Playwright testing and automation library.
+- [fishaudio/fish-diffusion](https://github.com/fishaudio/fish-diffusion) - An easy-to-understand TTS/SVS/SVC framework.
+- [fishaudio/fish-speech](https://github.com/fishaudio/fish-speech) - Brand new TTS solution.
+- [mem0ai/mem0](https://github.com/mem0ai/mem0) - The Memory layer for your AI apps.
+- [kestra-io/kestra](https://github.com/kestra-io/kestra) - Workflow Automation Platform.
+- [maybe-finance/maybe](https://github.com/maybe-finance/maybe) - The OS for your personal finances.
+- [NirDiamant/Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - Tutorials and implementations for Prompt Engineering.
+- [Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
 - [niledatabase/niledatabase](https://github.com/niledatabase/niledatabase) - PostgreSQL reengineered for multi-tenant apps.
 - [openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
-- [Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - A collection of tutorials and implementations for Prompt Engineering techniques.
-- [weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications.
-- [Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
+- [jy0205/Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
+- [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -148,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 21, 2024*
+📊 *Last edited: October 22, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
