@@ -32,32 +32,32 @@ Here's how it works:
 
 ### Large Language Models (LLMs)
 
-- [dynamic-few-shot-llamaindex-workflow](https://github.com/rsrohan99/dynamic-few-shot-llamaindex-workflow) - None.
+- [rsrohan99/dynamic-few-shot-llamaindex-workflow](https://github.com/rsrohan99/dynamic-few-shot-llamaindex-workflow) - None.
 - [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) - Implementing a ChatGPT-like LLM in PyTorch from scratch, step by step.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
-- [BitNet](https://github.com/microsoft/BitNet) - Official inference framework for 1-bit LLMs.
+- [microsoft/BitNet](https://github.com/microsoft/BitNet) - Official inference framework for 1-bit LLMs.
 
 ## MLOps & AI Infrastructure
 
-- [weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications.
-- [phidata](https://github.com/phidatahq/phidata) - Build AI Agents with memory, knowledge, tools and reasoning.
-- [ollama](https://github.com/ollama/ollama) - Get up and running with Llama 3.2, Mistral, Gemma 2, and other large language models.
+- [wandb/weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications, built by Weights & Biases.
+- [phidatahq/phidata](https://github.com/phidatahq/phidata) - Build AI Agents with memory, knowledge, tools and reasoning. Chat with them using a beautiful Agent UI.
+- [ollama/ollama](https://github.com/ollama/ollama) - Get up and running with Llama 3.2, Mistral, Gemma 2, and other large language models.
 
 ## Agentic Frameworks
 
-- [Agent-S](https://github.com/simular-ai/Agent-S) - Agent S: an open agentic framework that uses computers like a human.
-- [TapeAgents](https://github.com/ServiceNow/TapeAgents) - A framework facilitating all stages of the LLM Agent development lifecycle.
-- [GENAI-CareerAssistant-Multiagent](https://github.com/amanv1906/GENAI-CareerAssistant-Multiagent) - GenAI career assistant.
-- [agentic_patterns](https://github.com/neural-maze/agentic_patterns) - Implementing the 4 agentic patterns from scratch.
+- [simular-ai/Agent-S](https://github.com/simular-ai/Agent-S) - Agent S: an open agentic framework that uses computers like a human.
+- [ServiceNow/TapeAgents](https://github.com/ServiceNow/TapeAgents) - TapeAgents is a framework that facilitates all stages of the LLM Agent development lifecycle.
+- [amanv1906/GENAI-CareerAssistant-Multiagent](https://github.com/amanv1906/GENAI-CareerAssistant-Multiagent) - GenAI career assistant.
+- [neural-maze/agentic_patterns](https://github.com/neural-maze/agentic_patterns) - Implementing the 4 agentic patterns from scratch.
 
 ## Other
 
 - [docker/genai-stack](https://github.com/docker/genai-stack) - Langchain + Docker + Neo4j + Ollama.
-- [jadwcjaylove/awesome-mac](https://github.com/jaywcjlove/awesome-mac) - Collect premium software in various categories.
+- [jaywcjlove/awesome-mac](https://github.com/jaywcjlove/awesome-mac) - Collect premium software in various categories.
 - [trimstray/the-book-of-secret-knowledge](https://github.com/trimstray/the-book-of-secret-knowledge) - A collection of inspiring lists.
 - [vinta/awesome-python](https://github.com/vinta/awesome-python) - An opinionated list of awesome Python frameworks, libraries, and resources.
 - [norvig/pytudes](https://github.com/norvig/pytudes) - Python programs to perfect particular skills.
@@ -70,11 +70,12 @@ Here's how it works:
 - [kestra-io/kestra](https://github.com/kestra-io/kestra) - Workflow Automation Platform.
 - [maybe-finance/maybe](https://github.com/maybe-finance/maybe) - The OS for your personal finances.
 - [NirDiamant/Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - Tutorials and implementations for Prompt Engineering.
-- [Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
+- [adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
 - [niledatabase/niledatabase](https://github.com/niledatabase/niledatabase) - PostgreSQL reengineered for multi-tenant apps.
-- [openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
+- [run-llama/openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
 - [jy0205/Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
-- [Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
+- [openai/swarm](https://github.com/openai/swarm) - Educational framework exploring ergonomic, lightweight multi-agent orchestration.
+- [feder-cr/Auto_Jobs_Applier_AIHawk](https://github.com/feder-cr/Auto_Jobs_Applier_AIHawk) - Automates the jobs application process using AI.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -136,6 +137,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 22, 2024*
+📊 *Last edited: October 23, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
