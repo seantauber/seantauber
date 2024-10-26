@@ -32,14 +32,17 @@ Here's how it works:
 
 ### Large Language Models (LLMs)
 
-- [rsrohan99/dynamic-few-shot-llamaindex-workflow](https://github.com/rsrohan99/dynamic-few-shot-llamaindex-workflow) - None.
+- [facebookresearch/lingua](https://github.com/facebookresearch/lingua) - Meta Lingua: a lean, efficient, and easy-to-hack codebase to research LLMs.
 - [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) - Implementing a ChatGPT-like LLM in PyTorch from scratch, step by step.
+- [cpacker/MemGPT](https://github.com/cpacker/MemGPT) - Letta (fka MemGPT) is a framework for creating stateful LLM services.
+- [microsoft/BitNet](https://github.com/microsoft/BitNet) - Official inference framework for 1-bit LLMs.
+- [microsoft/semantic-kernel](https://github.com/microsoft/semantic-kernel) - Integrate cutting-edge LLM technology quickly and easily into your apps.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
-- [microsoft/BitNet](https://github.com/microsoft/BitNet) - Official inference framework for 1-bit LLMs.
+- [run-llama/multi-agent-concierge](https://github.com/run-llama/multi-agent-concierge) - An example of multi-agent orchestration with llama-index.
 
 ## MLOps & AI Infrastructure
 
@@ -49,11 +52,7 @@ Here's how it works:
 
 ## Agentic Frameworks
 
-- [simular-ai/Agent-S](https://github.com/simular-ai/Agent-S) - Agent S: an open agentic framework that uses computers like a human.
-- [ServiceNow/TapeAgents](https://github.com/ServiceNow/TapeAgents) - TapeAgents is a framework that facilitates all stages of the LLM Agent development lifecycle.
-- [amanv1906/GENAI-CareerAssistant-Multiagent](https://github.com/amanv1906/GENAI-CareerAssistant-Multiagent) - GenAI career assistant.
 - [neural-maze/agentic_patterns](https://github.com/neural-maze/agentic_patterns) - Implementing the 4 agentic patterns from scratch.
-- [run-llama/multi-agent-concierge](https://github.com/run-llama/multi-agent-concierge) - An example of multi-agent orchestration with llama-index.
 
 ## Other
 
@@ -70,11 +69,7 @@ Here's how it works:
 - [mem0ai/mem0](https://github.com/mem0ai/mem0) - The Memory layer for your AI apps.
 - [kestra-io/kestra](https://github.com/kestra-io/kestra) - Workflow Automation Platform.
 - [maybe-finance/maybe](https://github.com/maybe-finance/maybe) - The OS for your personal finances.
-- [NirDiamant/Prompt_Engineering](https://github.com/NirDiamant/Prompt_Engineering) - Tutorials and implementations for Prompt Engineering.
 - [adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
-- [niledatabase/niledatabase](https://github.com/niledatabase/niledatabase) - PostgreSQL reengineered for multi-tenant apps.
-- [run-llama/openai_realtime_client](https://github.com/run-llama/openai_realtime_client) - A simple client and utils for interacting with OpenAI's Realtime API in Python.
-- [jy0205/Pyramid-Flow](https://github.com/jy0205/Pyramid-Flow) - Code of Pyramidal Flow Matching for Efficient Video Generative Modeling.
 - [microsoft/OmniParser](https://github.com/microsoft/OmniParser) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -137,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 25, 2024*
+📊 *Last edited: October 26, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
