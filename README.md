@@ -43,10 +43,11 @@ Here's how it works:
 ### Machine Learning Frameworks
 
 - [run-llama/multi-agent-concierge](https://github.com/run-llama/multi-agent-concierge) - An example of multi-agent orchestration with llama-index.
+- [kenshiro-o/nagato-ai](https://github.com/kenshiro-o/nagato-ai) - Simple cross-LLM AI Agent library.
 
 ## MLOps & AI Infrastructure
 
-- [wandb/weave](https://github.com/wandb/weave) - Weave is a toolkit for developing AI-powered applications, built by Weights & Biases.
+- [langflow-ai/langflow](https://github.com/langflow-ai/langflow) - Langflow is a low-code app builder for RAG and multi-agent AI applications.
 - [phidatahq/phidata](https://github.com/phidatahq/phidata) - Build AI Agents with memory, knowledge, tools and reasoning. Chat with them using a beautiful Agent UI.
 - [ollama/ollama](https://github.com/ollama/ollama) - Get up and running with Llama 3.2, Mistral, Gemma 2, and other large language models.
 
@@ -71,6 +72,11 @@ Here's how it works:
 - [maybe-finance/maybe](https://github.com/maybe-finance/maybe) - The OS for your personal finances.
 - [adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio](https://github.com/adarshb3/Virtual-Try-On-Application-using-Flask-Twilio-and-Gradio) - Virtual try-on application built using Flask, Twilio's WhatsApp API, and Gradio's virtual try-on model.
 - [microsoft/OmniParser](https://github.com/microsoft/OmniParser) - None.
+- [Resume-Matcher](https://github.com/srbhr/Resume-Matcher) - Resume Matcher is an open-source, free tool to improve your resume.
+- [lobehub/lobe-chat](https://github.com/lobehub/lobe-chat) - Lobe Chat - an open-source, modern-design AI chat framework.
+- [ScrapeGraphAI/Scrapegraph-ai](https://github.com/ScrapeGraphAI/Scrapegraph-ai) - Python scraper based on AI.
+- [Marker-Inc-Korea/AutoRAG](https://github.com/Marker-Inc-Korea/AutoRAG) - AutoML tool for RAG.
+- [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps) - Collection of awesome LLM apps with RAG.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -132,6 +138,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 26, 2024*
+📊 *Last edited: October 27, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
