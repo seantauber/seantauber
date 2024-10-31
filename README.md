@@ -22,7 +22,6 @@ Here's how it works:
 - [Artificial Intelligence](#artificial-intelligence)
   - [Machine Learning Frameworks](#machine-learning-frameworks)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [Agentic Frameworks](#agentic-frameworks)
 - [Documentation](#documentation)
 - [TTS & Speech](#tts--speech)
 - [Other](#other)
@@ -52,21 +51,25 @@ Here's how it works:
 - [langflow-ai/langflow](https://github.com/langflow-ai/langflow) - Langflow is a low-code app builder for RAG and multi-agent AI applications.
 - [Marker-Inc-Korea/AutoRAG](https://github.com/Marker-Inc-Korea/AutoRAG) - AutoML tool for RAG.
 
-## Agentic Frameworks
-
-- [neural-maze/agentic_patterns](https://github.com/neural-maze/agentic_patterns) - Implementing the 4 agentic patterns from scratch.
-
 ## Documentation
 
 - [mkdocs/mkdocs](https://github.com/mkdocs/mkdocs) - Project documentation with Markdown.
 
 ## TTS & Speech
 
-- [fishaudio/fish-diffusion](https://github.com/fishaudio/fish-diffusion) - An easy to understand TTS / SVS / SVC framework.
-- [fishaudio/fish-speech](https://github.com/fishaudio/fish-speech) - Brand new TTS solution.
+- [usefulsensors/moonshine](https://github.com/usefulsensors/moonshine) - Fast and accurate automatic speech recognition (ASR) for edge devices.
 
 ## Other
 
+- [langchain-ai/langgraph-studio](https://github.com/langchain-ai/langgraph-studio) - Desktop app for prototyping and debugging LangGraph applications locally.
+- [mendableai/firecrawl](https://github.com/mendableai/firecrawl) - 🔥 Turn entire websites into LLM-ready markdown or structured data.
+- [maitrix-org/llm-reasoners](https://github.com/maitrix-org/llm-reasoners) - A library for advanced large language model reasoning.
+- [aotakeda/learn-thing](https://github.com/aotakeda/learn-thing) - Create mind maps to learn new things using AI.
+- [corbt/agent.exe](https://github.com/corbt/agent.exe) - None.
+- [anthropics/anthropic-quickstarts](https://github.com/anthropics/anthropic-quickstarts) - A collection of projects designed to help developers quickly get started with building deployable applications using the Anthropic API.
+- [weaviate/recipes](https://github.com/weaviate/recipes) - This repository shares end-to-end notebooks on how to use various Weaviate features and integrations!
+- [suitedaces/computer-agent](https://github.com/suitedaces/computer-agent) - Desktop app powered by Claude’s computer use capability to control your computer.
+- [dipanjanS/improving-RAG-systems-dhs2024](https://github.com/dipanjanS/improving-RAG-systems-dhs2024) - Improving Real-world Retrieval Augmented Generation Systems at DataHack Summit 2024.
 - [enricoros/big-AGI](https://github.com/enricoros/big-AGI) - Generative AI suite powered by state-of-the-art models and providing advanced AI/AGI functions.
 - [eosphoros-ai/Awesome-Text2SQL](https://github.com/eosphoros-ai/Awesome-Text2SQL) - Curated tutorials and resources for Large Language Models, Text2SQL, and more.
 - [zou-group/textgrad](https://github.com/zou-group/textgrad) - TextGrad: Automatic 'Differentiation' via Text.
@@ -77,13 +80,6 @@ Here's how it works:
 - [ScrapeGraphAI/Scrapegraph-ai](https://github.com/ScrapeGraphAI/Scrapegraph-ai) - Python scraper based on AI.
 - [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps) - Collection of awesome LLM apps with RAG.
 - [microsoft/OmniParser](https://github.com/microsoft/OmniParser) - A simple screen parsing tool towards pure vision-based GUI agent.
-- [mem0ai/mem0](https://github.com/mem0ai/mem0) - The Memory layer for your AI apps.
-- [kestra-io/kestra](https://github.com/kestra-io/kestra) - Workflow Automation Platform.
-- [maybe-finance/maybe](https://github.com/maybe-finance/maybe) - The OS for your personal finances.
-- [docker/genai-stack](https://github.com/docker/genai-stack) - Langchain + Docker + Neo4j + Ollama.
-- [dipanjanS/improving-RAG-systems-dhs2024](https://github.com/dipanjanS/improving-RAG-systems-dhs2024) - Improving Real-world Retrieval Augmented Generation Systems at DataHack Summit 2024.
-- [weaviate/recipes](https://github.com/weaviate/recipes) - This repository shares end-to-end notebooks on how to use various Weaviate features and integrations!
-- [suitedaces/computer-agent](https://github.com/suitedaces/computer-agent) - Desktop app powered by Claude’s computer use capability to control your computer.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -145,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: October 30, 2024*
+📊 *Last edited: October 31, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
