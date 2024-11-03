@@ -51,7 +51,6 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [langflow-ai/langflow](https://github.com/langflow-ai/langflow) - Langflow is a low-code app builder for RAG and multi-agent AI applications.
-- [Marker-Inc-Korea/AutoRAG](https://github.com/Marker-Inc-Korea/AutoRAG) - AutoML tool for RAG.
 - [dynamiq-ai/dynamiq](https://github.com/dynamiq-ai/dynamiq) - Dynamiq is an orchestration framework for agentic AI and LLM applications.
 
 ## Documentation
@@ -80,6 +79,7 @@ Here's how it works:
 - [lobehub/lobe-chat](https://github.com/lobehub/lobe-chat) - Lobe Chat - an open-source, modern-design AI chat framework.
 - [ScrapeGraphAI/Scrapegraph-ai](https://github.com/ScrapeGraphAI/Scrapegraph-ai) - Python scraper based on AI.
 - [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) - React UI + elegant infrastructure for AI Copilots.
+- [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 2, 2024*
+📊 *Last edited: November 3, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
