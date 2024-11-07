@@ -37,19 +37,19 @@ Here's how it works:
 - [huggingface/chat-ui](https://github.com/huggingface/chat-ui) - Open source codebase powering the HuggingChat app.
 - [enricoros/big-AGI](https://github.com/enricoros/big-AGI) - Generative AI suite powered by state-of-the-art models.
 - [eosphoros-ai/Awesome-Text2SQL](https://github.com/eosphoros-ai/Awesome-Text2SQL) - Curated tutorials and resources for Large Language Models, Text2SQL, and more.
-- [cpacker/MemGPT](https://github.com/cpacker/MemGPT) - Letta (fka MemGPT) is a framework for creating stateful LLM services.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
-- [kenshiro-o/nagato-ai](https://github.com/kenshiro-o/nagato-ai) - Simple cross-LLM AI Agent library.
 - [SylphAI-Inc/AdalFlow](https://github.com/SylphAI-Inc/AdalFlow) - AdalFlow: The library to build & auto-optimize LLM applications.
+- [kenshiro-o/nagato-ai](https://github.com/kenshiro-o/nagato-ai) - Simple cross-LLM AI Agent library.
 
 ## MLOps & AI Infrastructure
 
 - [dynamiq-ai/dynamiq](https://github.com/dynamiq-ai/dynamiq) - Dynamiq is an orchestration framework for agentic AI and LLM applications.
 - [langflow-ai/langflow](https://github.com/langflow-ai/langflow) - Langflow is a low-code app builder for RAG and multi-agent AI applications.
+- [crewAIInc/crewAI-examples](https://github.com/crewAIInc/crewAI-examples) - A collection of examples that show how to use CrewAI framework to automate workflows.
 
 ## Documentation
 
@@ -66,7 +66,6 @@ Here's how it works:
 - [ErikBjare/gptme](https://github.com/ErikBjare/gptme) - Your agent in your terminal, equipped with local tools.
 - [altera-al/project-sid](https://github.com/altera-al/project-sid) - None.
 - [BrainBlend-AI/atomic-agents](https://github.com/BrainBlend-AI/atomic-agents) - Building AI agents, atomically.
-- [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
 - [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) - React UI + elegant infrastructure for AI Copilots.
 - [langchain-ai/langgraph-studio](https://github.com/langchain-ai/langgraph-studio) - Desktop app for prototyping and debugging LangGraph applications locally.
 - [mendableai/firecrawl](https://github.com/mendableai/firecrawl) - 🔥 Turn entire websites into LLM-ready markdown or structured data.
@@ -80,6 +79,7 @@ Here's how it works:
 - [zou-group/textgrad](https://github.com/zou-group/textgrad) - TextGrad: Automatic 'Differentiation' via Text.
 - [xitanggg/open-resume](https://github.com/xitanggg/open-resume) - Open-source resume builder and parser.
 - [srbhr/Resume-Matcher](https://github.com/srbhr/Resume-Matcher) - Opensource, free tool to improve your resume.
+- [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 6, 2024*
+📊 *Last edited: November 7, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
