@@ -36,15 +36,14 @@ Here's how it works:
 - [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) - A Gradio web UI for Large Language Models.
 - [huggingface/chat-ui](https://github.com/huggingface/chat-ui) - Open source codebase powering the HuggingChat app.
 - [enricoros/big-AGI](https://github.com/enricoros/big-AGI) - Generative AI suite powered by state-of-the-art models.
-- [eosphoros-ai/Awesome-Text2SQL](https://github.com/eosphoros-ai/Awesome-Text2SQL) - Curated tutorials and resources for Large Language Models, Text2SQL, and more.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
-- [dynamiq-ai/dynamiq](https://github.com/dynamiq-ai/dynamiq) - Dynamiq is an orchestration framework for agentic AI and LLM applications.
 - [guardrails-ai/guardrails](https://github.com/guardrails-ai/guardrails) - Adding guardrails to large language models.
 - [NVIDIA/NeMo-Guardrails](https://github.com/NVIDIA/NeMo-Guardrails) - NeMo Guardrails is an open-source toolkit for easily adding programmable guardrails to LLM-based conversational systems.
+- [dynamiq-ai/dynamiq](https://github.com/dynamiq-ai/dynamiq) - Dynamiq is an orchestration framework for agentic AI and LLM applications.
 
 ## MLOps & AI Infrastructure
 
@@ -53,7 +52,6 @@ Here's how it works:
 
 ## Documentation
 
-- [mkdocs/mkdocs](https://github.com/mkdocs/mkdocs) - Project documentation with Markdown.
 - [DS4SD/docling](https://github.com/DS4SD/docling) - Get your documents ready for gen AI.
 
 ## TTS & Speech
@@ -62,6 +60,10 @@ Here's how it works:
 
 ## Other
 
+- [TAG-Research/lotus](https://github.com/TAG-Research/lotus) - LOTUS: A semantic query engine - process data with LLMs as easily as writing pandas code.
+- [pymupdf/RAG](https://github.com/pymupdf/RAG) - RAG (Retrieval-Augmented Generation) Chatbot Examples Using PyMuPDF.
+- [ExistentialAudio/BlackHole](https://github.com/ExistentialAudio/BlackHole) - BlackHole is a modern macOS audio loopback driver that allows applications to pass audio.
+- [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) - Open source libraries and APIs to build custom preprocessing pipelines for labeling, training, or production machine learning pipelines.
 - [ErikBjare/gptme](https://github.com/ErikBjare/gptme) - Your agent in your terminal, equipped with local tools.
 - [altera-al/project-sid](https://github.com/altera-al/project-sid) - None.
 - [BrainBlend-AI/atomic-agents](https://github.com/BrainBlend-AI/atomic-agents) - Building AI agents, atomically.
@@ -76,9 +78,8 @@ Here's how it works:
 - [suitedaces/computer-agent](https://github.com/suitedaces/computer-agent) - Desktop app powered by Claude’s computer use capability.
 - [dipanjanS/improving-RAG-systems-dhs2024](https://github.com/dipanjanS/improving-RAG-systems-dhs2024) - Improving Real-world Retrieval Augmented Generation Systems at DataHack Summit 2024.
 - [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
-- [TAG-Research/lotus](https://github.com/TAG-Research/lotus) - LOTUS: A semantic query engine - process data with LLMs as easily as writing pandas code.
-- [pymupdf/RAG](https://github.com/pymupdf/RAG) - RAG (Retrieval-Augmented Generation) Chatbot Examples Using PyMuPDF.
-- [ExistentialAudio/BlackHole](https://github.com/ExistentialAudio/BlackHole) - BlackHole is a modern macOS audio loopback driver that allows applications to pass audio.
+- [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
+- [bytedance/SALMONN](https://github.com/bytedance/SALMONN) - SALMONN: Speech Audio Language Music Open Neural Network.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -140,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 8, 2024*
+📊 *Last edited: November 9, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
