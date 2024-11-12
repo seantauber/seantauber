@@ -34,6 +34,7 @@ Here's how it works:
 ### Large Language Models (LLMs)
 
 - [SylphAI-Inc/LLM-engineer-handbook](https://github.com/SylphAI-Inc/LLM-engineer-handbook) - A curated list of Large Language Model resources, covering model training, serving, fine-tuning, and building LLM applications.
+- [maitrix-org/llm-reasoners](https://github.com/maitrix-org/llm-reasoners) - A library for advanced large language model reasoning.
 
 ## Artificial Intelligence
 
@@ -59,6 +60,9 @@ Here's how it works:
 
 ## Other
 
+- [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
+- [camel-ai/camel](https://github.com/camel-ai/camel) - 🐫 CAMEL: Finding the Scaling Law of Agents. The first and the best multi-agent framework.
+- [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
 - [TAG-Research/lotus](https://github.com/TAG-Research/lotus) - LOTUS: A semantic query engine - process data with LLMs as easily as writing pandas code.
 - [pymupdf/RAG](https://github.com/pymupdf/RAG) - RAG (Retrieval-Augmented Generation) Chatbot Examples Using PyMuPDF.
 - [ExistentialAudio/BlackHole](https://github.com/ExistentialAudio/BlackHole) - BlackHole is a modern macOS audio loopback driver that allows applications to pass audio.
@@ -69,7 +73,6 @@ Here's how it works:
 - [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) - React UI + elegant infrastructure for AI Copilots.
 - [langchain-ai/langgraph-studio](https://github.com/langchain-ai/langgraph-studio) - Desktop app for prototyping and debugging LangGraph applications locally.
 - [mendableai/firecrawl](https://github.com/mendableai/firecrawl) - 🔥 Turn entire websites into LLM-ready markdown or structured data.
-- [maitrix-org/llm-reasoners](https://github.com/maitrix-org/llm-reasoners) - A library for advanced large language model reasoning.
 - [aotakeda/learn-thing](https://github.com/aotakeda/learn-thing) - Create mind maps to learn new things using AI.
 - [corbt/agent.exe](https://github.com/corbt/agent.exe) - None.
 - [anthropics/anthropic-quickstarts](https://github.com/anthropics/anthropic-quickstarts) - Quickstart projects for the Anthropic API.
@@ -77,9 +80,6 @@ Here's how it works:
 - [suitedaces/computer-agent](https://github.com/suitedaces/computer-agent) - Desktop app powered by Claude’s computer use capability.
 - [dipanjanS/improving-RAG-systems-dhs2024](https://github.com/dipanjanS/improving-RAG-systems-dhs2024) - Improving Real-world Retrieval Augmented Generation Systems at DataHack Summit 2024.
 - [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
-- [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
-- [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
-- [camel-ai/camel](https://github.com/camel-ai/camel) - 🐫 CAMEL: Finding the Scaling Law of Agents. The first and the best multi-agent framework.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -139,6 +139,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 11, 2024*
+📊 *Last edited: November 12, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
