@@ -22,7 +22,6 @@ Here's how it works:
 - [Artificial Intelligence](#artificial-intelligence)
   - [Machine Learning Frameworks](#machine-learning-frameworks)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [Documentation](#documentation)
 - [TTS & Speech](#tts--speech)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
@@ -49,17 +48,14 @@ Here's how it works:
 - [crewAIInc/crewAI-examples](https://github.com/crewAIInc/crewAI-examples) - A collection of examples that show how to use CrewAI framework to automate workflows.
 - [APIParkLab/APIPark](https://github.com/APIParkLab/APIPark) - 🦄APIPark is the #1 open-source AI Gateway and Developer Portal.
 
-## Documentation
-
-- [DS4SD/docling](https://github.com/DS4SD/docling) - Get your documents ready for gen AI.
-
 ## TTS & Speech
 
-- [usefulsensors/moonshine](https://github.com/usefulsensors/moonshine) - Fast and accurate automatic speech recognition (ASR) for edge devices.
 - [bytedance/SALMONN](https://github.com/bytedance/SALMONN) - SALMONN: Speech Audio Language Music Open Neural Network.
 
 ## Other
 
+- [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
+- [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
 - [microsoft/TinyTroupe](https://github.com/microsoft/TinyTroupe) - LLM-powered multiagent persona simulation for imagination enhancement and business insights.
 - [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
@@ -72,14 +68,14 @@ Here's how it works:
 - [ErikBjare/gptme](https://github.com/ErikBjare/gptme) - Your agent in your terminal, equipped with local tools.
 - [altera-al/project-sid](https://github.com/altera-al/project-sid) - None.
 - [BrainBlend-AI/atomic-agents](https://github.com/BrainBlend-AI/atomic-agents) - Building AI agents, atomically.
+- [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
+- [DS4SD/docling](https://github.com/DS4SD/docling) - Get your documents ready for gen AI.
 - [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) - React UI + elegant infrastructure for AI Copilots.
 - [langchain-ai/langgraph-studio](https://github.com/langchain-ai/langgraph-studio) - Desktop app for prototyping and debugging LangGraph applications locally.
 - [mendableai/firecrawl](https://github.com/mendableai/firecrawl) - 🔥 Turn entire websites into LLM-ready markdown or structured data.
 - [aotakeda/learn-thing](https://github.com/aotakeda/learn-thing) - Create mind maps to learn new things using AI.
-- [corbt/agent.exe](https://github.com/corbt/agent.exe) - None.
-- [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
-- [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
-- [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
+- [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI. 
+- [replicate/cog](https://github.com/replicate/cog) - Containers for machine learning.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -139,6 +135,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 16, 2024*
+📊 *Last edited: November 17, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
