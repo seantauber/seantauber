@@ -1,3 +1,5 @@
 requests
 openai
 python-dotenv
+pytest>=7.0.0
+pydantic>=2.0.0
