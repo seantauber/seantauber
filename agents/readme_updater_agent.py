@@ -15,14 +15,27 @@ class ReadmeUpdaterAgent(BaseAgent):
         super().__init__(name="ReadmeUpdaterAgent")
         self.archive_agent = archive_agent  # Instance of ArchiveAgent
     
-    def build_repos_section(self, grouped_repos: dict) -> str:
+    def build_repos_section(self, grouped_repos: dict[str, list[RepoDetails]]) -> str:
+        """
+        Builds the repositories section for the README based on the grouped repositories data.
+        """
         section = ""
         for category, repos in grouped_repos.items():
             section += f"## {category}\n\n"
             for repo in repos:
-                section += f"- [{repo['name']}]({repo['html_url']}) - {repo['description']}\n"
+                # Format the repository details into the README section
+                section += (
+                    f"- [{repo.name}]({repo.html_url}) - {repo.description}\n"
+                    f"  - ⭐ Stars: {repo.stargazers_count}, 🍴 Forks: {repo.forks_count}, "
+                    f"👀 Watchers: {repo.watchers_count}, 🛠️ Issues: {repo.open_issues_count}\n"
+                    f"  - 🔍 Language: {repo.language}, 🌱 Default Branch: {repo.default_branch}, "
+                    f"📈 Star Growth: {repo.star_growth_rate:.2f}%, 🔥 Activity Level: {repo.activity_level}\n"
+                    f"  - 📆 Created: {repo.created_at}, Updated: {repo.updated_at}\n"
+                    f"  - 🎯 Relevance: {repo.relevance}, 🏷️ Topics: {', '.join(repo.topics)}\n\n"
+                )
             section += "\n"
         return section
+
     
     def update_table_of_contents(self, readme_content: str, categories: list) -> str:
         toc_start = "## 📚 Table of Contents"
