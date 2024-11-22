@@ -2,7 +2,6 @@ from .base_agent import BaseAgent
 from models.triaging_models import TriagingResponse
 from openai import OpenAI
 from pydantic import ValidationError
-import json
 
 class TriagingAgent(BaseAgent):
     """

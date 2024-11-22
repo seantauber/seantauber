@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Dict, Any, Optional
+from datetime import datetime
 
 class CategoryHierarchy(BaseModel):
     """Represents a hierarchical category structure with confidence scoring"""
@@ -57,3 +58,80 @@ class EnhancedCurationDetails(CurationDetails):
             }
         }
     )
+
+class HistoricalDecision(BaseModel):
+    """Represents a single historical categorization decision"""
+    timestamp: datetime = Field(default_factory=datetime.utcnow, description="When the decision was made")
+    categories: List[CategoryHierarchy] = Field(..., description="Categories assigned at this point")
+    agent_decisions: Dict[str, Any] = Field(..., description="Individual agent decisions and confidence scores")
+    version: str = Field(..., description="Model version used for this decision")
+    metadata: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Additional metadata about the decision context"
+    )
+
+class RepositoryHistory(BaseModel):
+    """Tracks the complete history of categorization decisions for a repository"""
+    repository_id: str = Field(..., description="Unique identifier for the repository")
+    decisions: List[HistoricalDecision] = Field(
+        default_factory=list,
+        description="Chronological list of categorization decisions"
+    )
+    latest_decision: Optional[HistoricalDecision] = Field(
+        None,
+        description="Most recent categorization decision"
+    )
+    statistics: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Statistical analysis of historical decisions"
+    )
+
+    def add_decision(self, decision: HistoricalDecision):
+        """Add a new decision to the history and update statistics"""
+        self.decisions.append(decision)
+        self.latest_decision = decision
+        self._update_statistics()
+
+    def _update_statistics(self):
+        """Update statistical analysis of historical decisions"""
+        # Initialize default values
+        self.statistics = {
+            "total_decisions": 0,
+            "category_stability": {},
+            "confidence_trends": {},
+            "last_updated": datetime.utcnow()
+        }
+
+        if not self.decisions:
+            return
+
+        # Calculate category stability
+        category_counts: Dict[str, int] = {}
+        for decision in self.decisions:
+            for category in decision.categories:
+                key = f"{category.main_category}:{category.subcategory}"
+                category_counts[key] = category_counts.get(key, 0) + 1
+
+        total_decisions = len(self.decisions)
+        self.statistics["total_decisions"] = total_decisions
+        
+        category_stability = {
+            category: count / total_decisions
+            for category, count in category_counts.items()
+        }
+        self.statistics["category_stability"] = category_stability
+
+        # Calculate average confidence trends
+        confidence_trends = {}
+        for decision in self.decisions:
+            for agent, data in decision.agent_decisions.items():
+                if isinstance(data, dict) and "confidence" in data:
+                    if agent not in confidence_trends:
+                        confidence_trends[agent] = []
+                    confidence_trends[agent].append(data["confidence"])
+
+        avg_confidence_trends = {
+            agent: sum(scores) / len(scores)
+            for agent, scores in confidence_trends.items()
+        }
+        self.statistics["confidence_trends"] = avg_confidence_trends

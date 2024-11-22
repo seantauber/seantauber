@@ -1,76 +1,80 @@
+from typing import Optional, Union, List, Any
 from .base_agent import BaseAgent
 from models.repo_models import RepoDetails
 from openai import OpenAI
 from pydantic import ValidationError
-import json
 from datetime import datetime
 
 class ProcessingAgent(BaseAgent):
     """
     Processing Agent: Cleans and enriches repository data.
     """
-    def __init__(self, client: OpenAI):
-        super().__init__(name="ProcessingAgent")
-        self.client = client
-        self.system_prompt = (
-            "You are a Processing Agent. Your role is to clean and enrich repository data."
-        )
+    def __init__(self, client: Optional[Union[OpenAI, Any]] = None):
+        super().__init__(name="ProcessingAgent", client=client)
     
     def process_repo(self, repo: dict) -> RepoDetails:
         prompt = (
+            "You are a Processing Agent. Your role is to clean and enrich repository data.\n\n"
             f"Given the following repository data, clean and enrich it with additional metrics.\n\n"
-            f"Repository Data:\n{json.dumps(repo, indent=2)}\n\n"
+            f"Repository Data:\n{repo}\n\n"
             "Tasks:\n"
-            "- Remove any unnecessary fields.\n"
-            "- Calculate star growth rate (stars per year since creation).\n"
-            "- Determine activity level based on the number of days since the last update (High, Medium, Low).\n"
-            "- Provide a relevance summary combining star growth rate and activity level.\n\n"
-            "Provide the output in JSON format adhering to the following schema:\n\n"
-            "{\n"
-            '    "name": "string",\n'
-            '    "full_name": "string",\n'
-            '    "description": "string",\n'
-            '    "html_url": "string",\n'
-            '    "stargazers_count": integer,\n'
-            '    "forks_count": integer,\n'
-            '    "open_issues_count": integer,\n'
-            '    "watchers_count": integer,\n'
-            '    "language": "string",\n'
-            '    "updated_at": "string",\n'
-            '    "created_at": "string",\n'
-            '    "topics": ["string"],\n'
-            '    "default_branch": "string",\n'
-            '    "star_growth_rate": number,\n'
-            '    "activity_level": "string",\n'
-            '    "relevance": "string"\n'
-            "}"
+            "1. Remove any unnecessary fields.\n"
+            "2. Calculate star growth rate (stars per year since creation).\n"
+            "3. Determine activity level based on days since last update:\n"
+            "   - 'High': updated within last 30 days\n"
+            "   - 'Medium': updated within last 90 days\n"
+            "   - 'Low': updated more than 90 days ago\n"
+            "4. Set relevance based on combined metrics:\n"
+            "   - 'High': high activity and growth rate > 100\n"
+            "   - 'Medium': medium activity or growth rate > 50\n"
+            "   - 'Low': low activity and low growth rate\n\n"
+            "Note: activity_level and relevance MUST be exactly one of: 'Low', 'Medium', 'High'\n"
+            "The response must match the RepoDetails schema exactly."
         )
         
         try:
             completion = self.client.beta.chat.completions.parse(
-                model="o1-mini",
+                model="gpt-4o-2024-08-06",
                 messages=[
-                    {"role": "system", "content": self.system_prompt},
+                    {
+                        "role": "system", 
+                        "content": (
+                            "Extract and enrich the repository information. "
+                            "Ensure activity_level and relevance are exactly 'Low', 'Medium', or 'High'. "
+                            "Do not use any other values or descriptions."
+                        )
+                    },
                     {"role": "user", "content": prompt}
                 ],
                 response_format=RepoDetails,
-                max_tokens=300
+                max_tokens=500
             )
+            
             processed_repo = completion.choices[0].message.parsed
             return processed_repo
+            
         except ValidationError as ve:
-            print(f"ProcessingAgent Validation Error: {ve}")
+            print(f"ProcessingAgent Validation Error: {str(ve)}")
             raise ve
         except Exception as e:
-            print(f"ProcessingAgent Unexpected Error: {e}")
+            print(f"ProcessingAgent Unexpected Error: {str(e)}")
             raise e
     
-    def execute(self, repos: list) -> list:
+    def execute(self, repos: List[dict]) -> List[RepoDetails]:
+        """
+        Process a list of repositories.
+        
+        Args:
+            repos: List of repository dictionaries from GitHub API
+            
+        Returns:
+            List of processed RepoDetails objects
+        """
         processed_repos = []
         for repo in repos:
             try:
                 processed_repo = self.process_repo(repo)
                 processed_repos.append(processed_repo)
             except Exception as e:
-                print(f"ProcessingAgent Error processing repo {repo.get('full_name')}: {e}")
+                print(f"ProcessingAgent Error processing repo {repo.get('full_name', 'unknown')}: {str(e)}")
         return processed_repos

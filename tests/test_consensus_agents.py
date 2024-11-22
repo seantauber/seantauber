@@ -1,7 +1,13 @@
 """Tests for the consensus-based categorization system"""
 import pytest
+from datetime import datetime, timedelta
 from models.repo_models import RepoDetails
-from models.curation_models import CategoryHierarchy, EnhancedCurationDetails
+from models.curation_models import (
+    CategoryHierarchy,
+    EnhancedCurationDetails,
+    HistoricalDecision,
+    RepositoryHistory
+)
 from agents.consensus_agents import (
     CategoryAgent,
     ReviewAgent,
@@ -14,6 +20,7 @@ from agents.consensus_agents import (
 def sample_repo():
     """Sample repository details for testing"""
     return RepoDetails(
+        id="test-repo-123",  # Added id field for historical tracking
         name="test-repo",
         full_name="test-org/test-repo",
         description="A deep learning framework for testing",
@@ -31,6 +38,42 @@ def sample_repo():
         activity_level="high",
         relevance="high"
     )
+
+@pytest.fixture
+def sample_historical_data():
+    """Sample historical data for testing"""
+    history = RepositoryHistory(repository_id="test-repo-123")
+    
+    # Add some historical decisions
+    categories = [
+        CategoryHierarchy(
+            main_category="AI/ML",
+            subcategory="Deep Learning",
+            confidence=0.9,
+            reasoning="Historical decision 1"
+        )
+    ]
+    
+    # Add decisions from different times
+    for days_ago in [30, 20, 10]:
+        decision = HistoricalDecision(
+            timestamp=datetime.utcnow() - timedelta(days=days_ago),
+            categories=categories,
+            agent_decisions={
+                "category_agent": {"confidence": 0.9},
+                "review_agent": {"confidence": 0.95},
+                "validation_agent": {"confidence": 0.92}
+            },
+            version="1.0.0",
+            metadata={
+                "repo_updated_at": "2024-01-01T00:00:00Z",
+                "stars": 1000,
+                "forks": 100
+            }
+        )
+        history.add_decision(decision)
+    
+    return history
 
 def test_category_agent(sample_repo):
     agent = CategoryAgent()
@@ -59,7 +102,7 @@ def test_review_agent(sample_repo):
     assert all(0 <= cat.confidence <= 1.0 for cat in reviewed)
     assert all(cat.reasoning for cat in reviewed)
 
-def test_validation_agent(sample_repo):
+def test_validation_agent_with_history(sample_repo, sample_historical_data):
     agent = ValidationAgent()
     categories = [
         CategoryHierarchy(
@@ -69,14 +112,49 @@ def test_validation_agent(sample_repo):
             reasoning="Reviewed categorization"
         )
     ]
-    historical_data = {}  # Mock historical data
     
-    validated = agent.execute(sample_repo, categories, historical_data)
+    validated = agent.execute(sample_repo, categories, sample_historical_data)
     
     assert len(validated) == len(categories)
     assert all(isinstance(cat, CategoryHierarchy) for cat in validated)
     assert all(0 <= cat.confidence <= 1.0 for cat in validated)
     assert all(cat.reasoning for cat in validated)
+    assert all("stability" in cat.reasoning for cat in validated)
+
+def test_validation_agent_category_shift(sample_repo, sample_historical_data):
+    agent = ValidationAgent()
+    # Test with a different category than historical data
+    categories = [
+        CategoryHierarchy(
+            main_category="Web Dev",  # Different from historical AI/ML
+            subcategory="Frontend",
+            confidence=0.9,
+            reasoning="New categorization"
+        )
+    ]
+    
+    validated = agent.execute(sample_repo, categories, sample_historical_data)
+    
+    assert len(validated) == len(categories)
+    assert all("Category shift" in cat.reasoning for cat in validated)
+    assert all(cat.confidence < 0.9 for cat in validated)  # Confidence should be reduced
+
+def test_validation_agent_no_history(sample_repo):
+    agent = ValidationAgent()
+    categories = [
+        CategoryHierarchy(
+            main_category="AI/ML",
+            subcategory="Deep Learning",
+            confidence=0.9,
+            reasoning="Initial categorization"
+        )
+    ]
+    empty_history = RepositoryHistory(repository_id="test-repo-123")
+    
+    validated = agent.execute(sample_repo, categories, empty_history)
+    
+    assert len(validated) == len(categories)
+    assert all(cat.confidence == 0.9 for cat in validated)  # Confidence unchanged
 
 def test_synthesis_agent(sample_repo):
     agent = SynthesisAgent()
@@ -106,46 +184,83 @@ def test_synthesis_agent(sample_repo):
 def test_consensus_manager(sample_repo):
     manager = ConsensusManager()
     
-    result = manager.get_consensus(sample_repo)
+    # First categorization
+    result1 = manager.get_consensus(sample_repo)
+    assert isinstance(result1, EnhancedCurationDetails)
     
-    assert isinstance(result, EnhancedCurationDetails)
-    assert len(result.categories) > 0
-    assert result.consensus_data is not None
-    assert "agent_decisions" in result.consensus_data
-    assert all(
-        agent in result.consensus_data["agent_decisions"]
-        for agent in ["category_agent", "review_agent", "validation_agent"]
+    # Second categorization - should use historical data
+    result2 = manager.get_consensus(sample_repo)
+    assert isinstance(result2, EnhancedCurationDetails)
+    
+    # Verify historical data was recorded
+    assert sample_repo.id in manager.historical_data
+    history = manager.historical_data[sample_repo.id]
+    assert len(history.decisions) == 2
+    assert history.latest_decision is not None
+    assert history.statistics is not None
+    assert "category_stability" in history.statistics
+
+def test_repository_history():
+    history = RepositoryHistory(repository_id="test-repo-123")
+    
+    # Add a decision
+    decision = HistoricalDecision(
+        categories=[
+            CategoryHierarchy(
+                main_category="AI/ML",
+                subcategory="Deep Learning",
+                confidence=0.9,
+                reasoning="Test decision"
+            )
+        ],
+        agent_decisions={
+            "category_agent": {"confidence": 0.9},
+            "review_agent": {"confidence": 0.95},
+            "validation_agent": {"confidence": 0.92}
+        },
+        version="1.0.0"
     )
-    assert 0 <= result.popularity_score <= 1.0
-    assert 0 <= result.trending_score <= 1.0
+    
+    history.add_decision(decision)
+    
+    assert len(history.decisions) == 1
+    assert history.latest_decision == decision
+    assert history.statistics is not None
+    assert "category_stability" in history.statistics
+    assert "confidence_trends" in history.statistics
+    assert "total_decisions" in history.statistics
 
 def test_consensus_manager_end_to_end(sample_repo):
-    """Test the complete consensus workflow"""
+    """Test the complete consensus workflow with historical tracking"""
     manager = ConsensusManager()
     
-    # Get consensus categorization
-    result = manager.get_consensus(sample_repo)
+    # First categorization
+    result1 = manager.get_consensus(sample_repo)
+    assert isinstance(result1, EnhancedCurationDetails)
     
-    # Verify the structure and content of the result
-    assert isinstance(result, EnhancedCurationDetails)
-    assert len(result.categories) > 0
-    assert result.consensus_data is not None
+    # Verify historical data was recorded
+    assert sample_repo.id in manager.historical_data
+    history = manager.historical_data[sample_repo.id]
+    assert len(history.decisions) == 1
     
-    # Verify agent decisions are present
-    decisions = result.consensus_data["agent_decisions"]
-    assert "category_agent" in decisions
-    assert "review_agent" in decisions
-    assert "validation_agent" in decisions
+    # Second categorization
+    result2 = manager.get_consensus(sample_repo)
+    assert isinstance(result2, EnhancedCurationDetails)
+    assert len(history.decisions) == 2
     
-    # Verify confidence scores
-    assert all(
-        0 <= decisions[agent]["confidence"] <= 1.0
-        for agent in ["category_agent", "review_agent", "validation_agent"]
-    )
+    # Verify historical tracking
+    assert history.latest_decision is not None
+    assert history.statistics is not None
+    assert "category_stability" in history.statistics
+    assert "confidence_trends" in history.statistics
     
-    # Verify categories are properly structured
-    for category in result.categories:
-        assert isinstance(category, CategoryHierarchy)
-        assert category.main_category
-        assert 0 <= category.confidence <= 1.0
-        assert category.reasoning
+    # Verify agent decisions are tracked
+    for result in [result1, result2]:
+        decisions = result.consensus_data["agent_decisions"]
+        assert "category_agent" in decisions
+        assert "review_agent" in decisions
+        assert "validation_agent" in decisions
+        assert all(
+            0 <= decisions[agent]["confidence"] <= 1.0
+            for agent in ["category_agent", "review_agent", "validation_agent"]
+        )

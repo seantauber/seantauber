@@ -6,6 +6,7 @@ class EditorNote(BaseModel):
 
 class CategoryAssignment(BaseModel):
     category: str
+
 class Repository(BaseModel):
     name: str
     url: HttpUrl
@@ -20,7 +21,7 @@ class Category(BaseModel):
     repositories: List[Repository]
 
 class ExtractedReadme(BaseModel):
-    categories: List<Category]
+    categories: List[Category]
 
     @classmethod
     def from_dict(cls, data: Dict) -> "ExtractedReadme":

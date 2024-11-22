@@ -1,5 +1,5 @@
 from .base_agent import BaseAgent
-from models.editor_models import EditorNote, ExtractedReadme, Category, Repository
+from models.editor_models import EditorNote, ExtractedReadme, Category, Repository, CategoryAssignment
 from openai import OpenAI
 from pydantic import ValidationError
 import json
@@ -39,7 +39,7 @@ class EditorAgent(BaseAgent):
         )
 
         try:
-            response = self.client.beta.chat.completions.create(
+            response = self.client.beta.chat.completions.parse(
                 model="gpt-4o-2024-08-06",
                 messages=[
                     {"role": "system", "content": self.system_prompt},
@@ -49,11 +49,7 @@ class EditorAgent(BaseAgent):
                 max_tokens=1000,
                 temperature=0.3
             )
-            extracted_readme = completion.choices[0].message.parsed
-            return extracted_readme
-        except json.JSONDecodeError as jde:
-            print(f"Error parsing LLM response as JSON: {jde}")
-            return ExtractedReadme(categories=[])
+            return response.choices[0].message.parsed
         except ValidationError as ve:
             print(f"Validation error with Pydantic model: {ve}")
             return ExtractedReadme(categories=[])
@@ -93,7 +89,7 @@ class EditorAgent(BaseAgent):
             )
 
             try:
-                response = self.client.beta.chat.completions.create(
+                response = self.client.beta.chat.completions.parse(
                     model="gpt-4o-2024-08-06",
                     messages=[
                         {"role": "system", "content": self.system_prompt},
@@ -103,8 +99,7 @@ class EditorAgent(BaseAgent):
                     max_tokens=50,
                     temperature=0.2
                 )
-                category = completion.choices[0].message.parsed
-                return category
+                return response.choices[0].message.parsed
             except Exception as e:
                 print(f"Error during LLM categorization: {e}")
                 return "Other"  # Default to "Other" in case of errors
@@ -155,6 +150,34 @@ class EditorAgent(BaseAgent):
         except Exception as e:
             print(f"EditorAgent Unexpected Error: {e}")
             raise e
+
+    def generate_content(self, curated_repos: list) -> str:
+        """
+        Generates formatted README content from curated repositories.
+        """
+        content = []
+        content.append("<!-- Starred Repositories Section Start -->")
+        content.append("\n## ⭐ Starred Repositories\n")
+
+        # Group repositories by category
+        repos_by_category = {}
+        for repo in curated_repos:
+            category = repo.get('category', 'Other')
+            if category not in repos_by_category:
+                repos_by_category[category] = []
+            repos_by_category[category].append(repo)
+
+        # Generate content for each category
+        for category, repos in sorted(repos_by_category.items()):
+            content.append(f"\n### {category}\n")
+            for repo in repos:
+                name = repo.get('name', '')
+                url = repo.get('url', '')
+                description = repo.get('description', 'No description available')
+                content.append(f"- [{name}]({url}) - {description}")
+
+        content.append("\n<!-- Starred Repositories Section End -->")
+        return "\n".join(content)
 
     def execute(self, new_repos: list, readme_content: str) -> dict:
         existing_repos = self.extract_existing_repos(readme_content)
