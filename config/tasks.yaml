@@ -1,0 +1,92 @@
+# Task Definitions for GitHub GenAI List
+
+fetch_starred_repos:
+  description: >
+    Fetch the list of starred repositories from GitHub API for a specific user.
+    Handle authentication and pagination properly.
+  expected_output: >
+    A list of starred repositories containing:
+    - Full repository name
+    - Description
+    - HTML URL
+    - Additional metadata
+  agent: github_api_agent
+
+read_readme:
+  description: >
+    Read and parse the current README.md file, preserving its structure
+    and non-repository content.
+  expected_output: >
+    Current README content with identified sections:
+    - Table of contents
+    - Repository categories
+    - Non-repository content
+  agent: content_processor
+  input_file: README.md
+
+generate_updated_content:
+  description: >
+    Use LLM to generate updated README content incorporating new starred repos
+    while maintaining existing structure and categories.
+  expected_output: >
+    Updated README content with:
+    - Reorganized repositories in categories
+    - Updated table of contents
+    - Preserved non-repository content
+    - Updated "Last edited" date
+  agent: content_generator
+  context: 
+    - fetch_starred_repos
+    - read_readme
+
+write_readme:
+  description: >
+    Write the updated content to README.md, ensuring proper formatting
+    and structure preservation.
+  expected_output: >
+    Successfully updated README.md file with:
+    - Proper markdown formatting
+    - All content sections intact
+    - No formatting artifacts
+  agent: content_processor
+  output_file: README.md
+  context:
+    - generate_updated_content
+
+research_task:
+  description: >
+    Search GitHub for new repositories related to Generative AI.
+    Focus on projects that have been active in the last month and
+    have significant community engagement.
+  expected_output: >
+    A list of potential repositories to add, including:
+    - Repository name and URL
+    - Brief description
+    - Key metrics (stars, forks, last update)
+    - Primary focus area
+  agent: researcher
+
+analyze_task:
+  description: >
+    Analyze the identified repositories for quality and relevance.
+    Evaluate code quality, documentation, and community engagement.
+    Determine appropriate categorization.
+  expected_output: >
+    Detailed analysis of each repository including:
+    - Quality assessment
+    - Category recommendation
+    - Justification for inclusion
+  agent: analyzer
+
+curate_task:
+  description: >
+    Update the README.md with new repositories, ensuring proper
+    categorization and formatting. Remove any outdated or inactive projects.
+  expected_output: >
+    Updated README.md file with:
+    - New repositories added
+    - Proper categorization
+    - Consistent formatting
+    - Removed outdated entries
+  agent: curator
+  output_file: README.md

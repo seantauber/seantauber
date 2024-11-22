@@ -1,2 +1,5 @@
 requests
 openai
+crewai[tools]
+python-dotenv
+PyGithub
