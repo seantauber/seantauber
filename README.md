@@ -33,7 +33,6 @@ Here's how it works:
 ### Large Language Models (LLMs)
 
 - [SylphAI-Inc/LLM-engineer-handbook](https://github.com/SylphAI-Inc/LLM-engineer-handbook) - A curated list of Large Language Model resources, covering model training, serving, fine-tuning, and building LLM applications.
-- [maitrix-org/llm-reasoners](https://github.com/maitrix-org/llm-reasoners) - A library for advanced large language model reasoning.
 
 ## Artificial Intelligence
 
@@ -74,8 +73,9 @@ Here's how it works:
 - [DS4SD/docling](https://github.com/DS4SD/docling) - Get your documents ready for gen AI.
 - [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) - React UI + elegant infrastructure for AI Copilots.
 - [langchain-ai/langgraph-studio](https://github.com/langchain-ai/langgraph-studio) - Desktop app for prototyping and debugging LangGraph applications locally.
-- [mendableai/firecrawl](https://github.com/mendableai/firecrawl) - 🔥 Turn entire websites into LLM-ready markdown or structured data.
-- [aotakeda/learn-thing](https://github.com/aotakeda/learn-thing) - Create mind maps to learn new things using AI.
+- [Kozea/Radicale](https://github.com/Kozea/Radicale) - A simple CalDAV (calendar) and CardDAV (contact) server.
+- [collective/icalendar](https://github.com/collective/icalendar) - icalendar parser library for Python.
+- [kanboard/kanboard](https://github.com/kanboard/kanboard) - Kanban project management software.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -135,6 +135,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 21, 2024*
+📊 *Last edited: November 22, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
