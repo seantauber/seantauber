@@ -23,6 +23,7 @@ Here's how it works:
   - [Machine Learning Frameworks](#machine-learning-frameworks)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [TTS & Speech](#tts--speech)
+- [Productivity Tools](#productivity-tools)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
 - [🌟 Contributing](#-contributing)
@@ -53,6 +54,12 @@ Here's how it works:
 
 - [bytedance/SALMONN](https://github.com/bytedance/SALMONN) - SALMONN: Speech Audio Language Music Open Neural Network.
 
+## Productivity Tools
+
+- [Kozea/Radicale](https://github.com/Kozea/Radicale) - A simple CalDAV (calendar) and CardDAV (contact) server.
+- [collective/icalendar](https://github.com/collective/icalendar) - icalendar parser library for Python.
+- [kanboard/kanboard](https://github.com/kanboard/kanboard) - Kanban project management software.
+
 ## Other
 
 - [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI.
@@ -72,9 +79,6 @@ Here's how it works:
 - [BrainBlend-AI/atomic-agents](https://github.com/BrainBlend-AI/atomic-agents) - Building AI agents, atomically.
 - [trotsky1997/MathBlackBox](https://github.com/trotsky1997/MathBlackBox) - None.
 - [DS4SD/docling](https://github.com/DS4SD/docling) - Get your documents ready for gen AI.
-- [Kozea/Radicale](https://github.com/Kozea/Radicale) - A simple CalDAV (calendar) and CardDAV (contact) server.
-- [collective/icalendar](https://github.com/collective/icalendar) - icalendar parser library for Python.
-- [kanboard/kanboard](https://github.com/kanboard/kanboard) - Kanban project management software.
 - [langchain-ai/langgraph-studio](https://github.com/langchain-ai/langgraph-studio) - Desktop app for prototyping and debugging LangGraph applications locally.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -135,6 +139,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 23, 2024*
+📊 *Last edited: November 24, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
