@@ -43,9 +43,8 @@ Here's how it works:
 
 ### Machine Learning Frameworks
 
-- [guardrails-ai/guardrails](https://github.com/guardrails-ai/guardrails) - Adding guardrails to large language models.
-- [NVIDIA/NeMo-Guardrails](https://github.com/NVIDIA/NeMo-Guardrails) - NeMo Guardrails is an open-source toolkit for easily adding programmable guardrails to LLM-based conversational systems.
 - [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
+- [VincentGranville/Large-Language-Models](https://github.com/VincentGranville/Large-Language-Models) - Large language Models (LLM).
 
 ## MLOps & AI Infrastructure
 
@@ -77,9 +76,10 @@ Here's how it works:
 - [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
 - [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
-- [ExistentialAudio/BlackHole](https://github.com/ExistentialAudio/BlackHole) - BlackHole is a modern macOS audio loopback driver that allows applications to pass audio.
-- [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) - Open source libraries and APIs to build custom preprocessing pipelines for labeling, training, or production machine learning pipelines.
 - [anaisbetts/mcp-youtube](https://github.com/anaisbetts/mcp-youtube) - A Model-Context Protocol Server for YouTube.
+- [microsoft/lida](https://github.com/microsoft/lida) - Automatic Generation of Visualizations and Infographics using Large Language Models.
+- [andrewyng/aisuite](https://github.com/andrewyng/aisuite) - Simple, unified interface to multiple Generative AI providers.
+- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -139,6 +139,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 28, 2024*
+📊 *Last edited: November 29, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
