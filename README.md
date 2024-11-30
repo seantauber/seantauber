@@ -37,14 +37,14 @@ Here's how it works:
 - [camel-ai/camel](https://github.com/camel-ai/camel) - 🐫 CAMEL: Finding the Scaling Law of Agents. The first and the best multi-agent framework.
 - [microsoft/TinyTroupe](https://github.com/microsoft/TinyTroupe) - LLM-powered multiagent persona simulation for imagination enhancement and business insights.
 - [TAG-Research/lotus](https://github.com/TAG-Research/lotus) - LOTUS: A semantic query engine - process data with LLMs as easily as writing pandas code.
-- [pymupdf/RAG](https://github.com/pymupdf/RAG) - RAG (Retrieval-Augmented Generation) Chatbot Examples Using PyMuPDF.
+- [VincentGranville/Large-Language-Models](https://github.com/VincentGranville/Large-Language-Models) - Large language Models (LLM).
+- [microsoft/lida](https://github.com/microsoft/lida) - Automatic Generation of Visualizations and Infographics using Large Language Models.
 
 ## Artificial Intelligence
 
 ### Machine Learning Frameworks
 
 - [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
-- [VincentGranville/Large-Language-Models](https://github.com/VincentGranville/Large-Language-Models) - Large language Models (LLM).
 
 ## MLOps & AI Infrastructure
 
@@ -77,9 +77,9 @@ Here's how it works:
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
 - [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
 - [anaisbetts/mcp-youtube](https://github.com/anaisbetts/mcp-youtube) - A Model-Context Protocol Server for YouTube.
-- [microsoft/lida](https://github.com/microsoft/lida) - Automatic Generation of Visualizations and Infographics using Large Language Models.
 - [andrewyng/aisuite](https://github.com/andrewyng/aisuite) - Simple, unified interface to multiple Generative AI providers.
 - [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
+- [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -139,6 +139,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: November 29, 2024*
+📊 *Last edited: November 30, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
