@@ -20,7 +20,6 @@ Here's how it works:
 - [Generative AI](#generative-ai)
   - [Large Language Models (LLMs)](#large-language-models-llms)
 - [Artificial Intelligence](#artificial-intelligence)
-  - [Machine Learning Frameworks](#machine-learning-frameworks)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [TTS & Speech](#tts--speech)
 - [Productivity Tools](#productivity-tools)
@@ -42,13 +41,26 @@ Here's how it works:
 
 ## Artificial Intelligence
 
-### Machine Learning Frameworks
-
 - [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
+- [vercel/ai](https://github.com/vercel/ai) - Build AI-powered applications with React, Svelte, Vue, and Solid.
+- [run-llama/chat-ui](https://github.com/run-llama/chat-ui) - Chat UI components for LLM apps.
+- [kennethreitz/simplemind](https://github.com/kennethreitz/simplemind) - Python API client for AI providers that intends to replace LangChain and LangGraph for most common use cases.
+- [prompt-security/ps-fuzz](https://github.com/prompt-security/ps-fuzz) - Make your GenAI Apps Safe & Secure :rocket: Test & harden your system prompt.
+- [yangchris11/samurai](https://github.com/yangchris11/samurai) - Official repository of "SAMURAI: Adapting Segment Anything Model for Zero-Shot Visual Tracking with Motion-Aware Memory".
+- [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI.
+- [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
+- [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
+- [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
+- [andrewyng/aisuite](https://github.com/andrewyng/aisuite) - Simple, unified interface to multiple Generative AI providers.
+- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
+- [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
 
 ## MLOps & AI Infrastructure
 
 - [replicate/cog](https://github.com/replicate/cog) - Containers for machine learning.
+- [anaisbetts/mcp-youtube](https://github.com/anaisbetts/mcp-youtube) - A Model-Context Protocol Server for YouTube.
+- [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) - The official Python SDK for Model Context Protocol servers and clients.
+- [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) - Model Context Protocol Servers.
 
 ## TTS & Speech
 
@@ -63,23 +75,8 @@ Here's how it works:
 ## Other
 
 - [Tameyer41/liftoff](https://github.com/Tameyer41/liftoff) - Mock Interview Simulator with AI-Powered Feedback.
-- [vercel/ai](https://github.com/vercel/ai) - Build AI-powered applications with React, Svelte, Vue, and Solid.
-- [run-llama/chat-ui](https://github.com/run-llama/chat-ui) - Chat UI components for LLM apps.
-- [kennethreitz/simplemind](https://github.com/kennethreitz/simplemind) - Python API client for AI providers that intends to replace LangChain and LangGraph for most common use cases.
-- [prompt-security/ps-fuzz](https://github.com/prompt-security/ps-fuzz) - Make your GenAI Apps Safe & Secure :rocket: Test & harden your system prompt.
-- [yangchris11/samurai](https://github.com/yangchris11/samurai) - Official repository of "SAMURAI: Adapting Segment Anything Model for Zero-Shot Visual Tracking with Motion-Aware Memory".
-- [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) - The official Python SDK for Model Context Protocol servers and clients.
-- [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) - Model Context Protocol Servers.
 - [caspianmoon/memoripy](https://github.com/caspianmoon/memoripy) - An AI memory layer with short- and long-term storage, semantic clustering, and optional memory decay for context-aware applications.
-- [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI.
-- [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
-- [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
-- [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
-- [anaisbetts/mcp-youtube](https://github.com/anaisbetts/mcp-youtube) - A Model-Context Protocol Server for YouTube.
-- [andrewyng/aisuite](https://github.com/andrewyng/aisuite) - Simple, unified interface to multiple Generative AI providers.
-- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
-- [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -139,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: December 1, 2024*
+📊 *Last edited: December 2, 2024*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
