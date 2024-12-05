@@ -4,15 +4,10 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.tools import tool
 from crewai_tools import GithubSearchTool, SerplyNewsSearchTool, FileWriterTool, SerperDevTool
 from github import Github
-from models.github_repo_data import (
-    GitHubRepoData,
-    StarredReposOutput,
-    TrendingReposOutput,
-    CombinedReposOutput,
-    AnalyzedReposOutput,
-    ReadmeStructure
-)
+from models.github_repo_data import ReadmeStructure
+from models.task_outputs import ProcessingSummary, FetchSummary, AnalysisSummary
 from db.database import DatabaseManager
+from processing.parallel_manager import ParallelProcessor
 import os
 from typing import List, Dict, Any
 import requests
@@ -21,31 +16,63 @@ import yaml
 
 
 @tool("Fetch Starred Repos Tool")
-def fetch_starred_repos(github_username: str) -> List[GitHubRepoData]:
+def fetch_starred_repos(github_username: str) -> FetchSummary:
     """Fetches starred repositories for a given GitHub username and stores them in the database"""
     github_client = Github(os.environ['GITHUB_TOKEN'])
-    starred_repos = github_client.get_user(os.environ['GITHUB_USERNAME']).get_starred()
+    starred_repos = list(github_client.get_user(os.environ['GITHUB_USERNAME']).get_starred())
     
-    # Create GitHubRepoData objects
-    repo_data_list = [
-        GitHubRepoData(
-            full_name=repo.full_name,
-            description=repo.description,
-            html_url=repo.html_url,
-            stargazers_count=repo.stargazers_count,
-            topics=repo.get_topics(),
-            created_at=repo.created_at,
-            updated_at=repo.updated_at,
-            language=repo.language
-        ) 
-        for repo in starred_repos
-    ]
+    def process_repo_batch(batch: List[Any], batch_id: int) -> Dict:
+        """Process a batch of repositories"""
+        repo_data_list = [
+            {
+                'full_name': repo.full_name,
+                'description': repo.description,
+                'html_url': repo.html_url,
+                'stargazers_count': repo.stargazers_count,
+                'topics': repo.get_topics(),
+                'created_at': repo.created_at,
+                'updated_at': repo.updated_at,
+                'language': repo.language,
+                'batch_id': batch_id
+            }
+            for repo in batch
+        ]
+        
+        # Store batch in database
+        db_manager = DatabaseManager()
+        db_manager.store_raw_repos(repo_data_list, source='starred', batch_id=batch_id)
+        
+        return {
+            'success': True,
+            'processed_count': len(repo_data_list),
+            'error': None
+        }
+
+    # Initialize parallel processor
+    processor = ParallelProcessor(max_workers=4)
     
-    # Store in database
-    db_manager = DatabaseManager()
-    db_manager.store_raw_repos([repo.dict() for repo in repo_data_list], source='starred')
+    # Process repositories in parallel batches
+    result = processor.process_batch(
+        task_type='fetch_starred',
+        items=starred_repos,
+        process_fn=process_repo_batch,
+        batch_size=10
+    )
     
-    return repo_data_list
+    # Create FetchSummary from results
+    return FetchSummary(
+        success=result['failed_batches'] == 0,
+        message="Completed fetching starred repositories",
+        processed_count=result['total_processed'],
+        batch_count=result['successful_batches'] + result['failed_batches'],
+        completed_batches=result['successful_batches'],
+        failed_batches=result['failed_batches'],
+        error_count=len(result['errors']),
+        errors=result['errors'],
+        source='starred',
+        total_repos=len(starred_repos),
+        stored_repos=result['total_processed']
+    )
 
 @tool("Store Raw Repos Tool")
 def store_raw_repos(repos: List[Dict], source: str) -> str:
@@ -61,11 +88,11 @@ def get_unprocessed_repos(batch_size: int = 10) -> List[Dict]:
     return db_manager.get_unprocessed_repos(batch_size)
 
 @tool("Store Analyzed Repos Tool")
-def store_analyzed_repos(analyzed_repos: List[Dict]) -> str:
+def store_analyzed_repos(analyzed_repos: List[Dict], batch_id: int) -> str:
     """Store analyzed repository data in the database"""
     db_manager = DatabaseManager()
-    db_manager.store_analyzed_repos(analyzed_repos)
-    return f"Stored {len(analyzed_repos)} analyzed repositories in database"
+    db_manager.store_analyzed_repos(analyzed_repos, batch_id)
+    return f"Stored {len(analyzed_repos)} analyzed repositories in database for batch {batch_id}"
 
 @tool("Get Analyzed Repos Tool")
 def get_analyzed_repos() -> List[Dict]:
@@ -146,7 +173,11 @@ class GitHubGenAICrew:
         """Creates the analyzer agent"""
         return Agent(
             config=self.agents_config['analyzer'],
-            verbose=True
+            verbose=True,
+            tools=[
+                self.get_unprocessed_repos_tool,
+                self.store_analyzed_repos_tool
+            ]
         )
 
     @task
@@ -154,7 +185,7 @@ class GitHubGenAICrew:
         """Creates the fetch starred repos task"""
         return Task(
             config=self.tasks_config['fetch_starred'],
-            output_json=StarredReposOutput
+            output_json=FetchSummary
         )
     
     @task
@@ -162,7 +193,7 @@ class GitHubGenAICrew:
         """Creates the search trending repos task"""
         return Task(
             config=self.tasks_config['search_trending'],
-            output_json=TrendingReposOutput,
+            output_json=FetchSummary,
             tools=[self.store_raw_repos_tool]
         )
     
@@ -171,30 +202,35 @@ class GitHubGenAICrew:
         """Creates the combine repos task"""
         return Task(
             config=self.tasks_config['combine_repos'],
-            output_json=CombinedReposOutput,
+            output_json=ProcessingSummary,
             tools=[self.get_unprocessed_repos_tool]
         )
     
     @task
     def analyze_repos(self) -> Task:
         """Creates the analyze repos task with batch processing support"""
-        # Configure task with database tools for batch processing
         task_config = self.tasks_config['analyze_repos']
-        # Add batch processing details to task description
-        task_config['description'] += """
-        Process repositories in batches to optimize memory usage:
-        1. Fetch unprocessed repos in small batches
-        2. Analyze each batch
-        3. Store results back to database
-        4. Continue until all repos are processed
-        Batch size is configured to optimize for LLM context limits.
+        task_config['description'] = """
+        Analyze repositories in parallel batches for optimal performance:
+        
+        1. Initialize the ParallelProcessor with appropriate batch size
+        2. For each batch:
+           - Fetch unprocessed repos using get_unprocessed_repos_tool
+           - Analyze repos in the batch for categorization and quality metrics
+           - Store results using store_analyzed_repos_tool with batch tracking
+        3. Continue processing until all repos are analyzed
+        4. Return AnalysisSummary with processing statistics
+        
+        Ensure proper error handling and batch status tracking throughout the process.
+        Use batch size of 10 repositories to optimize for LLM context limits.
         """
+        
         return Task(
             config=task_config,
-            output_json=AnalyzedReposOutput,
+            output_json=AnalysisSummary,
             tools=[
-                self.get_unprocessed_repos_tool,  # For fetching batches
-                self.store_analyzed_repos_tool    # For storing results
+                self.get_unprocessed_repos_tool,
+                self.store_analyzed_repos_tool
             ]
         )
 
@@ -234,7 +270,8 @@ class GitHubGenAICrew:
             agents=[
                 self.github_api_agent(),
                 self.content_processor(),
-                self.content_generator()
+                self.content_generator(),
+                self.analyzer()  # Added analyzer agent for parallel processing
             ],
             tasks=[
                 self.fetch_starred(),

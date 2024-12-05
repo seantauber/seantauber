@@ -6,7 +6,8 @@ fetch_starred:
     Fetch the complete list of repositories starred by the user from GitHub API.
     Handle authentication and pagination properly to ensure all starred repos
     are retrieved. Get full repository details for each starred item.
-  expected_output: A JSON object containing an array of starred repositories with full repository details
+    Store results directly in database using DatabaseManager.
+  expected_output: A FetchSummary object containing processing stats for starred repos (success, message, processed_count, batch stats, etc.)
   agent: github_api_agent
 
 # 1b. Search Trending Repositories
@@ -18,18 +19,20 @@ search_trending:
     - Active issues and PRs
     - Keywords: "generative ai", "llm", "ai agents", "machine learning"
     Focus on repositories with significant recent engagement.
-  expected_output: A JSON object containing an array of trending repositories with engagement metrics
+    Store results directly in database using DatabaseManager.
+  expected_output: A FetchSummary object containing processing stats for trending repos (success, message, processed_count, batch stats, etc.)
   agent: github_api_agent
 
 # 1c. Combine Repository Lists
 combine_repos:
   description: |
-    Combine the starred and trending repository lists:
+    Retrieve repositories from database and combine the starred and trending lists:
     1. Remove any duplicates (prefer starred version if duplicate)
     2. Ensure consistent data structure
     3. Add source flags ("starred", "trending", or "both")
     4. Sort by relevance (starred items first, then by stars)
-  expected_output: A JSON object containing an array of combined unique repositories with source flags
+    5. Store combined results back to database
+  expected_output: A ProcessingSummary object containing stats about the combination process
   agent: github_api_agent
   context: 
     - fetch_starred
@@ -38,7 +41,8 @@ combine_repos:
 # 2. Analyze and Filter
 analyze_repos:
   description: |
-    Analyze the combined repository list for quality and relevance.
+    Retrieve unprocessed repositories from database in batches and analyze for quality and relevance.
+    Process batches in parallel using ParallelProcessor.
     Evaluate each repository based on:
     - Code quality and documentation
     - Community engagement and maintenance
@@ -46,7 +50,8 @@ analyze_repos:
     - Appropriate categorization
     Filter out repositories that don't meet quality standards.
     Prioritize starred repositories in the analysis.
-  expected_output: A JSON object containing an array of analyzed repositories with quality scores and categorization
+    Store analysis results back to database.
+  expected_output: An AnalysisSummary object containing analysis stats, category distribution, and quality metrics
   agent: analyzer
   context: 
     - combine_repos
@@ -71,14 +76,14 @@ parse_readme:
 generate_content:
   description: |
     Generate new README content by:
-    1. Retrieving analyzed repositories from the database using get_analyzed_repos()
+    1. Retrieving analyzed repositories from database using DatabaseManager.get_analyzed_repos()
     2. Using the README structure from parse_readme
     3. Preserving all static sections exactly as they are
     4. Updating the table of contents based on new categories
     5. Updating the "Last edited" date
     
     Database retrieval notes:
-    - Use the provided get_analyzed_repos() tool to fetch repository data
+    - Use DatabaseManager.get_analyzed_repos() to fetch repository data
     - Data includes source ('starred' or 'trending') and analysis_data
     - Repository data is already analyzed and categorized
     
