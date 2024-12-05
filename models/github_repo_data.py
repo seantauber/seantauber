@@ -13,6 +13,11 @@ class GitHubRepoData(BaseModel):
     updated_at: datetime
     language: str | None
 
+    class Config:
+        json_encoders = {
+            datetime: lambda dt: dt.isoformat()
+        }
+
 class TrendingMetrics(BaseModel):
     """Metrics for trending repositories"""
     recent_stars: int

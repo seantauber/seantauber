@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 from typing import List, Dict, Optional
 from pathlib import Path
+from models.github_repo_data import GitHubRepoData
 
 class DatabaseManager:
     """Manages database operations for storing and retrieving GitHub repository data."""
@@ -63,23 +64,25 @@ class DatabaseManager:
             
             conn.commit()
     
-    def store_raw_repos(self, repos: List[Dict], source: str, batch_id: Optional[int] = None):
+    def store_raw_repos(self, repos: List[GitHubRepoData], source: str, batch_id: Optional[int] = None):
         """Store raw repository data in the database.
         
         Args:
-            repos (List[Dict]): List of repository data dictionaries
+            repos (List[GitHubRepoData]): List of GitHubRepoData objects
             source (str): Source of the repositories ('starred' or 'trending')
             batch_id (Optional[int]): ID of the processing batch
         """
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             for repo in repos:
+                # Convert GitHubRepoData to dict and then to JSON
+                repo_dict = repo.dict()
                 cursor.execute(
                     """
                     INSERT INTO raw_repositories (source, data, batch_id)
                     VALUES (?, ?, ?)
                     """,
-                    (source, json.dumps(repo), batch_id)
+                    (source, json.dumps(repo_dict), batch_id)
                 )
             conn.commit()
     
