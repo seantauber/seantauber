@@ -70,12 +70,18 @@ parse_readme:
 # 4. Generate Content
 generate_content:
   description: |
-    Generate new README content using:
-    1. The analyzed repository list from analyze_repos
-    2. The README structure from parse_readme
-    3. Preserve all static sections exactly as they are
-    4. Update the table of contents based on new categories
-    5. Update the "Last edited" date
+    Generate new README content by:
+    1. Retrieving analyzed repositories from the database using get_analyzed_repos()
+    2. Using the README structure from parse_readme
+    3. Preserving all static sections exactly as they are
+    4. Updating the table of contents based on new categories
+    5. Updating the "Last edited" date
+    
+    Database retrieval notes:
+    - Use the provided get_analyzed_repos() tool to fetch repository data
+    - Data includes source ('starred' or 'trending') and analysis_data
+    - Repository data is already analyzed and categorized
+    
     Ensure all formatting is consistent with the original.
   expected_output: Complete README.md content as a string, properly formatted in Markdown
   agent: content_generator

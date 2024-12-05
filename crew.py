@@ -12,6 +12,7 @@ from models.github_repo_data import (
     AnalyzedReposOutput,
     ReadmeStructure
 )
+from db.database import DatabaseManager
 import os
 from typing import List, Dict, Any
 import requests
@@ -21,10 +22,12 @@ import yaml
 
 @tool("Fetch Starred Repos Tool")
 def fetch_starred_repos(github_username: str) -> List[GitHubRepoData]:
-    """Fetches starred repositories for a given GitHub username"""
+    """Fetches starred repositories for a given GitHub username and stores them in the database"""
     github_client = Github(os.environ['GITHUB_TOKEN'])
     starred_repos = github_client.get_user(os.environ['GITHUB_USERNAME']).get_starred()
-    return [
+    
+    # Create GitHubRepoData objects
+    repo_data_list = [
         GitHubRepoData(
             full_name=repo.full_name,
             description=repo.description,
@@ -37,6 +40,38 @@ def fetch_starred_repos(github_username: str) -> List[GitHubRepoData]:
         ) 
         for repo in starred_repos
     ]
+    
+    # Store in database
+    db_manager = DatabaseManager()
+    db_manager.store_raw_repos([repo.dict() for repo in repo_data_list], source='starred')
+    
+    return repo_data_list
+
+@tool("Store Raw Repos Tool")
+def store_raw_repos(repos: List[Dict], source: str) -> str:
+    """Store raw repository data in the database"""
+    db_manager = DatabaseManager()
+    db_manager.store_raw_repos(repos, source)
+    return f"Stored {len(repos)} repositories in database with source: {source}"
+
+@tool("Get Unprocessed Repos Tool")
+def get_unprocessed_repos(batch_size: int = 10) -> List[Dict]:
+    """Get a batch of unprocessed repositories from the database"""
+    db_manager = DatabaseManager()
+    return db_manager.get_unprocessed_repos(batch_size)
+
+@tool("Store Analyzed Repos Tool")
+def store_analyzed_repos(analyzed_repos: List[Dict]) -> str:
+    """Store analyzed repository data in the database"""
+    db_manager = DatabaseManager()
+    db_manager.store_analyzed_repos(analyzed_repos)
+    return f"Stored {len(analyzed_repos)} analyzed repositories in database"
+
+@tool("Get Analyzed Repos Tool")
+def get_analyzed_repos() -> List[Dict]:
+    """Get all analyzed repositories from the database"""
+    db_manager = DatabaseManager()
+    return db_manager.get_analyzed_repos()
 
 @tool("Current Date Tool")
 def get_current_date(date_format: str = "%m-%d-%Y %H:%M") -> str:
@@ -61,6 +96,7 @@ def save_file(file_name: str, file_extension: str, content: str) -> str:
     with open(file_path, 'w') as file:
         file.write(content)
     return f"File saved to {file_path}"
+
 @CrewBase
 class GitHubGenAICrew:
     """Crew for managing the GitHub GenAI List project"""
@@ -75,6 +111,10 @@ class GitHubGenAICrew:
         )
         self.get_current_date_tool = get_current_date
         self.save_file_tool = save_file
+        self.store_raw_repos_tool = store_raw_repos
+        self.get_unprocessed_repos_tool = get_unprocessed_repos
+        self.store_analyzed_repos_tool = store_analyzed_repos
+        self.get_analyzed_repos_tool = get_analyzed_repos
             
     @agent
     def github_api_agent(self) -> Agent:
@@ -122,7 +162,8 @@ class GitHubGenAICrew:
         """Creates the search trending repos task"""
         return Task(
             config=self.tasks_config['search_trending'],
-            output_json=TrendingReposOutput
+            output_json=TrendingReposOutput,
+            tools=[self.store_raw_repos_tool]
         )
     
     @task
@@ -130,15 +171,31 @@ class GitHubGenAICrew:
         """Creates the combine repos task"""
         return Task(
             config=self.tasks_config['combine_repos'],
-            output_json=CombinedReposOutput
+            output_json=CombinedReposOutput,
+            tools=[self.get_unprocessed_repos_tool]
         )
     
     @task
     def analyze_repos(self) -> Task:
-        """Creates the analyze repos task"""
+        """Creates the analyze repos task with batch processing support"""
+        # Configure task with database tools for batch processing
+        task_config = self.tasks_config['analyze_repos']
+        # Add batch processing details to task description
+        task_config['description'] += """
+        Process repositories in batches to optimize memory usage:
+        1. Fetch unprocessed repos in small batches
+        2. Analyze each batch
+        3. Store results back to database
+        4. Continue until all repos are processed
+        Batch size is configured to optimize for LLM context limits.
+        """
         return Task(
-            config=self.tasks_config['analyze_repos'],
-            output_json=AnalyzedReposOutput
+            config=task_config,
+            output_json=AnalyzedReposOutput,
+            tools=[
+                self.get_unprocessed_repos_tool,  # For fetching batches
+                self.store_analyzed_repos_tool    # For storing results
+            ]
         )
 
     @task
@@ -153,7 +210,8 @@ class GitHubGenAICrew:
     def generate_content(self) -> Task:
         """Creates the generate updated content task"""
         return Task(
-            config=self.tasks_config['generate_content']
+            config=self.tasks_config['generate_content'],
+            tools=[self.get_analyzed_repos_tool]
         )
     
     @task
@@ -162,7 +220,7 @@ class GitHubGenAICrew:
         if test_mode:
             return Task(
                 config=self.tasks_config['update_readme'],
-                output_file="README.test.md"
+                output_file="README.test.md",
                 tools=[self.get_current_date_tool]
             )
         return Task(
