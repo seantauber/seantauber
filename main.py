@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from crew import GitHubGenAICrew
+from github import Github
 from dotenv import load_dotenv
 import os
 import argparse
@@ -21,18 +22,17 @@ def main():
     
     # Load environment variables
     load_environment()
+
+    # Read current README
+    with open('README.md', 'r') as file:
+        current_readme = file.read()
     
     crew = GitHubGenAICrew()
     
     # Update README with starred repos
     print("Updating README with starred repositories...")
     readme_crew = crew.readme_update_crew(test_mode=args.test)
-    readme_crew.kickoff()
-
-    # Run research crew for finding new repos
-    print("\nResearching new GenAI repositories...")
-    research_crew = crew.research_crew(test_mode=args.test)
-    research_crew.kickoff()
+    readme_crew.kickoff(inputs={"current_readme_content": current_readme})
 
 if __name__ == "__main__":
     main()

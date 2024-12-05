@@ -2,13 +2,21 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.tools import tool
-from crewai_tools import GithubSearchTool
+from crewai_tools import GithubSearchTool, SerplyNewsSearchTool, FileWriterTool, SerperDevTool
 from github import Github
-from models.github_repo_data import GitHubRepoData
+from models.github_repo_data import (
+    GitHubRepoData,
+    StarredReposOutput,
+    TrendingReposOutput,
+    CombinedReposOutput,
+    AnalyzedReposOutput,
+    ReadmeStructure
+)
 import os
 from typing import List, Dict, Any
 import requests
 from datetime import datetime
+import yaml
 
 
 @tool("Fetch Starred Repos Tool")
@@ -30,9 +38,34 @@ def fetch_starred_repos(github_username: str) -> List[GitHubRepoData]:
         for repo in starred_repos
     ]
 
+@tool("Current Date Tool")
+def get_current_date(date_format: str = "%m-%d-%Y %H:%M") -> str:
+    """
+    Tool that returns the current date and time
+    date_format should be a valid date format string for the python datetime.strftime() method
+    date_format defaults to "%m-%d-%Y %H:%M"
+    Remember the output of this tool and don't call it again in the same task
+    """
+    return f"Current Date: {datetime.now().strftime(date_format)}\nDate Format: {date_format}"
+
+@tool("Save File Tool")
+def save_file(file_name: str, file_extension: str, content: str) -> str:
+    """
+    Tool that saves the content to a file with the given file name
+    file_name should be succint and descriptive of the file contents
+    file_name should have the format: "{file_name} - {current_date}"
+    file_name should not include the file extension
+    file_extension should be the correct file extension for the file type (e.g. '.md' for markdown)
+    """
+    file_path = str(f".crew_storage/{file_name}")
+    with open(file_path, 'w') as file:
+        file.write(content)
+    return f"File saved to {file_path}"
 @CrewBase
 class GitHubGenAICrew:
     """Crew for managing the GitHub GenAI List project"""
+    agents_config = 'config/agents.yaml'
+    tasks_config = 'config/tasks.yaml'
 
     def __init__(self):
         self.fetch_starred_repos_tool = fetch_starred_repos
@@ -40,14 +73,16 @@ class GitHubGenAICrew:
             gh_token=os.environ['GITHUB_TOKEN'],
             content_types=['code', 'repo']
         )
-        
+        self.get_current_date_tool = get_current_date
+        self.save_file_tool = save_file
+            
     @agent
     def github_api_agent(self) -> Agent:
         """Creates the GitHub API agent"""
         return Agent(
             config=self.agents_config['github_api_agent'],
             verbose=True,
-            tools=[self.fetch_starred_repos_tool]
+            tools=[self.fetch_starred_repos_tool, self.github_search_tool]
         )
 
     @agent
@@ -67,81 +102,72 @@ class GitHubGenAICrew:
         )
 
     @agent
-    def researcher(self) -> Agent:
-        """Creates the researcher agent"""
-        return Agent(
-            config=self.agents_config['researcher'],
-            verbose=True,
-            tools=[self.github_search_tool]
-        )
-
-    @agent
     def analyzer(self) -> Agent:
         """Creates the analyzer agent"""
         return Agent(
             config=self.agents_config['analyzer'],
-            verbose=True,
-            tools=[self.github_search_tool]
-        )
-
-    @agent
-    def curator(self) -> Agent:
-        """Creates the curator agent"""
-        return Agent(
-            config=self.agents_config['curator'],
             verbose=True
         )
 
     @task
-    def fetch_starred_repos_task(self) -> Task:
+    def fetch_starred(self) -> Task:
         """Creates the fetch starred repos task"""
         return Task(
-            config=self.tasks_config['fetch_starred_repos']
+            config=self.tasks_config['fetch_starred'],
+            output_json=StarredReposOutput
+        )
+    
+    @task
+    def search_trending(self) -> Task:
+        """Creates the search trending repos task"""
+        return Task(
+            config=self.tasks_config['search_trending'],
+            output_json=TrendingReposOutput
+        )
+    
+    @task
+    def combine_repos(self) -> Task:
+        """Creates the combine repos task"""
+        return Task(
+            config=self.tasks_config['combine_repos'],
+            output_json=CombinedReposOutput
+        )
+    
+    @task
+    def analyze_repos(self) -> Task:
+        """Creates the analyze repos task"""
+        return Task(
+            config=self.tasks_config['analyze_repos'],
+            output_json=AnalyzedReposOutput
         )
 
     @task
-    def read_readme_task(self) -> Task:
+    def parse_readme(self) -> Task:
         """Creates the read readme task"""
         return Task(
-            config=self.tasks_config['read_readme']
+            config=self.tasks_config['parse_readme'],
+            output_json=ReadmeStructure
         )
 
     @task
-    def generate_updated_content_task(self) -> Task:
+    def generate_content(self) -> Task:
         """Creates the generate updated content task"""
         return Task(
-            config=self.tasks_config['generate_updated_content']
+            config=self.tasks_config['generate_content']
         )
-
+    
     @task
-    def write_readme_task(self, test_mode: bool = False) -> Task:
-        """Creates the write readme task"""
-        config = dict(self.tasks_config['write_readme'])
+    def update_readme(self, test_mode: bool = False) -> Task:
+        """Creates the update readme task"""
         if test_mode:
-            config['output_file'] = 'README.test.md'
-        return Task(config=config)
-
-    @task
-    def research_task(self) -> Task:
-        """Creates the research task"""
+            return Task(
+                config=self.tasks_config['update_readme'],
+                output_file="README.test.md"
+                tools=[self.get_current_date_tool]
+            )
         return Task(
-            config=self.tasks_config['research_task']
+            config=self.tasks_config['update_readme']
         )
-
-    @task
-    def analyze_task(self) -> Task:
-        """Creates the analyze task"""
-        return Task(
-            config=self.tasks_config['analyze_task']
-        )
-
-    @task
-    def curate_task(self, test_mode: bool = False) -> Task:
-        """Creates the curate task"""
-        config = dict(self.tasks_config['curate_task'])
-        if test_mode:
-            config['output_file'] = 'README.test.md'
-        return Task(config=config)
 
     @crew
     def readme_update_crew(self, test_mode: bool = False) -> Crew:
@@ -153,28 +179,13 @@ class GitHubGenAICrew:
                 self.content_generator()
             ],
             tasks=[
-                self.fetch_starred_repos_task(),
-                self.read_readme_task(),
-                self.generate_updated_content_task(),
-                self.write_readme_task(test_mode=test_mode)
-            ],
-            process=Process.sequential,
-            verbose=True
-        )
-
-    @crew
-    def research_crew(self, test_mode: bool = False) -> Crew:
-        """Creates the research crew"""
-        return Crew(
-            agents=[
-                self.researcher(),
-                self.analyzer(),
-                self.curator()
-            ],
-            tasks=[
-                self.research_task(),
-                self.analyze_task(),
-                self.curate_task(test_mode=test_mode)
+                self.fetch_starred(),
+                self.search_trending(),
+                self.combine_repos(),
+                self.analyze_repos(),
+                self.parse_readme(),
+                self.generate_content(),
+                self.update_readme(test_mode=test_mode)
             ],
             process=Process.sequential,
             verbose=True
