@@ -5,6 +5,13 @@ from typing import List, Dict, Optional
 from pathlib import Path
 from models.github_repo_data import GitHubRepoData
 
+class DateTimeEncoder(json.JSONEncoder):
+    """Custom JSON encoder that handles datetime objects."""
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
 class DatabaseManager:
     """Manages database operations for storing and retrieving GitHub repository data."""
     
@@ -75,14 +82,14 @@ class DatabaseManager:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             for repo in repos:
-                # Convert GitHubRepoData to dict and then to JSON
+                # Convert GitHubRepoData to dict and then to JSON using custom encoder
                 repo_dict = repo.dict()
                 cursor.execute(
                     """
                     INSERT INTO raw_repositories (source, data, batch_id)
                     VALUES (?, ?, ?)
                     """,
-                    (source, json.dumps(repo_dict), batch_id)
+                    (source, json.dumps(repo_dict, cls=DateTimeEncoder), batch_id)
                 )
             conn.commit()
     
@@ -118,13 +125,13 @@ class DatabaseManager:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             for repo in analyzed_repos:
-                # Store analyzed data
+                # Store analyzed data using custom encoder for datetime objects
                 cursor.execute(
                     """
                     INSERT INTO analyzed_repositories (raw_repo_id, analysis_data, batch_id)
                     VALUES (?, ?, ?)
                     """,
-                    (repo['raw_repo_id'], json.dumps(repo['analysis_data']), batch_id)
+                    (repo['raw_repo_id'], json.dumps(repo['analysis_data'], cls=DateTimeEncoder), batch_id)
                 )
                 
                 # Mark raw repo as processed

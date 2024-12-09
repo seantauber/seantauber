@@ -4,7 +4,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.tools import tool
 from crewai_tools import GithubSearchTool, SerplyNewsSearchTool, FileWriterTool, SerperDevTool
 from github import Github
-from models.github_repo_data import ReadmeStructure
+from models.github_repo_data import ReadmeStructure, GitHubRepoData
 from models.task_outputs import ProcessingSummary, FetchSummary, AnalysisSummary
 from db.database import DatabaseManager
 from processing.parallel_manager import ParallelProcessor
@@ -13,6 +13,8 @@ from typing import List, Dict, Any
 import requests
 from datetime import datetime
 import yaml
+from embedchain import App
+from embedchain.config import AppConfig
 
 
 @tool("Fetch Starred Repos Tool")
@@ -24,17 +26,16 @@ def fetch_starred_repos(github_username: str) -> FetchSummary:
     def process_repo_batch(batch: List[Any], batch_id: int) -> Dict:
         """Process a batch of repositories"""
         repo_data_list = [
-            {
-                'full_name': repo.full_name,
-                'description': repo.description,
-                'html_url': repo.html_url,
-                'stargazers_count': repo.stargazers_count,
-                'topics': repo.get_topics(),
-                'created_at': repo.created_at,
-                'updated_at': repo.updated_at,
-                'language': repo.language,
-                'batch_id': batch_id
-            }
+            GitHubRepoData(
+                full_name=repo.full_name,
+                description=repo.description,
+                html_url=repo.html_url,
+                stargazers_count=repo.stargazers_count,
+                topics=repo.get_topics(),
+                created_at=repo.created_at,
+                updated_at=repo.updated_at,
+                language=repo.language
+            )
             for repo in batch
         ]
         
@@ -132,10 +133,16 @@ class GitHubGenAICrew:
 
     def __init__(self):
         self.fetch_starred_repos_tool = fetch_starred_repos
+        
+        # Initialize embedchain app with minimal config
+        app = App()
+        
+        # Initialize GithubSearchTool
         self.github_search_tool = GithubSearchTool(
             gh_token=os.environ['GITHUB_TOKEN'],
             content_types=['code', 'repo']
         )
+        
         self.get_current_date_tool = get_current_date
         self.save_file_tool = save_file
         self.store_raw_repos_tool = store_raw_repos

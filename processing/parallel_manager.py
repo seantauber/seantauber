@@ -331,12 +331,24 @@ class ParallelProcessor:
         last_status_time = 0
         status_interval = 5  # Status update interval in seconds
 
-        while self._active_futures:
+        while True:
             current_time = time.time()
             if current_time - last_status_time >= status_interval:
                 status = self.get_processing_status(task_type, total_batches)
                 self._print_status_update(status)
                 last_status_time = current_time
+
+                # Check if all batches are completed or failed
+                completed_count = status['status_counts'][BatchStatus.COMPLETED]
+                failed_count = status['status_counts'][BatchStatus.FAILED]
+                cleaned_up_count = status['status_counts'][BatchStatus.CLEANED_UP]
+                
+                if completed_count + failed_count + cleaned_up_count >= total_batches:
+                    # All batches are done (completed, failed, or cleaned up)
+                    if len(self._retry_queue) == 0:
+                        # No more retries pending
+                        break
+
             time.sleep(1)
 
     def get_processing_status(self, task_type: str, total_batches: int) -> Dict:
