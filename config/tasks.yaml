@@ -41,16 +41,51 @@ combine_repos:
 # 2. Analyze and Filter
 analyze_repos:
   description: |
-    Retrieve unprocessed repositories from database in batches and analyze for quality and relevance.
-    Process batches in parallel using ParallelProcessor.
-    Evaluate each repository based on:
-    - Code quality and documentation
-    - Community engagement and maintenance
-    - Relevance to GenAI/AI/ML
-    - Appropriate categorization
-    Filter out repositories that don't meet quality standards.
-    Prioritize starred repositories in the analysis.
-    Store analysis results back to database.
+    Process repositories in sequential batches using these specific steps:
+
+    1. For each batch:
+       a. Use get_unprocessed_repos_tool to fetch exactly 10 unprocessed repositories
+       b. For each repository in the batch:
+          - Evaluate code quality and documentation
+          - Check community engagement (stars, issues, PRs)
+          - Assess relevance to GenAI/AI/ML
+          - Determine appropriate category and subcategory
+          - Calculate a quality score (0.0 to 1.0)
+       c. Create analysis data for each repo with this structure:
+          {
+            'raw_repo_id': <id from raw repo>,
+            'quality_score': <float between 0.0 and 1.0>,
+            'category': <main category>,
+            'subcategory': <subcategory if applicable>,
+            'include': <boolean based on quality>,
+            'justification': <reason for inclusion/exclusion>
+          }
+       d. Use store_analyzed_repos_tool to save the batch analysis results
+       e. Continue with next batch until no unprocessed repos remain
+
+    2. Quality Criteria:
+       - Documentation quality and completeness
+       - Code quality and organization
+       - Community engagement level
+       - Maintenance activity
+       - Relevance to AI/ML/GenAI
+
+    3. Main Categories:
+       - Generative AI
+       - Artificial Intelligence
+       - MLOps & AI Infrastructure
+       - Machine Learning Tools
+       - Development Tools
+       - Other AI-Related
+
+    4. Processing Rules:
+       - Process exactly 10 repos per batch
+       - Must include raw_repo_id in analysis data
+       - Must store results before processing next batch
+       - Quality score must be between 0.0 and 1.0
+       - Include must be boolean (true/false)
+       - Categories must be consistent across batches
+
   expected_output: An AnalysisSummary object containing analysis stats, category distribution, and quality metrics
   agent: analyzer
   context: 

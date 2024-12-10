@@ -1,147 +1,169 @@
 # System Issues and Resolution Plan
 
-## Identified Issues
+## Critical Issues (Immediate Priority)
 
-### 1. Database and Data Storage Issues
-- ✅ ChromaDB duplicate embedding ID warnings appearing during batch insertion (FIXED)
-- ✅ Multiple warnings for "Add of existing embedding ID" indicating potential data duplication (FIXED)
-- Database queries potentially not returning expected results (get_analyzed_repos returned empty list)
+### 1. Database Cleanup Issue
+- ❌ Multiple database cleanups occurring due to DatabaseManager initialization:
+  * DatabaseManager initialized with cleanup=True by default
+  * Each agent creates its own DatabaseManager instance
+  * Multiple cleanups causing data loss between tasks
+- Technical details:
+  * Issue occurs in the following sequence:
+    1. fetch_starred_repos creates DatabaseManager and stores data
+    2. analyzer agent creates new DatabaseManager
+    3. New DatabaseManager cleans up database
+    4. Previously stored data is lost
+  * Affected components:
+    ```python
+    # db/database.py
+    class DatabaseManager:
+        def __init__(self, db_path: str = "db/github_repos.db", cleanup: bool = True):
+            # cleanup=True by default causes the issue
+    ```
+  * Current implementation:
+    ```python
+    # crew.py
+    # Each tool creates its own DatabaseManager instance
+    def store_raw_repos(repos: List[Dict], source: str) -> str:
+        db_manager = DatabaseManager()  # New instance with cleanup=True
+    
+    def get_unprocessed_repos(batch_size: int = 10) -> List[Dict]:
+        db_manager = DatabaseManager()  # Another instance with cleanup=True
+    ```
 
-### 2. GitHub API Integration Issues
-- GitHub username configuration issue ("your_github_username" being used instead of actual username)
-- Potential authentication issues with GitHub API
-- Search functionality limitations (search results not being properly filtered/stored)
+### 2. GitHub Username Configuration
+- ✓ Configuration implementation is correct:
+  * GITHUB_USERNAME properly set in .env
+  * GitHubConfig loads and validates username
+  * fetch_starred_repos uses app_config correctly
+- Required changes:
+  * ✓ Remove unused github_username parameter from fetch_starred_repos
+  * ✓ Keep existing config usage
+  * ✓ Add error logging
 
-### 3. Batch Processing Issues
-- Progress tracking shows unusual behavior (progress reaching 200% - "Progress: 200.0% (40/20 batches)")
-- Batch status tracking inconsistencies
-- Active batches count remains constant despite completion
-
-### 4. Tool Implementation Issues
-- Store Analyzed Repos Tool failing with 'raw_repo_id' error
-- Tool reuse errors ("I tried reusing the same input, I must stop using this action input")
-- Limited tool functionality (only two tools available for repository analysis)
-
-### 5. Data Analysis Issues
-- Repository categorization not being stored properly
-- Quality metrics not being persisted
-- Analysis results not being properly integrated into README generation
+### 3. Database Implementation
+- ✓ Schema implementation is correct:
+  * Tables properly defined
+  * Relationships properly set
+  * Constraints in place
+- ❌ Data persistence issues:
+  * Multiple cleanups causing data loss
+  * Need singleton pattern for DatabaseManager
+  * Need to control cleanup behavior
 
 ## Resolution Plan
 
-### Phase 1: Database Optimization
-1. ✅ Fix ChromaDB duplicate entries
-   - ✅ Implemented proper ChromaDB configuration through embedchain's AppConfig
-   - ✅ Added collection name and directory configuration
-   - ✅ Configured chunking parameters to prevent duplicates
-   - ✅ Added local cache to prevent duplicate processing
+### Phase 1: Database Manager Refactoring
 
-2. Improve Database Operations
-   - Add proper error handling for database operations
-   - Implement transaction management
-   - Add data validation before storage
-   - Fix get_analyzed_repos functionality
+1. Implement Singleton Pattern:
+```python
+class DatabaseManager:
+    _instance = None
+    _initialized = False
+    
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
+    def __init__(self, db_path: str = "db/github_repos.db", cleanup: bool = False):
+        if not self._initialized:
+            self._initialized = True
+            self.db_path = db_path
+            if cleanup:  # Only cleanup if explicitly requested
+                self.cleanup_database()
+            self.init_db()
+```
 
-### Phase 2: GitHub Integration Enhancement
-1. Fix Authentication
-   - Implement proper GitHub username configuration
-   - Add token validation
-   - Improve error handling for API calls
+2. Update Tool Implementations:
+```python
+# Update all tool implementations to use singleton instance
+def store_raw_repos(repos: List[Dict], source: str) -> str:
+    db_manager = DatabaseManager(cleanup=False)  # Will reuse existing instance
+    
+def get_unprocessed_repos(batch_size: int = 10) -> List[Dict]:
+    db_manager = DatabaseManager(cleanup=False)  # Will reuse existing instance
+```
 
-2. Improve Search Functionality
-   - Enhance search criteria implementation
-   - Add proper filtering of results
-   - Implement better error handling for search operations
+3. Add Database State Verification:
+```python
+class DatabaseManager:
+    def verify_state(self):
+        """Verify database state and table contents."""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM raw_repositories")
+            raw_count = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM analyzed_repositories")
+            analyzed_count = cursor.fetchone()[0]
+            logger.info(f"Database state - Raw repos: {raw_count}, Analyzed: {analyzed_count}")
+```
 
-### Phase 3: Batch Processing Improvements
-1. Fix Progress Tracking
-   - Implement accurate progress calculation
-   - Add proper batch completion detection
-   - Fix active batch counting
+### Phase 2: Implementation Steps
 
-2. Enhance Batch Management
-   - Implement proper batch lifecycle tracking
-   - Add batch cleanup procedures
-   - Improve error handling for batch operations
+1. Create DatabaseManager Singleton:
+   - Implement singleton pattern
+   - Add state verification
+   - Default cleanup to False
+   - Add proper initialization tracking
 
-### Phase 4: Tool Enhancement
-1. Fix Existing Tools
-   - Resolve 'raw_repo_id' error in Store Analyzed Repos Tool
-   - Implement proper input validation
-   - Add better error messages
+2. Update Tool Implementations:
+   - Modify all database interactions
+   - Remove cleanup flag from normal usage
+   - Add state verification calls
 
-2. Add New Tools
-   - Implement additional analysis tools
-   - Add tools for README generation
-   - Create tools for data validation
+3. Add Database Monitoring:
+   - Implement state logging
+   - Add transaction tracking
+   - Monitor table contents
+   - Track cleanup operations
 
-### Phase 5: Analysis Pipeline Enhancement
-1. Improve Repository Analysis
-   - Enhance categorization logic
-   - Implement better quality metrics
-   - Add validation for analysis results
+4. Testing:
+   - Test singleton behavior
+   - Verify data persistence
+   - Check cleanup control
+   - Validate state tracking
 
-2. Fix Data Storage
-   - Implement proper storage of analysis results
-   - Add versioning for analyzed data
-   - Improve data retrieval mechanisms
+### Phase 3: Validation Steps
 
-## Implementation Steps
+1. Data Flow Testing:
+   - Verify fetch_starred_repos storage
+   - Check data persistence
+   - Validate analysis flow
+   - Test end-to-end process
 
-1. Database Fixes
-   - [x] Implement unique ID generation through ChromaDB config
-   - [x] Add duplicate detection via embedchain configuration
-   - [ ] Fix database queries
-   - [ ] Add data validation
+2. Error Handling:
+   - Test cleanup scenarios
+   - Verify error recovery
+   - Check state consistency
+   - Validate logging
 
-2. GitHub Integration
-   - [ ] Fix authentication configuration
-   - [ ] Enhance API error handling
-   - [ ] Improve search functionality
-   - [ ] Add result validation
+## Implementation Timeline
 
-3. Batch Processing
-   - [ ] Fix progress calculation
-   - [ ] Implement proper batch tracking
-   - [ ] Add cleanup procedures
-   - [ ] Enhance error handling
+1. Database Refactoring (1 day):
+   - Implement singleton pattern
+   - Update tool implementations
+   - Add state verification
 
-4. Tool Improvements
-   - [ ] Fix Store Analyzed Repos Tool
-   - [ ] Add input validation
-   - [ ] Implement new tools
-   - [ ] Enhance error reporting
+2. Testing & Validation (1 day):
+   - Test data persistence
+   - Verify cleanup control
+   - Validate state tracking
 
-5. Analysis Pipeline
-   - [ ] Enhance analysis logic
-   - [ ] Fix data storage
-   - [ ] Improve README generation
-   - [ ] Add validation checks
+Total Implementation Time: 2 days
 
 ## Success Metrics
-1. ✅ Zero ChromaDB duplicate warnings (Achieved through proper configuration)
-2. Accurate progress tracking (no over 100% progress)
-3. All tools functioning without errors
-4. Proper storage and retrieval of analyzed data
-5. Complete and accurate README generation
 
-## Timeline
-- Phase 1: 2-3 days
-- Phase 2: 2-3 days
-- Phase 3: 2-3 days
-- Phase 4: 3-4 days
-- Phase 5: 2-3 days
-
-Total estimated time: 11-16 days
+1. Data persists between tasks
+2. Single DatabaseManager instance
+3. Controlled cleanup behavior
+4. Complete state tracking
+5. Proper error handling
 
 ## Notes
-- Priority should be given to fixing database issues as they affect all other operations
-- Tool improvements should focus on stability before adding new features
-- Regular testing should be implemented throughout the process
-- Documentation should be updated as changes are made
 
-## Recent Changes
-- Implemented proper ChromaDB configuration through embedchain's AppConfig in crew.py
-- Added specific collection name and directory settings to prevent conflicts
-- Configured chunking parameters to optimize embedding storage
-- Added local cache to prevent duplicate processing of embeddings
+- ✓ Identified root cause
+- ✓ Designed singleton solution
+- ✓ Planned implementation steps
+- Need to implement changes
+- Need to validate solution

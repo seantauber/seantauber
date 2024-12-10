@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 
 class GitHubRepoData(BaseModel):
     """Streamlined GitHub repository data model with essential fields"""
@@ -54,8 +54,17 @@ class AnalyzedReposOutput(BaseModel):
     """Output model for analyzed repositories"""
     repositories: List[AnalyzedRepoData]
 
+class StaticSection(BaseModel):
+    """Model for a static section in the README"""
+    header: str
+    content: List[str] | str
+
 class ReadmeStructure(BaseModel):
     """Structure of the README file"""
-    static_sections: Dict[str, str]
-    toc_structure: List[str]
-    formatting_rules: Dict[str, str]
+    title: str
+    introduction: str
+    static_sections: Dict[str, StaticSection]
+    footer: str
+
+    class Config:
+        extra = "allow"  # Allow additional fields in the JSON

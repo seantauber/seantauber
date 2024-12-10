@@ -143,3 +143,21 @@ Temporary Items
 
 # VS Code
 .vscode/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.sqlite-journal
+db/*.db
+db/*.sqlite
+db/*.sqlite3
+
+# Chroma database files
+db/*/
+*.bin
+
+# Logs
+logs/
+*.log

@@ -8,6 +8,7 @@ from typing import List, Callable, Any, Dict, Optional, Set, Tuple
 from datetime import datetime
 import time
 import logging
+import threading
 from collections import defaultdict
 from db.database import DatabaseManager
 
@@ -43,6 +44,8 @@ class ParallelProcessor:
         self._failed_batches: Dict[int, Dict] = {}  # Track failed batches with error info
         self._retry_queue: Set[int] = set()  # Queue of batch_ids to retry
         self._error_patterns: Dict[str, int] = defaultdict(int)  # Track error patterns
+        self._completed_batches: Set[int] = set()  # Track completed batches
+        self._processing_complete = False  # Flag to indicate when processing is done
 
     def process_batch(self, task_type: str, items: List[Any], 
                      process_fn: Callable, batch_size: int = 10,
@@ -72,9 +75,14 @@ class ParallelProcessor:
                                       batch, process_fn, batch_id, 0)
                 self._active_futures[batch_id] = future
 
-            # Monitor progress if requested
+            # Start a separate thread for progress monitoring if requested
             if monitor_progress:
-                self._monitor_batch_progress(task_type, total_batches)
+                monitor_thread = threading.Thread(
+                    target=self._monitor_batch_progress,
+                    args=(task_type, total_batches)
+                )
+                monitor_thread.daemon = True
+                monitor_thread.start()
 
             # Collect results and handle retries
             results = self._collect_results_with_retry(executor, process_fn)
@@ -83,6 +91,9 @@ class ParallelProcessor:
             if self._retry_queue:
                 retry_results = self._process_retry_queue(executor, process_fn)
                 results.extend(retry_results)
+
+            # Signal that processing is complete
+            self._processing_complete = True
 
             # Analyze errors and cleanup failed batches
             self._analyze_errors()
@@ -104,26 +115,25 @@ class ParallelProcessor:
 
         Returns:
             Dict: Results from processing the batch with additional metadata
-
-        Raises:
-            Exception: If batch processing fails after max retries
         """
         try:
             start_time = time.time()
             self.db.update_batch_status(batch_id, BatchStatus.PROCESSING)
             
             result = process_fn(batch, batch_id)
+            processing_time = time.time() - start_time
             
             # Add metadata to result
             result.update({
                 'batch_id': batch_id,
                 'success': True,
-                'processing_time': time.time() - start_time,
+                'processing_time': processing_time,
                 'retry_count': retry_count,
                 'items_processed': len(batch)
             })
             
             self.db.update_batch_status(batch_id, BatchStatus.COMPLETED)
+            self._completed_batches.add(batch_id)
             return result
             
         except Exception as e:
@@ -145,14 +155,22 @@ class ParallelProcessor:
             
             if retry_count < self.max_retries:
                 self._retry_queue.add(batch_id)
-                raise RetryableError(error_msg, batch, batch_id, retry_count)
+                return {
+                    'batch_id': batch_id,
+                    'success': False,
+                    'error': error_msg,
+                    'retry_count': retry_count,
+                    'items_processed': 0,
+                    'needs_retry': True
+                }
             else:
                 return {
                     'batch_id': batch_id,
                     'success': False,
                     'error': error_msg,
                     'retry_count': retry_count,
-                    'items_processed': 0
+                    'items_processed': 0,
+                    'needs_retry': False
                 }
 
     def _process_retry_queue(self, executor: ThreadPoolExecutor, 
@@ -182,9 +200,8 @@ class ParallelProcessor:
                             failed_info['retry_count'] + 1
                         )
                         retry_results.append(result)
-                    except RetryableError:
-                        # If it fails again, it will be added back to retry queue
-                        pass
+                        if result.get('success', False):
+                            self._completed_batches.add(batch_id)
                     except Exception as e:
                         logging.error(f"Unhandled error during retry of batch {batch_id}: {str(e)}")
         return retry_results
@@ -284,23 +301,29 @@ class ParallelProcessor:
         """
         results = []
         while self._active_futures:
-            completed = []
+            completed_batch_ids = []
             for batch_id, future in self._active_futures.items():
                 if future.done():
-                    completed.append(batch_id)
                     try:
                         result = future.result()
                         results.append(result)
-                    except RetryableError as e:
-                        # Submit a new attempt for the failed batch
-                        new_future = executor.submit(
-                            self._process_single_batch,
-                            e.batch,
-                            process_fn,
-                            e.batch_id,
-                            e.retry_count + 1
-                        )
-                        self._active_futures[batch_id] = new_future
+                        if result.get('success', False):
+                            self._completed_batches.add(batch_id)
+                            completed_batch_ids.append(batch_id)
+                        elif result.get('needs_retry', False):
+                            # Submit a new attempt for the failed batch
+                            failed_info = self._failed_batches[batch_id]
+                            new_future = executor.submit(
+                                self._process_single_batch,
+                                failed_info['batch'],
+                                process_fn,
+                                batch_id,
+                                failed_info['retry_count'] + 1
+                            )
+                            self._active_futures[batch_id] = new_future
+                        else:
+                            # Failed and no more retries
+                            completed_batch_ids.append(batch_id)
                     except Exception as e:
                         # Handle any other exceptions
                         results.append({
@@ -310,10 +333,11 @@ class ParallelProcessor:
                             'retry_count': 0,
                             'items_processed': 0
                         })
+                        completed_batch_ids.append(batch_id)
             
             # Remove completed futures
-            for batch_id in completed:
-                if not isinstance(self._active_futures[batch_id].exception(), RetryableError):
+            for batch_id in completed_batch_ids:
+                if batch_id in self._active_futures:
                     del self._active_futures[batch_id]
             
             time.sleep(0.1)  # Prevent busy waiting
@@ -331,165 +355,47 @@ class ParallelProcessor:
         last_status_time = 0
         status_interval = 5  # Status update interval in seconds
 
-        while True:
+        while not self._processing_complete:
             current_time = time.time()
             if current_time - last_status_time >= status_interval:
-                status = self.get_processing_status(task_type, total_batches)
-                self._print_status_update(status)
-                last_status_time = current_time
-
-                # Check if all batches are completed or failed
-                completed_count = status['status_counts'][BatchStatus.COMPLETED]
-                failed_count = status['status_counts'][BatchStatus.FAILED]
-                cleaned_up_count = status['status_counts'][BatchStatus.CLEANED_UP]
+                completed = len(self._completed_batches)
+                failed = len(self._failed_batches)
+                active = len(self._active_futures)
+                retries = len(self._retry_queue)
                 
-                if completed_count + failed_count + cleaned_up_count >= total_batches:
-                    # All batches are done (completed, failed, or cleaned up)
-                    if len(self._retry_queue) == 0:
-                        # No more retries pending
-                        break
-
+                progress = ((completed + failed) / total_batches) * 100 if total_batches > 0 else 0
+                
+                print(f"\nProcessing Status for {task_type}:")
+                print(f"Progress: {progress:.1f}% ({completed + failed}/{total_batches} batches)")
+                print(f"Active Batches: {active}")
+                print(f"Retry Queue Size: {retries}")
+                
+                if self._failed_batches:
+                    print(f"\nFailed Batches: {failed}")
+                    for batch_id, info in list(self._failed_batches.items())[-3:]:  # Show last 3 failures
+                        print(f"  Batch {batch_id}: {info['error']}")
+                
+                last_status_time = current_time
+            
             time.sleep(1)
 
-    def get_processing_status(self, task_type: str, total_batches: int) -> Dict:
-        """
-        Get current processing status for a task type.
-
-        Args:
-            task_type (str): Type of task to get status for
-            total_batches (int): Total number of batches being processed
-
-        Returns:
-            Dict: Current processing status
-        """
-        batch_statuses = self.db.get_batch_status(task_type)
-        
-        status_counts = {
-            BatchStatus.PENDING: 0,
-            BatchStatus.PROCESSING: 0,
-            BatchStatus.COMPLETED: 0,
-            BatchStatus.FAILED: 0,
-            BatchStatus.RETRY_QUEUE: 0,
-            BatchStatus.CLEANED_UP: 0
-        }
-        
-        errors = []
-        processing_times = []
-        
-        for batch_info in batch_statuses.values():
-            status = batch_info['status']
-            status_counts[status] += 1
-            
-            if status == BatchStatus.FAILED and batch_info['error']:
-                errors.append(batch_info['error'])
-            
-            if status == BatchStatus.COMPLETED and batch_info['started_at'] and batch_info['completed_at']:
-                try:
-                    start = datetime.fromisoformat(batch_info['started_at'])
-                    end = datetime.fromisoformat(batch_info['completed_at'])
-                    processing_times.append((end - start).total_seconds())
-                except (ValueError, TypeError):
-                    pass
-
-        avg_processing_time = sum(processing_times) / len(processing_times) if processing_times else 0
-        
-        return {
-            'task_type': task_type,
-            'total_batches': total_batches,
-            'status_counts': status_counts,
-            'progress_percentage': (status_counts[BatchStatus.COMPLETED] / total_batches) * 100,
-            'errors': errors,
-            'average_processing_time': avg_processing_time,
-            'active_batches': len(self._active_futures),
-            'retry_queue_size': len(self._retry_queue),
-            'error_patterns': dict(self._error_patterns)
-        }
-
-    def _print_status_update(self, status: Dict):
-        """
-        Print a formatted status update.
-
-        Args:
-            status (Dict): Current processing status
-        """
-        print(f"\nProcessing Status for {status['task_type']}:")
-        print(f"Progress: {status['progress_percentage']:.1f}% "
-              f"({status['status_counts'][BatchStatus.COMPLETED]}/{status['total_batches']} batches)")
-        print(f"Active Batches: {status['active_batches']}")
-        print(f"Retry Queue Size: {status['retry_queue_size']}")
-        print(f"Average Processing Time: {status['average_processing_time']:.2f}s per batch")
-        
-        if status['status_counts'][BatchStatus.FAILED] > 0:
-            print(f"\nFailed Batches: {status['status_counts'][BatchStatus.FAILED]}")
-            print("Error Patterns:")
-            for error_type, count in status['error_patterns'].items():
-                print(f"  - {error_type}: {count} occurrences")
-            print("\nRecent Errors:")
-            for error in status['errors'][-3:]:  # Show last 3 errors
-                print(f"  - {error}")
-
     def _create_batches(self, items: List[Any], batch_size: int) -> List[List[Any]]:
-        """
-        Split items into batches of specified size.
-
-        Args:
-            items (List[Any]): List of items to split into batches
-            batch_size (int): Size of each batch
-
-        Returns:
-            List[List[Any]]: List of batches
-        """
+        """Split items into batches."""
         return [items[i:i + batch_size] for i in range(0, len(items), batch_size)]
 
     def _combine_results(self, results: List[Dict]) -> Dict:
-        """
-        Combine results from all batches into a single summary.
-
-        Args:
-            results (List[Dict]): List of batch processing results
-
-        Returns:
-            Dict: Combined summary of all batch results
-        """
+        """Combine results from all batches."""
         summary = {
-            'total_processed': 0,
-            'successful_batches': 0,
-            'failed_batches': 0,
-            'retry_attempts': 0,
-            'errors': [],
-            'error_patterns': dict(self._error_patterns),
-            'average_processing_time': 0,
-            'total_processing_time': 0,
-            'items_processed': 0
+            'total_processed': sum(r.get('items_processed', 0) for r in results),
+            'successful_batches': len(self._completed_batches),
+            'failed_batches': len(self._failed_batches),
+            'errors': [info['error'] for info in self._failed_batches.values()],
+            'total_retries': sum(r.get('retry_count', 0) for r in results),
+            'average_processing_time': 0
         }
-
-        processing_times = []
-        for result in results:
-            if result.get('success', False):
-                summary['successful_batches'] += 1
-                summary['total_processed'] += result.get('processed_count', 0)
-                summary['items_processed'] += result.get('items_processed', 0)
-                if 'processing_time' in result:
-                    processing_times.append(result['processing_time'])
-            else:
-                summary['failed_batches'] += 1
-                if 'error' in result:
-                    summary['errors'].append(result['error'])
-            
-            summary['retry_attempts'] += result.get('retry_count', 0)
-            summary['total_processing_time'] += result.get('processing_time', 0)
-
+        
+        processing_times = [r.get('processing_time', 0) for r in results if r.get('success', False)]
         if processing_times:
             summary['average_processing_time'] = sum(processing_times) / len(processing_times)
-
+        
         return summary
-
-
-class RetryableError(Exception):
-    """Custom exception for handling retryable batch failures."""
-    
-    def __init__(self, message: str, batch: List[Any], batch_id: int, retry_count: int):
-        super().__init__(message)
-        self.batch = batch
-        self.batch_id = batch_id
-        self.retry_count = retry_count
