@@ -2,7 +2,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.tools import tool
-from crewai_tools import GithubSearchTool, SerplyNewsSearchTool, FileWriterTool, SerperDevTool
+from crewai_tools import GithubSearchTool
 from github import Github
 from models.github_repo_data import ReadmeStructure, GitHubRepoData
 from models.task_outputs import ProcessingSummary, FetchSummary, AnalysisSummary
@@ -11,7 +11,7 @@ from processing.parallel_manager import ParallelProcessor
 from config.config_manager import AppConfig
 from config.logging_config import setup_logging
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import requests
 from datetime import datetime
 import yaml
@@ -27,8 +27,7 @@ crewai_logger = logging.getLogger('crewai')
 # Global config for tools
 app_config = None
 
-@tool("Fetch Starred Repos Tool")
-def fetch_starred_repos() -> FetchSummary:
+def fetch_starred_repos_fn() -> FetchSummary:
     """Fetches starred repositories for the configured GitHub user and stores them in the database"""
     logger.info("Starting fetch_starred_repos execution")
     
@@ -128,38 +127,33 @@ def fetch_starred_repos() -> FetchSummary:
         logger.error(f"Fatal error in fetch_starred_repos: {str(e)}")
         raise
 
-@tool("Store Raw Repos Tool")
-def store_raw_repos(repos: List[Dict], source: str) -> str:
+def store_raw_repos_fn(repos: List[Dict], source: str) -> str:
     """Store raw repository data in the database"""
     logger.info(f"Storing {len(repos)} repositories from source: {source}")
     db_manager = DatabaseManager(cleanup=False)  # Explicitly set cleanup=False
     db_manager.store_raw_repos(repos, source)
     return f"Stored {len(repos)} repositories in database with source: {source}"
 
-@tool("Get Unprocessed Repos Tool")
-def get_unprocessed_repos(batch_size: int = 10) -> List[Dict]:
+def get_unprocessed_repos_fn(batch_size: int = 10) -> List[Dict]:
     """Get a batch of unprocessed repositories from the database"""
     logger.info(f"Retrieving {batch_size} unprocessed repositories")
     db_manager = DatabaseManager(cleanup=False)  # Explicitly set cleanup=False
     return db_manager.get_unprocessed_repos(batch_size)
 
-@tool("Store Analyzed Repos Tool")
-def store_analyzed_repos(analyzed_repos: List[Dict], batch_id: int) -> str:
+def store_analyzed_repos_fn(analyzed_repos: List[Dict], batch_id: int) -> str:
     """Store analyzed repository data in the database"""
     logger.info(f"Storing {len(analyzed_repos)} analyzed repositories for batch {batch_id}")
     db_manager = DatabaseManager(cleanup=False)  # Explicitly set cleanup=False
     db_manager.store_analyzed_repos(analyzed_repos, batch_id)
     return f"Stored {len(analyzed_repos)} analyzed repositories in database for batch {batch_id}"
 
-@tool("Get Analyzed Repos Tool")
-def get_analyzed_repos() -> List[Dict]:
+def get_analyzed_repos_fn() -> List[Dict]:
     """Get all analyzed repositories from the database"""
     logger.info("Retrieving all analyzed repositories")
     db_manager = DatabaseManager(cleanup=False)  # Explicitly set cleanup=False
     return db_manager.get_analyzed_repos()
 
-@tool("Current Date Tool")
-def get_current_date(date_format: str = "%m-%d-%Y %H:%M") -> str:
+def get_current_date_fn(date_format: str = "%m-%d-%Y %H:%M") -> str:
     """
     Tool that returns the current date and time
     date_format should be a valid date format string for the python datetime.strftime() method
@@ -168,8 +162,7 @@ def get_current_date(date_format: str = "%m-%d-%Y %H:%M") -> str:
     """
     return f"Current Date: {datetime.now().strftime(date_format)}\nDate Format: {date_format}"
 
-@tool("Save File Tool")
-def save_file(file_name: str, file_extension: str, content: str) -> str:
+def save_file_fn(file_name: str, file_extension: str, content: str) -> str:
     """
     Tool that saves the content to a file with the given file name
     file_name should be succint and descriptive of the file contents
@@ -181,6 +174,15 @@ def save_file(file_name: str, file_extension: str, content: str) -> str:
     with open(file_path, 'w') as file:
         file.write(content)
     return f"File saved to {file_path}"
+
+# Create tool decorators for the functions
+fetch_starred_repos = tool("Fetch Starred Repos Tool")(fetch_starred_repos_fn)
+store_raw_repos = tool("Store Raw Repos Tool")(store_raw_repos_fn)
+get_unprocessed_repos = tool("Get Unprocessed Repos Tool")(get_unprocessed_repos_fn)
+store_analyzed_repos = tool("Store Analyzed Repos Tool")(store_analyzed_repos_fn)
+get_analyzed_repos = tool("Get Analyzed Repos Tool")(get_analyzed_repos_fn)
+get_current_date = tool("Current Date Tool")(get_current_date_fn)
+save_file = tool("Save File Tool")(save_file_fn)
 
 @CrewBase
 class GitHubGenAICrew:
@@ -210,168 +212,114 @@ class GitHubGenAICrew:
             content_types=['code', 'repo']
         )
         
+        # Store both the tool decorators and the actual functions
         self.get_current_date_tool = get_current_date
         self.save_file_tool = save_file
         self.store_raw_repos_tool = store_raw_repos
         self.get_unprocessed_repos_tool = get_unprocessed_repos
         self.store_analyzed_repos_tool = store_analyzed_repos
         self.get_analyzed_repos_tool = get_analyzed_repos
+        
+        # Store the actual functions for direct use
+        self.get_current_date_fn = get_current_date_fn
+        self.save_file_fn = save_file_fn
+        self.store_raw_repos_fn = store_raw_repos_fn
+        self.get_unprocessed_repos_fn = get_unprocessed_repos_fn
+        self.store_analyzed_repos_fn = store_analyzed_repos_fn
+        self.get_analyzed_repos_fn = get_analyzed_repos_fn
+        
         logger.info("GitHubGenAICrew initialization complete")
             
-    @agent
-    def github_api_agent(self) -> Agent:
-        """Creates the GitHub API agent"""
-        crewai_logger.info("Creating GitHub API agent")
-        return Agent(
-            config=self.agents_config['github_api_agent'],
-            verbose=True,
-            tools=[self.fetch_starred_repos_tool, self.github_search_tool],
-            allow_delegation=True
-        )
-
-    @agent
-    def content_processor(self) -> Agent:
-        """Creates the content processor agent"""
-        crewai_logger.info("Creating content processor agent")
-        return Agent(
-            config=self.agents_config['content_processor'],
-            verbose=True,
-            allow_delegation=True
-        )
-
-    @agent
-    def content_generator(self) -> Agent:
-        """Creates the content generator agent"""
-        crewai_logger.info("Creating content generator agent")
-        return Agent(
-            config=self.agents_config['content_generator'],
-            verbose=True,
-            allow_delegation=True
-        )
-
     @agent
     def analyzer(self) -> Agent:
         """Creates the analyzer agent"""
         crewai_logger.info("Creating analyzer agent")
         return Agent(
             config=self.agents_config['analyzer'],
+            verbose=True
+        )
+
+    @agent
+    def readme_generator(self) -> Agent:
+        """Creates the README generator agent"""
+        crewai_logger.info("Creating README generator agent")
+        return Agent(
+            config=self.agents_config['readme_generator'],
             verbose=True,
-            allow_delegation=True,
             tools=[
-                self.get_unprocessed_repos_tool,
-                self.store_analyzed_repos_tool
+                self.get_current_date_tool,
+                self.save_file_tool
             ]
         )
 
     @task
-    def fetch_starred(self) -> Task:
-        """Creates the fetch starred repos task"""
-        crewai_logger.info("Creating fetch starred repos task")
-        return Task(
-            config=self.tasks_config['fetch_starred'],
-            output_json=FetchSummary
-        )
-    
-    @task
-    def search_trending(self) -> Task:
-        """Creates the search trending repos task"""
-        crewai_logger.info("Creating search trending repos task")
-        return Task(
-            config=self.tasks_config['search_trending'],
-            output_json=FetchSummary,
-            tools=[self.store_raw_repos_tool]
-        )
-    
-    @task
-    def combine_repos(self) -> Task:
-        """Creates the combine repos task"""
-        crewai_logger.info("Creating combine repos task")
-        return Task(
-            config=self.tasks_config['combine_repos'],
-            output_json=ProcessingSummary,
-            tools=[self.get_unprocessed_repos_tool]
-        )
-    
-    @task
-    def analyze_repos(self) -> Task:
-        """Creates the analyze repos task with batch processing support"""
-        crewai_logger.info("Creating analyze repos task")
-        task_config = self.tasks_config['analyze_repos']
-        task_config['description'] = """
-        Analyze repositories in parallel batches for optimal performance:
+    def analyze_repo_batch(self) -> Task:
+        """Creates the analyze repo batch task"""
+        crewai_logger.info("Creating analyze repo batch task")
+        task_config = self.tasks_config['analyze_repo_batch'].copy()
         
-        1. Initialize the ParallelProcessor with appropriate batch size
-        2. For each batch:
-           - Fetch unprocessed repos using get_unprocessed_repos_tool
-           - Analyze repos in the batch for categorization and quality metrics
-           - Store results using store_analyzed_repos_tool with batch tracking
-        3. Continue processing until all repos are analyzed
-        4. Return AnalysisSummary with processing statistics
-        
-        Ensure proper error handling and batch status tracking throughout the process.
-        Use batch size of 10 repositories to optimize for LLM context limits.
-        """
+        # Get unprocessed repos and convert to list format expected by CrewAI
+        repos = self.get_unprocessed_repos_fn()
+        task_config['context'] = [{"repo": repo} for repo in repos]
         
         return Task(
-            config=task_config,
+            description=task_config['description'],
+            expected_output=task_config['expected_output'],
+            agent=self.analyzer(),
             output_json=AnalysisSummary,
-            tools=[
-                self.get_unprocessed_repos_tool,
-                self.store_analyzed_repos_tool
-            ]
+            context=task_config['context']
         )
 
     @task
-    def parse_readme(self) -> Task:
-        """Creates the read readme task"""
-        crewai_logger.info("Creating parse readme task")
+    def generate_readme_content(self, analyze_task: Optional[Task] = None) -> Task:
+        """Creates the generate readme content task"""
+        crewai_logger.info("Creating generate readme content task")
+        task_config = self.tasks_config['generate_readme_content'].copy()
+        
+        # Get analyzed repos and convert to list format expected by CrewAI
+        analyzed_repos = self.get_analyzed_repos_fn()
+        task_config['context'] = [{"analyzed_repo": repo} for repo in analyzed_repos]
+        
         return Task(
-            config=self.tasks_config['parse_readme'],
-            output_json=ReadmeStructure
+            description=task_config['description'],
+            expected_output=task_config['expected_output'],
+            agent=self.readme_generator(),
+            context=task_config['context'],
+            dependencies=[analyze_task] if analyze_task else None
         )
 
     @task
-    def generate_content(self) -> Task:
-        """Creates the generate updated content task"""
-        crewai_logger.info("Creating generate content task")
+    def validate_readme(self, generate_task: Optional[Task] = None) -> Task:
+        """Creates the validate readme task"""
+        crewai_logger.info("Creating validate readme task")
+        task_config = self.tasks_config['validate_readme'].copy()
+        
         return Task(
-            config=self.tasks_config['generate_content'],
-            tools=[self.get_analyzed_repos_tool]
-        )
-    
-    @task
-    def update_readme(self, test_mode: bool = False) -> Task:
-        """Creates the update readme task"""
-        crewai_logger.info("Creating update readme task")
-        if test_mode:
-            return Task(
-                config=self.tasks_config['update_readme'],
-                output_file="README.test.md",
-                tools=[self.get_current_date_tool]
-            )
-        return Task(
-            config=self.tasks_config['update_readme']
+            description=task_config['description'],
+            expected_output=task_config['expected_output'],
+            agent=self.readme_generator(),
+            dependencies=[generate_task] if generate_task else None
         )
 
     @crew
     def readme_update_crew(self, test_mode: bool = False) -> Crew:
         """Creates the README update crew"""
         crewai_logger.info("Creating README update crew")
+        
+        # Create tasks with dependencies
+        analyze_task = self.analyze_repo_batch()
+        generate_task = self.generate_readme_content(analyze_task)
+        validate_task = self.validate_readme(generate_task)
+        
         crew = Crew(
             agents=[
-                self.github_api_agent(),
-                self.content_processor(),
-                self.content_generator(),
-                self.analyzer()
+                self.analyzer(),
+                self.readme_generator()
             ],
             tasks=[
-                self.fetch_starred(),
-                self.search_trending(),
-                self.combine_repos(),
-                self.analyze_repos(),
-                self.parse_readme(),
-                self.generate_content(),
-                self.update_readme(test_mode=test_mode)
+                analyze_task,
+                generate_task,
+                validate_task
             ],
             process=Process.sequential,
             verbose=True

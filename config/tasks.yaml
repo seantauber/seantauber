@@ -1,76 +1,26 @@
 # Task Definitions for GitHub GenAI List
 
-# 1a. Fetch Starred Repositories
-fetch_starred:
+# Stage 3: Analysis Stage (Agent-Based)
+analyze_repo_batch:
   description: |
-    Fetch the complete list of repositories starred by the user from GitHub API.
-    Handle authentication and pagination properly to ensure all starred repos
-    are retrieved. Get full repository details for each starred item.
-    Store results directly in database using DatabaseManager.
-  expected_output: A FetchSummary object containing processing stats for starred repos (success, message, processed_count, batch stats, etc.)
-  agent: github_api_agent
+    Analyze the provided batch of repositories using consistent criteria.
+    Repositories are provided in the task context as 'repos'.
 
-# 1b. Search Trending Repositories
-search_trending:
-  description: |
-    Search GitHub for trending GenAI repositories that meet these criteria:
-    - Updated within the last month
-    - Minimum 100 stars
-    - Active issues and PRs
-    - Keywords: "generative ai", "llm", "ai agents", "machine learning"
-    Focus on repositories with significant recent engagement.
-    Store results directly in database using DatabaseManager.
-  expected_output: A FetchSummary object containing processing stats for trending repos (success, message, processed_count, batch stats, etc.)
-  agent: github_api_agent
-
-# 1c. Combine Repository Lists
-combine_repos:
-  description: |
-    Retrieve repositories from database and combine the starred and trending lists:
-    1. Remove any duplicates (prefer starred version if duplicate)
-    2. Ensure consistent data structure
-    3. Add source flags ("starred", "trending", or "both")
-    4. Sort by relevance (starred items first, then by stars)
-    5. Store combined results back to database
-  expected_output: A ProcessingSummary object containing stats about the combination process
-  agent: github_api_agent
-  context: 
-    - fetch_starred
-    - search_trending
-
-# 2. Analyze and Filter
-analyze_repos:
-  description: |
-    Process repositories in sequential batches using these specific steps:
-
-    1. For each batch:
-       a. Use get_unprocessed_repos_tool to fetch exactly 10 unprocessed repositories
-       b. For each repository in the batch:
-          - Evaluate code quality and documentation
-          - Check community engagement (stars, issues, PRs)
-          - Assess relevance to GenAI/AI/ML
-          - Determine appropriate category and subcategory
-          - Calculate a quality score (0.0 to 1.0)
-       c. Create analysis data for each repo with this structure:
-          {
-            'raw_repo_id': <id from raw repo>,
-            'quality_score': <float between 0.0 and 1.0>,
-            'category': <main category>,
-            'subcategory': <subcategory if applicable>,
-            'include': <boolean based on quality>,
-            'justification': <reason for inclusion/exclusion>
-          }
-       d. Use store_analyzed_repos_tool to save the batch analysis results
-       e. Continue with next batch until no unprocessed repos remain
+    1. For each repository in the provided batch:
+       - Evaluate code quality and documentation
+       - Check community engagement metrics
+       - Assess relevance to GenAI/AI/ML
+       - Determine appropriate category and subcategory
+       - Calculate quality score (0.0 to 1.0)
 
     2. Quality Criteria:
-       - Documentation quality and completeness
-       - Code quality and organization
+       - Documentation completeness and clarity
+       - Code organization and maintainability
        - Community engagement level
-       - Maintenance activity
-       - Relevance to AI/ML/GenAI
+       - Active maintenance
+       - AI/ML relevance and innovation
 
-    3. Main Categories:
+    3. Categories:
        - Generative AI
        - Artificial Intelligence
        - MLOps & AI Infrastructure
@@ -78,67 +28,80 @@ analyze_repos:
        - Development Tools
        - Other AI-Related
 
-    4. Processing Rules:
-       - Process exactly 10 repos per batch
-       - Must include raw_repo_id in analysis data
-       - Must store results before processing next batch
-       - Quality score must be between 0.0 and 1.0
-       - Include must be boolean (true/false)
-       - Categories must be consistent across batches
+    4. Analysis Requirements:
+       - Maintain consistent scoring across batches
+       - Include detailed justification for scores
+       - Follow category taxonomy strictly
+       - Consider both technical merit and practical utility
 
-  expected_output: An AnalysisSummary object containing analysis stats, category distribution, and quality metrics
+    Return the analysis results as a structured output that can be saved to the database.
+  expected_output: Analysis results for the provided repository batch
   agent: analyzer
-  context: 
-    - combine_repos
 
-# 3. Parse Current README
-parse_readme:
+# Stage 4: README Stage (Agent-Based)
+generate_readme_content:
   description: |
-    Parse the content of the current README.md file.
-    Identify static sections that should be preserved:
-    - "How This Landing Page Works"
-    - "How to Implement This Landing Page"
-    - "Contributing"
-    - "License"
-    Extract current structure and formatting.
-    <current_readme_content>
-    {current_readme_content}
-    </current_readme_content>
-  expected_output: A JSON object containing README structure with static sections and formatting rules
-  agent: content_processor
+    Generate a comprehensive README.md using the provided analyzed repositories.
+    Analyzed repositories are provided in the task context as 'analyzed_repos'.
 
-# 4. Generate Content
-generate_content:
-  description: |
-    Generate new README content by:
-    1. Retrieving analyzed repositories from database using DatabaseManager.get_analyzed_repos()
-    2. Using the README structure from parse_readme
-    3. Preserving all static sections exactly as they are
-    4. Updating the table of contents based on new categories
-    5. Updating the "Last edited" date
-    
-    Database retrieval notes:
-    - Use DatabaseManager.get_analyzed_repos() to fetch repository data
-    - Data includes source ('starred' or 'trending') and analysis_data
-    - Repository data is already analyzed and categorized
-    
-    Ensure all formatting is consistent with the original.
-  expected_output: Complete README.md content as a string, properly formatted in Markdown
-  agent: content_generator
-  context: 
-    - analyze_repos
-    - parse_readme
+    1. Structure Requirements:
+       - Maintain consistent category organization
+       - Include table of contents
+       - Preserve static sections
+       - Update "Last edited" timestamp
+       - Follow markdown best practices
 
-# 5. Validate and Write
-update_readme:
+    2. Content Guidelines:
+       - Clear category descriptions
+       - Consistent repository entries
+       - Highlight key features
+       - Include relevant metrics
+       - Maintain professional tone
+
+    3. Static Sections to Preserve:
+       - "How This Landing Page Works"
+       - "How to Implement This Landing Page"
+       - "Contributing"
+       - "License"
+
+    4. Repository Entry Format:
+       - Repository name and link
+       - Brief description
+       - Key features/capabilities
+       - Community metrics
+       - Category placement
+
+    Return the complete README content as a string.
+  expected_output: Complete README.md content as a string
+  agent: readme_generator
+
+validate_readme:
   description: |
-    1. Validate the generated README content:
-        - Check all static sections are preserved
-        - Verify formatting consistency
-        - Ensure all links are properly formatted
-    2. Write to README.md
-  expected_output: Success message or validation error details
-  agent: content_processor
-  context: 
-    - generate_content
-  output_file: new_README.md
+    Validate the provided README content for completeness and correctness.
+    README content is provided in the task context as 'readme_content'.
+
+    1. Validation Checks:
+       - All static sections preserved exactly
+       - Proper markdown formatting
+       - Valid repository links
+       - Consistent category structure
+       - Complete table of contents
+       - Updated timestamp
+
+    2. Quality Checks:
+       - Clear organization
+       - Professional presentation
+       - Consistent formatting
+       - Proper section hierarchy
+       - Accurate repository information
+
+    3. Requirements:
+       - No broken links
+       - No formatting errors
+       - All repositories properly categorized
+       - All required sections present
+       - Proper markdown syntax
+
+    Return a validation report indicating any issues found.
+  expected_output: Validation report for the README content
+  agent: readme_generator
