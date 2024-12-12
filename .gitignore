@@ -143,3 +143,6 @@ Temporary Items
 
 # VS Code
 .vscode/
+
+# Credentials
+.credentials/
