@@ -1,0 +1,19 @@
+[project]
+name = "github-genai-list"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "embedchain[gmail]>=0.1.125",
+    "google-auth-oauthlib>=1.2.1",
+    "google-auth-httplib2>=0.2.0",
+    "google-api-python-client>=2.155.0",
+    "pytest-asyncio>=0.24.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"

@@ -8,16 +8,21 @@ The MVP system is designed to automatically curate GitHub repositories from AI/M
 
 ### 1. Data Collection Layer
 
-#### Gmail Integration
-- Simple Gmail API integration for newsletter retrieval
+#### Gmail Integration with Embedchain
+- Embedchain-based Gmail integration for efficient newsletter retrieval
+- Vector storage of newsletter content for enhanced analysis
 - Basic filtering system for "GenAI News" labeled emails
-- Minimal content extraction pipeline
+- Content extraction pipeline with semantic understanding
 
 #### Storage
 - SQLite database for structured data
+- Embedchain vector storage for:
+  - Newsletter content embeddings
+  - Repository content embeddings
+  - Semantic search capabilities
 - Core tables:
-  - newsletters (email_id, content, metadata)
-  - repositories (github_url, metadata)
+  - newsletters (email_id, content, metadata, vector_id)
+  - repositories (github_url, metadata, vector_id)
   - topics (name, parent_topic_id)
   - repository_categories (repository_id, topic_id)
 
@@ -29,34 +34,43 @@ graph TD
     B --> C[Topic Analyzer]
     C --> D[Repository Curator]
     D --> E[README Generator]
+    F[Embedchain Store] --> A
+    F --> B
+    F --> C
 ```
 
 #### Core Agents
 
 1. Newsletter Monitor
+   - Uses Embedchain for Gmail interaction
    - Polls Gmail for new newsletters
    - Basic filtering and validation
    - Queues content for processing
+   - Stores content in vector storage
 
 2. Content Extractor
    - Extracts GitHub repository links
+   - Uses vector storage for content analysis
    - Basic metadata collection
-   - Simple content parsing
+   - Content parsing with semantic context
 
 3. Topic Analyzer
    - Fixed category structure
-   - Basic topic identification
+   - Basic topic identification using embeddings
    - Simple parent/child relationships
+   - Semantic similarity for categorization
 
 4. Repository Curator
    - Basic repository metadata storage
-   - Simple categorization system
+   - Vector-based categorization system
    - Minimal duplicate detection
+   - Semantic similarity checks
 
 5. README Generator
    - Markdown generation
    - Static category organization
    - Simple repository listing
+   - Context-aware organization
 
 ### 3. Data Model
 
@@ -68,6 +82,8 @@ erDiagram
     Repository ||--o{ RepositoryCategory : has
     Topic ||--o{ RepositoryCategory : categorizes
     Topic ||--o{ Topic : has_parent
+    Newsletter ||--o{ VectorStorage : embedded_in
+    Repository ||--o{ VectorStorage : embedded_in
 ```
 
 #### Key Tables
@@ -79,6 +95,7 @@ CREATE TABLE newsletters (
     received_date TIMESTAMP NOT NULL,
     processed_date TIMESTAMP,
     content TEXT,
+    vector_id TEXT,              -- Reference to embedchain storage
     metadata JSON
 );
 
@@ -88,6 +105,7 @@ CREATE TABLE repositories (
     first_seen_date TIMESTAMP NOT NULL,
     last_mentioned_date TIMESTAMP NOT NULL,
     mention_count INTEGER DEFAULT 1,
+    vector_id TEXT,              -- Reference to embedchain storage
     metadata JSON
 );
 
@@ -102,6 +120,7 @@ CREATE TABLE repository_categories (
     id INTEGER PRIMARY KEY,
     repository_id INTEGER NOT NULL,
     topic_id INTEGER NOT NULL,
+    confidence_score FLOAT NOT NULL,
     FOREIGN KEY (repository_id) REFERENCES repositories(id),
     FOREIGN KEY (topic_id) REFERENCES topics(id)
 );
@@ -112,8 +131,11 @@ CREATE TABLE repository_categories (
 1. Newsletter Processing
 ```mermaid
 sequenceDiagram
-    Newsletter Monitor->>Gmail API: Fetch newsletters
-    Gmail API-->>Newsletter Monitor: Newsletter content
+    Newsletter Monitor->>Embedchain: Fetch newsletters
+    Embedchain->>Gmail API: API request
+    Gmail API-->>Embedchain: Newsletter content
+    Embedchain-->>Newsletter Monitor: Processed content
+    Newsletter Monitor->>Vector Storage: Store embeddings
     Newsletter Monitor->>Content Extractor: Raw content
     Content Extractor->>Database: Store repositories
 ```
@@ -121,7 +143,9 @@ sequenceDiagram
 2. Repository Processing
 ```mermaid
 sequenceDiagram
+    Content Extractor->>Vector Storage: Store repository data
     Content Extractor->>Topic Analyzer: Repository data
+    Topic Analyzer->>Vector Storage: Semantic analysis
     Topic Analyzer->>Database: Store categories
     Repository Curator->>README Generator: Curated data
     README Generator->>GitHub: Update README
@@ -133,25 +157,29 @@ sequenceDiagram
 graph TD
     A[GitHub Actions] --> B[Application Container]
     B --> C[SQLite Database]
-    B --> D[Gmail API]
-    B --> E[GitHub API]
+    B --> D[Vector Storage]
+    B --> E[Gmail API]
+    B --> F[GitHub API]
 ```
 
 - Single container deployment
 - GitHub Actions for scheduling
 - Local SQLite database
+- Embedchain vector storage
 - Simple API integrations
 
 ### 6. Security & Configuration
 
 #### Security
-- Basic Gmail API authentication
+- Embedchain-managed Gmail API authentication
 - GitHub token for README updates
 - Local credential storage
+- Secure vector storage access
 
 #### Configuration
-- Simple environment variables
+- Environment variables
 - Basic configuration file
+- Vector storage configuration
 - Minimal customization options
 
 ### 7. Error Handling
@@ -159,40 +187,44 @@ graph TD
 - Basic retry mechanism
 - Simple error logging
 - Manual intervention for failures
+- Vector storage backup/recovery
 
 ### 8. Monitoring & Logging
 
 - Basic operation logging
 - Simple status reporting
 - Essential error tracking
+- Vector storage metrics
 
 ## Technical Constraints
 
 ### MVP Limitations
 1. Fixed category structure
-2. No dynamic topic evolution
-3. Basic content extraction
-4. Simple categorization logic
-5. Minimal error recovery
+2. Basic semantic analysis
+3. Simple categorization logic
+4. Minimal error recovery
+5. Basic vector search capabilities
 
 ### Performance Targets
 - Newsletter processing: < 30 seconds
 - Daily updates: < 15 minutes
+- Vector operations: < 5 seconds
 - Basic rate limiting
 
 ### Resource Requirements
-- Minimal memory footprint
+- Moderate memory footprint for vector operations
 - Single-threaded processing
+- Vector storage space
 - Basic disk storage
 
 ## Future Considerations
 
 Features intentionally excluded from MVP:
-1. Advanced topic analysis
-2. Vector storage capabilities
-3. Complex relationship mapping
-4. Content summarization
+1. Advanced topic evolution
+2. Complex relationship mapping
+3. Advanced content summarization
+4. Sophisticated monitoring
 5. Advanced error recovery
-6. Sophisticated monitoring
+6. Advanced vector search optimizations
 
 These features are documented for future phases but are not part of the initial MVP implementation.

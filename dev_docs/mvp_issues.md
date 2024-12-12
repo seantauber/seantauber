@@ -11,8 +11,8 @@ Set up the core SQLite database structure for the MVP.
 
 **Tasks:**
 - [x] Create SQLite database with core tables:
-  - newsletters
-  - repositories
+  - newsletters (with vector_id reference)
+  - repositories (with vector_id reference)
   - topics
   - repository_categories
 - [x] Implement basic CRUD operations
@@ -29,115 +29,140 @@ Set up the core SQLite database structure for the MVP.
 - [x] Migration system in place
 - [x] Test coverage > 90%
 
-### Issue #2: Gmail Integration
+### Issue #2: Embedchain Setup
+**Priority: High**
+**Estimated Time: 2 days**
+**Labels: infrastructure, vector-storage**
+
+Set up Embedchain for vector storage and Gmail integration.
+
+**Tasks:**
+- [x] Install and configure embedchain[gmail]
+- [x] Set up vector storage collections:
+  - Newsletter content
+  - Repository content
+- [x] Configure Gmail loader
+- [x] Implement vector storage operations
+- [x] Write integration tests
+
+**Acceptance Criteria:**
+- [x] Vector storage properly configured
+- [x] Gmail loader working
+- [x] Vector operations tested
+- [x] Test coverage > 90%
+
+### Issue #3: Gmail Integration with Embedchain
 **Priority: High**
 **Estimated Time: 2 days**
 **Labels: integration, external-api**
 
-Implement basic Gmail API integration for newsletter retrieval.
+Implement Gmail integration using Embedchain.
 
 **Tasks:**
-- [ ] Set up Gmail API client
-- [ ] Implement newsletter filtering by label
-- [ ] Create basic content extraction
-- [ ] Add error handling for API calls
-- [ ] Write integration tests
+- [x] Set up Gmail API credentials
+- [x] Configure Embedchain Gmail loader
+- [x] Implement newsletter filtering by label
+- [x] Create content extraction pipeline
+- [x] Add vector storage integration
+- [x] Write integration tests
 
 **Acceptance Criteria:**
-- Successfully connects to Gmail API
-- Correctly filters newsletters
-- Extracts content reliably
-- Handles API errors gracefully
-- Test coverage > 90%
+- [x] Successfully connects to Gmail API
+- [x] Correctly filters newsletters
+- [x] Stores content in vector storage
+- [x] Handles API errors gracefully
+- [x] Test coverage > 90%
 
 ## Core Agents
 
-### Issue #3: Newsletter Monitor Agent
+### Issue #4: Newsletter Monitor Agent
 **Priority: High**
 **Estimated Time: 2 days**
 **Labels: agent, core-functionality**
 
-Implement the Newsletter Monitor agent for processing incoming newsletters.
+Implement the Newsletter Monitor agent with vector storage integration.
 
 **Tasks:**
 - [ ] Create basic agent structure
-- [ ] Implement newsletter polling
+- [ ] Implement newsletter polling using Embedchain
 - [ ] Add content validation
+- [ ] Integrate with vector storage
 - [ ] Create processing queue
 - [ ] Write unit tests
 
 **Acceptance Criteria:**
 - Agent successfully polls for newsletters
 - Validates newsletter content
+- Stores content in vector storage
 - Queues content for processing
 - Test coverage > 90%
 
-### Issue #4: Content Extractor Agent
+### Issue #5: Content Extractor Agent
 **Priority: High**
 **Estimated Time: 3 days**
 **Labels: agent, core-functionality**
 
-Implement the Content Extractor agent for processing newsletter content.
+Implement the Content Extractor agent with semantic analysis.
 
 **Tasks:**
 - [ ] Create repository link extraction
-- [ ] Implement basic metadata collection
-- [ ] Add content parsing logic
+- [ ] Implement vector-based content analysis
+- [ ] Add metadata collection
 - [ ] Create storage integration
 - [ ] Write unit tests
 
 **Acceptance Criteria:**
 - Successfully extracts GitHub links
-- Collects basic repository metadata
-- Stores data correctly
+- Performs semantic analysis
+- Stores data with vector references
 - Test coverage > 90%
 
-### Issue #5: Topic Analyzer Agent
+### Issue #6: Topic Analyzer Agent
 **Priority: High**
 **Estimated Time: 3 days**
 **Labels: agent, core-functionality**
 
-Implement the Topic Analyzer agent for basic categorization.
+Implement the Topic Analyzer agent with semantic categorization.
 
 **Tasks:**
 - [ ] Create fixed category structure
-- [ ] Implement basic topic identification
+- [ ] Implement semantic topic identification
 - [ ] Add parent/child relationship handling
-- [ ] Create storage integration
+- [ ] Integrate with vector storage
 - [ ] Write unit tests
 
 **Acceptance Criteria:**
-- Correctly identifies topics
+- Correctly identifies topics using embeddings
 - Maintains category structure
 - Handles relationships properly
 - Test coverage > 90%
 
-### Issue #6: Repository Curator Agent
+### Issue #7: Repository Curator Agent
 **Priority: High**
 **Estimated Time: 2 days**
 **Labels: agent, core-functionality**
 
-Implement the Repository Curator agent for organizing repositories.
+Implement the Repository Curator agent with semantic analysis.
 
 **Tasks:**
 - [ ] Create repository metadata management
-- [ ] Implement basic categorization
-- [ ] Add duplicate detection
+- [ ] Implement vector-based categorization
+- [ ] Add semantic duplicate detection
 - [ ] Create storage integration
 - [ ] Write unit tests
 
 **Acceptance Criteria:**
 - Manages repository metadata
-- Categorizes repositories correctly
-- Detects duplicates
+- Uses semantic categorization
+- Detects duplicates using embeddings
 - Test coverage > 90%
 
-### Issue #7: README Generator Agent
+### Issue #8: README Generator Agent
 **Priority: High**
 **Estimated Time: 2 days**
 **Labels: agent, core-functionality**
 
-Implement the README Generator agent for creating the curated list.
+Implement the README Generator agent.
 
 **Tasks:**
 - [ ] Create markdown generation
@@ -154,7 +179,27 @@ Implement the README Generator agent for creating the curated list.
 
 ## Integration & Deployment
 
-### Issue #8: Agent Orchestration
+### Issue #9: Vector Storage Integration
+**Priority: High**
+**Estimated Time: 2 days**
+**Labels: integration, core-functionality**
+
+Implement comprehensive vector storage integration.
+
+**Tasks:**
+- [x] Create vector storage wrapper
+- [x] Implement semantic search operations
+- [x] Add batch processing for embeddings
+- [ ] Create backup/recovery system
+- [x] Write integration tests
+
+**Acceptance Criteria:**
+- [x] Vector operations working properly
+- [x] Semantic search functional
+- [ ] Backup system in place
+- [x] Test coverage > 90%
+
+### Issue #10: Agent Orchestration
 **Priority: High**
 **Estimated Time: 2 days**
 **Labels: integration, core-functionality**
@@ -164,17 +209,17 @@ Implement the orchestration system for agent coordination.
 **Tasks:**
 - [ ] Create agent communication system
 - [ ] Implement processing pipeline
-- [ ] Add basic error handling
+- [ ] Add vector storage coordination
 - [ ] Create system state management
 - [ ] Write integration tests
 
 **Acceptance Criteria:**
 - Agents communicate properly
 - Pipeline processes correctly
-- Handles errors appropriately
+- Vector storage properly integrated
 - Test coverage > 90%
 
-### Issue #9: GitHub Actions Setup
+### Issue #11: GitHub Actions Setup
 **Priority: High**
 **Estimated Time: 1 day**
 **Labels: deployment, automation**
@@ -184,17 +229,17 @@ Set up GitHub Actions for automated execution.
 **Tasks:**
 - [ ] Create GitHub Actions workflow
 - [ ] Implement scheduled execution
-- [ ] Add basic error reporting
+- [ ] Add vector storage management
 - [ ] Create deployment configuration
 - [ ] Write workflow tests
 
 **Acceptance Criteria:**
 - Workflow runs on schedule
 - Executes successfully
-- Reports errors properly
+- Vector storage properly managed
 - Configuration is secure
 
-### Issue #10: Testing & Documentation
+### Issue #12: Testing & Documentation
 **Priority: High**
 **Estimated Time: 2 days**
 **Labels: testing, documentation**
@@ -203,14 +248,14 @@ Complete testing suite and documentation for MVP.
 
 **Tasks:**
 - [ ] Create end-to-end tests
-- [ ] Write technical documentation
+- [ ] Write vector storage documentation
 - [ ] Add setup instructions
 - [ ] Create troubleshooting guide
 - [ ] Review and update all tests
 
 **Acceptance Criteria:**
 - End-to-end tests passing
-- Documentation is complete
+- Documentation complete
 - Setup instructions verified
 - Overall test coverage > 90%
 
@@ -227,5 +272,6 @@ Complete testing suite and documentation for MVP.
 - All tests passing
 - Code coverage > 90%
 - Documentation complete
+- Vector operations performing within targets
 - GitHub Actions workflow successful
 - README updates working properly

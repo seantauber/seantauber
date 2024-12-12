@@ -113,6 +113,114 @@ class TestNewsletterProcessor:
 - Clean up test data after tests
 - Use appropriate mocks for external services
 
+## Vector Storage Practices
+
+### 1. Embedchain Usage
+- Initialize Embedchain with appropriate configuration
+- Handle vector storage operations properly
+- Manage embeddings lifecycle
+- Monitor storage usage
+
+Example:
+```python
+from embedchain import Embedchain
+
+class NewsletterEmbedder:
+    def __init__(self):
+        self.embedder = Embedchain(
+            config={
+                "collection_name": "newsletters",
+                "chunking": {"chunk_size": 500}
+            }
+        )
+
+    def embed_newsletter(self, content: str, metadata: dict) -> str:
+        """
+        Embed newsletter content and return vector ID.
+
+        Args:
+            content: Newsletter content to embed
+            metadata: Associated metadata
+
+        Returns:
+            Vector storage ID
+        """
+        return self.embedder.add(
+            content,
+            metadata=metadata
+        )
+```
+
+### 2. Vector Search Operations
+- Use semantic search appropriately
+- Handle similarity thresholds
+- Implement efficient batch operations
+- Cache search results when appropriate
+
+Example:
+```python
+class SemanticSearcher:
+    def __init__(self, embedder: Embedchain):
+        self.embedder = embedder
+
+    def find_similar_content(
+        self,
+        query: str,
+        threshold: float = 0.8,
+        limit: int = 5
+    ) -> List[Dict]:
+        """
+        Find semantically similar content.
+
+        Args:
+            query: Search query
+            threshold: Similarity threshold
+            limit: Maximum results
+
+        Returns:
+            List of similar content with scores
+        """
+        return self.embedder.search(
+            query,
+            threshold=threshold,
+            limit=limit
+        )
+```
+
+### 3. Gmail Integration
+- Use embedchain[gmail] for email operations
+- Handle authentication properly
+- Implement efficient content extraction
+- Manage email metadata
+
+Example:
+```python
+from embedchain.loaders import GmailLoader
+
+class NewsletterLoader:
+    def __init__(self, credentials_path: str):
+        self.loader = GmailLoader(
+            credentials_path=credentials_path,
+            query="label:GenAI-News"
+        )
+
+    async def load_newsletters(self) -> List[Dict]:
+        """Load and process newsletters."""
+        newsletters = await self.loader.load()
+        return [self._process_newsletter(n) for n in newsletters]
+
+    def _process_newsletter(self, raw_data: Dict) -> Dict:
+        """Process raw newsletter data."""
+        return {
+            "email_id": raw_data["id"],
+            "content": raw_data["content"],
+            "metadata": {
+                "date": raw_data["date"],
+                "sender": raw_data["from"]
+            }
+        }
+```
+
 ## Development Workflow
 
 ### 1. Git Practices
@@ -279,6 +387,43 @@ class DatabaseConnection:
 
 with DatabaseConnection() as conn:
     process_data(conn)
+```
+
+### 3. Vector Operation Optimization
+- Batch similar operations
+- Monitor embedding generation time
+- Optimize chunk sizes
+- Use appropriate similarity thresholds
+
+Example:
+```python
+class BatchEmbedder:
+    def __init__(self, embedder: Embedchain):
+        self.embedder = embedder
+        self.batch_size = 10
+        self.queue: List[Dict] = []
+
+    async def add_to_batch(self, content: str, metadata: dict):
+        """Add content to embedding batch."""
+        self.queue.append({"content": content, "metadata": metadata})
+        if len(self.queue) >= self.batch_size:
+            await self.process_batch()
+
+    async def process_batch(self):
+        """Process queued embeddings in batch."""
+        if not self.queue:
+            return
+        
+        try:
+            results = await self.embedder.add_many(
+                [item["content"] for item in self.queue],
+                [item["metadata"] for item in self.queue]
+            )
+            self.queue.clear()
+            return results
+        except Exception as e:
+            logger.error(f"Batch embedding failed: {str(e)}")
+            raise
 ```
 
 ## Deployment Practices
