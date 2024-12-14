@@ -57,14 +57,12 @@ class RepositoryCurator:
             enriched_repo = await self.enrich_metadata(repository)
             logger.debug(f"Enriched repository data: {enriched_repo}")
 
-            # Store in vector storage
-            vector_id = await self.store.add_repository(
-                text=repository.get('description', ''),
-                metadata={
-                    'github_url': repository['github_url'],
-                    **enriched_repo.get('metadata', {})
-                }
-            )
+            # Store in vector storage using store_repository method
+            vector_id = await self.store.store_repository({
+                'description': repository.get('description', ''),
+                'github_url': repository['github_url'],
+                'first_seen_date': repository.get('metadata', {}).get('first_seen_date', datetime.now(UTC).isoformat())
+            })
             logger.debug(f"Vector storage ID: {vector_id}")
 
             # Create final result with vector ID

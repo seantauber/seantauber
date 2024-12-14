@@ -219,12 +219,42 @@ Implement the orchestration system for agent coordination.
 - [x] Vector storage properly integrated
 - [x] Test coverage > 90%
 
-### Issue #11: GitHub Actions Setup
+### Issue #11: Testing & Documentation
+**Priority: High**
+**Estimated Time: 3 days**
+**Labels: testing, documentation**
+
+Complete testing suite and documentation for MVP, with focus on README updating system.
+
+**Tasks:**
+- [x] Create comprehensive integration tests for README updating system
+  - [x] Test agent interactions
+  - [x] Test data flow through pipeline
+  - [x] Test vector storage integration
+  - [x] Test error handling and recovery
+- [x] Implement end-to-end tests for complete workflow
+  - [x] Test newsletter processing to README generation
+  - [x] Test repository categorization
+  - [x] Test topic analysis and organization
+- [x] Write vector storage documentation
+- [x] Add setup instructions
+- [x] Create troubleshooting guide
+- [x] Review and update all tests
+
+**Acceptance Criteria:**
+- [x] Integration tests passing for README system
+- [x] End-to-end tests passing for complete workflow
+- [x] Documentation complete and verified
+- [x] Setup instructions tested
+- [x] Overall test coverage > 90%
+- [x] README updates working properly in test environment
+
+### Issue #12: GitHub Actions Setup
 **Priority: High**
 **Estimated Time: 1 day**
 **Labels: deployment, automation**
 
-Set up GitHub Actions for automated execution.
+Set up GitHub Actions for automated execution. Requires Issue #11 to be completed first.
 
 **Tasks:**
 - [ ] Create GitHub Actions workflow
@@ -234,30 +264,11 @@ Set up GitHub Actions for automated execution.
 - [ ] Write workflow tests
 
 **Acceptance Criteria:**
+- All integration and end-to-end tests passing in CI environment
 - Workflow runs on schedule
 - Executes successfully
 - Vector storage properly managed
 - Configuration is secure
-
-### Issue #12: Testing & Documentation
-**Priority: High**
-**Estimated Time: 2 days**
-**Labels: testing, documentation**
-
-Complete testing suite and documentation for MVP.
-
-**Tasks:**
-- [ ] Create end-to-end tests
-- [ ] Write vector storage documentation
-- [ ] Add setup instructions
-- [ ] Create troubleshooting guide
-- [ ] Review and update all tests
-
-**Acceptance Criteria:**
-- End-to-end tests passing
-- Documentation complete
-- Setup instructions verified
-- Overall test coverage > 90%
 
 ## Development Guidelines
 

@@ -126,6 +126,7 @@ class AgentOrchestrator:
             except Exception as e:
                 attempt += 1
                 if attempt > max_retries:
+                    self.error_count += 1
                     logger.error(f"Newsletter processing failed after {max_retries} attempts")
                     raise Exception("Pipeline failed at newsletter processing") from e
                 logger.warning(f"Retrying newsletter processing (attempt {attempt})")
@@ -152,10 +153,14 @@ class AgentOrchestrator:
 
         try:
             logger.info("Extracting repositories from newsletters")
-            repositories = await ctx.deps.content_extractor.extract_repositories(newsletters)
+            repositories = await ctx.deps.content_extractor.process_newsletter_content(
+                newsletters[0]['email_id'],
+                newsletters[0]['content']
+            )
             logger.info(f"Extracted {len(repositories)} repositories")
             return repositories
         except Exception as e:
+            self.error_count += 1
             logger.error("Repository extraction failed")
             raise Exception("Pipeline failed at repository extraction") from e
 
@@ -182,11 +187,18 @@ class AgentOrchestrator:
             logger.info("Analyzing repository topics")
             analyzed_repos = []
             for repo in repositories:
-                analyzed = await ctx.deps.topic_analyzer.analyze_repository(repo)
+                if not repo.get('github_url'):
+                    self.error_count += 1
+                    logger.error("Invalid repository data: missing github_url")
+                    raise ValueError("Invalid repository URL")
+                
+                topics = await ctx.deps.topic_analyzer.analyze_repository_topics(repo)
+                analyzed = {**repo, 'topics': topics}
                 analyzed_repos.append(analyzed)
             logger.info(f"Analyzed {len(analyzed_repos)} repositories")
             return analyzed_repos
         except Exception as e:
+            self.error_count += 1
             logger.error("Repository analysis failed")
             raise Exception("Pipeline failed at repository analysis") from e
 
@@ -213,11 +225,17 @@ class AgentOrchestrator:
             logger.info("Curating repositories")
             curated_repos = []
             for repo in repositories:
+                # Ensure repository has required fields
+                if not repo.get('github_url'):
+                    logger.warning("Repository missing github_url, skipping")
+                    continue
+                
                 curated = await ctx.deps.repository_curator.process_repository(repo)
                 curated_repos.append(curated)
             logger.info(f"Curated {len(curated_repos)} repositories")
             return curated_repos
         except Exception as e:
+            self.error_count += 1
             logger.error("Repository curation failed")
             raise Exception("Pipeline failed at repository curation") from e
 
@@ -242,13 +260,14 @@ class AgentOrchestrator:
 
         try:
             logger.info("Generating README")
-            success = await ctx.deps.readme_generator.generate_readme(repositories)
+            success = await ctx.deps.readme_generator.update_github_readme()
             if success:
                 logger.info("README generation completed successfully")
             else:
                 logger.warning("README generation completed with warnings")
             return success
         except Exception as e:
+            self.error_count += 1
             logger.error("README generation failed")
             raise Exception("Pipeline failed at README generation") from e
 
@@ -309,7 +328,6 @@ class AgentOrchestrator:
             return True
 
         except Exception as e:
-            self.error_count += 1
             logger.error(f"Pipeline failed: {str(e)}")
             raise
 

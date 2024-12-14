@@ -12,7 +12,7 @@ dependencies = [
     "google-auth-httplib2>=0.2.0",
     "google-api-python-client>=2.155.0",
     "pytest-asyncio>=0.24.0",
-    "pydantic-ai>=0.0.12",
+    "pydantic-ai[logfire]>=0.0.12",
 ]
 
 [tool.pytest.ini_options]

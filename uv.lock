@@ -502,6 +502,15 @@ wheels = [
 ]
 
 [[package]]
+name = "executing"
+version = "2.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8c/e3/7d45f492c2c4a0e8e0fad57d081a7c8a0286cdd86372b070cca1ec0caa1e/executing-2.1.0.tar.gz", hash = "sha256:8ea27ddd260da8150fa5a708269c4a10e76161e2496ec3e587da9e3c0fe4b9ab", size = 977485 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/fd/afcd0496feca3276f509df3dbd5dae726fcc756f1a08d9e25abe1733f962/executing-2.1.0-py2.py3-none-any.whl", hash = "sha256:8d63781349375b5ebccc3142f4b30350c0cd9c79f921cde38be2be4637e98eaf", size = 25805 },
+]
+
+[[package]]
 name = "fastapi"
 version = "0.115.6"
 source = { registry = "https://pypi.org/simple" }
@@ -604,7 +613,7 @@ dependencies = [
     { name = "google-api-python-client" },
     { name = "google-auth-httplib2" },
     { name = "google-auth-oauthlib" },
-    { name = "pydantic-ai" },
+    { name = "pydantic-ai", extra = ["logfire"] },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
@@ -616,7 +625,7 @@ requires-dist = [
     { name = "google-api-python-client", specifier = ">=2.155.0" },
     { name = "google-auth-httplib2", specifier = ">=0.2.0" },
     { name = "google-auth-oauthlib", specifier = ">=1.2.1" },
-    { name = "pydantic-ai", specifier = ">=0.0.12" },
+    { name = "pydantic-ai", extras = ["logfire"], specifier = ">=0.0.12" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
@@ -1387,6 +1396,24 @@ wheels = [
 ]
 
 [[package]]
+name = "logfire"
+version = "2.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "executing" },
+    { name = "opentelemetry-exporter-otlp-proto-http" },
+    { name = "opentelemetry-instrumentation" },
+    { name = "opentelemetry-sdk" },
+    { name = "protobuf" },
+    { name = "rich" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ab/36/f038726e1ba46789013b4aa24b94602400a96e62a95ac6d7d60534aaeb07/logfire-2.7.1.tar.gz", hash = "sha256:1e90f2640cc8962be5f66b461aabe91598082aa30ecdc5105be593bbe5e22160", size = 254381 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/10/0f/05468dabe4bca167b67c47d940f5af87834bb06b5e01e9b3affe81e5f18e/logfire-2.7.1-py3-none-any.whl", hash = "sha256:74316282f61d7e43a0e4cd31419584d54731e0192faa482bfe6b5bfa6fd318d6", size = 173305 },
+]
+
+[[package]]
 name = "logfire-api"
 version = "2.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1712,6 +1739,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/41/aa/b3f2190613141f35fe15145bf438334fdd1eac8aeeee4f7ecbc887999443/opentelemetry_exporter_otlp_proto_grpc-1.29.0.tar.gz", hash = "sha256:3d324d07d64574d72ed178698de3d717f62a059a93b6b7685ee3e303384e73ea", size = 26224 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f2/de/4b4127a25d1594851d99032f3a9acb09cb512d11edec713410fb906607f4/opentelemetry_exporter_otlp_proto_grpc-1.29.0-py3-none-any.whl", hash = "sha256:5a2a3a741a2543ed162676cf3eefc2b4150e6f4f0a193187afb0d0e65039c69c", size = 18520 },
+]
+
+[[package]]
+name = "opentelemetry-exporter-otlp-proto-http"
+version = "1.29.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "deprecated" },
+    { name = "googleapis-common-protos" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-exporter-otlp-proto-common" },
+    { name = "opentelemetry-proto" },
+    { name = "opentelemetry-sdk" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ab/88/e70a2e9fbb1bddb1ab7b6d74fb02c68601bff5948292ce33464c84ee082e/opentelemetry_exporter_otlp_proto_http-1.29.0.tar.gz", hash = "sha256:b10d174e3189716f49d386d66361fbcf6f2b9ad81e05404acdee3f65c8214204", size = 15041 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/31/49/a1c3d24e8fe73b5f422e21b46c24aed3db7fd9427371c06442e7bdfe4d3b/opentelemetry_exporter_otlp_proto_http-1.29.0-py3-none-any.whl", hash = "sha256:b228bdc0f0cfab82eeea834a7f0ffdd2a258b26aa33d89fb426c29e8e934d9d0", size = 17217 },
 ]
 
 [[package]]
@@ -2049,6 +2094,11 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5d/0d/846bcf91a22c8b167b3923fa4771d57d79635a32ad20bba3e6e9aa496ce1/pydantic_ai-0.0.12.tar.gz", hash = "sha256:e86ff5e5137be64c247a9ea1cf39867a96a92de28ed60440ec46fcc32ca8916c", size = 41669 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/4f/19046bd564a21cfc6d65e5053a6385aa170c312dd6b2ed9fa98218f03831/pydantic_ai-0.0.12-py3-none-any.whl", hash = "sha256:0dbfec39744a4ed87467bb0ce34c736cf6b3cade0256a7530e8b4a7c7c916afb", size = 8995 },
+]
+
+[package.optional-dependencies]
+logfire = [
+    { name = "logfire" },
 ]
 
 [[package]]
