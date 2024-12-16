@@ -1,9 +1,15 @@
 """Embedchain integration for vector storage."""
 
+import os
+import json
 import logging
-from typing import Dict, Optional, List
+import socket
+from typing import Dict, Optional, List, Tuple, Any
 from embedchain import App
+from embedchain.config import AppConfig
 from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 import googleapiclient
 from googleapiclient.discovery import build
 import base64
@@ -15,39 +21,119 @@ class EmbedchainStore:
 
     SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
     NEWSLETTER_LABEL = 'GenAI News'
+    BASE_PORT = 8029  # Base port to start trying from
+    MAX_PORT_ATTEMPTS = 10  # Maximum number of ports to try
 
-    def __init__(self, credentials_path: str):
+    def __init__(self, token_path: str):
         """
         Initialize Embedchain store.
 
         Args:
-            credentials_path: Path to Gmail API credentials
+            token_path: Path to Gmail API token
         """
-        # Initialize Gmail API
-        self.credentials_path = credentials_path
-        self.creds = Credentials.from_authorized_user_file(credentials_path, self.SCOPES)
+        # Initialize Gmail API with proper credential handling
+        self.token_path = token_path
+        self.creds = self._get_credentials()
         self.gmail_service = build('gmail', 'v1', credentials=self.creds)
         
         # Initialize Embedchain apps for different collections
-        self.newsletter_store = App(
-            config={
-                "collection_name": "newsletters",
-                "chunking": {
-                    "chunk_size": 500,
-                    "chunk_overlap": 50
-                }
-            }
-        )
+        self.newsletter_store = App()
+        self.repository_store = App()
+
+    def _find_available_port(self) -> Tuple[int, bool]:
+        """Find an available port starting from BASE_PORT."""
+        for port_offset in range(self.MAX_PORT_ATTEMPTS):
+            port = self.BASE_PORT + port_offset
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            try:
+                sock.bind(('localhost', port))
+                sock.close()
+                is_base_port = port == self.BASE_PORT
+                return port, is_base_port
+            except OSError:
+                continue
+            finally:
+                sock.close()
+        raise OSError(f"Could not find an available port after {self.MAX_PORT_ATTEMPTS} attempts")
+
+    def _validate_token_data(self, token_data: dict) -> bool:
+        """Validate token data has all required fields."""
+        required_fields = ['refresh_token', 'token', 'token_uri', 'client_id', 'client_secret']
+        return all(field in token_data for field in required_fields)
+
+    def _get_credentials(self) -> Credentials:
+        """Get or refresh Google API credentials."""
+        creds = None
         
-        self.repository_store = App(
-            config={
-                "collection_name": "repositories",
-                "chunking": {
-                    "chunk_size": 500,
-                    "chunk_overlap": 50
-                }
-            }
-        )
+        # Check if token file exists and contains valid data
+        if os.path.exists(self.token_path):
+            try:
+                with open(self.token_path) as f:
+                    token_data = json.load(f)
+                if not self._validate_token_data(token_data):
+                    logger.warning("Token file exists but missing required fields")
+                    os.remove(self.token_path)  # Remove invalid token file
+                else:
+                    creds = Credentials.from_authorized_user_file(self.token_path, self.SCOPES)
+            except (ValueError, KeyError, json.JSONDecodeError) as e:
+                logger.warning(f"Error reading token file: {e}")
+                os.remove(self.token_path)  # Remove invalid token file
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                try:
+                    creds.refresh(Request())
+                except Exception as e:
+                    logger.warning(f"Failed to refresh token: {e}")
+                    os.remove(self.token_path)  # Remove invalid token file
+                    creds = None
+            
+            if not creds:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    ".credentials/google-credentials.json", self.SCOPES)
+                
+                # Find an available port
+                try:
+                    port, is_base_port = self._find_available_port()
+                    if not is_base_port:
+                        logger.warning(
+                            f"Base port {self.BASE_PORT} is in use, using alternative port {port}"
+                        )
+                    
+                    # Use found port and request offline access for refresh token
+                    # Note: Adding trailing slash to match the redirect URI exactly
+                    redirect_uri = f"http://localhost:{port}/"
+                    flow.redirect_uri = redirect_uri
+                    
+                    creds = flow.run_local_server(
+                        port=port,
+                        access_type='offline',  # Enable offline access
+                        prompt='consent',  # Force consent screen to get refresh token
+                        authorization_prompt_message=(
+                            f"Please visit this URL to authorize this application "
+                            f"(using port {port} for callback)"
+                        )
+                    )
+                except OSError as e:
+                    logger.error("Failed to start local server for OAuth flow")
+                    raise RuntimeError(
+                        f"OAuth flow failed: Could not start local server. "
+                        f"Please ensure no other OAuth flows are running and try again. "
+                        f"Error: {str(e)}"
+                    )
+
+            # Validate we got a refresh token
+            if not creds.refresh_token:
+                raise RuntimeError(
+                    "Failed to obtain refresh token. Please ensure you're logged out of "
+                    "all Google accounts and try again to see the consent screen."
+                )
+
+            # Save the credentials for the next run
+            with open(self.token_path, 'w') as token:
+                token.write(creds.to_json())
+
+        return creds
 
     def _get_label_id(self) -> Optional[str]:
         """Get Gmail label ID for newsletter label."""
@@ -123,9 +209,9 @@ class EmbedchainStore:
 
                 body = base64.urlsafe_b64decode(data).decode('utf-8') if data else ''
 
-                # Store in vector storage
+                # Store in vector storage using message ID as source
                 vector_id = self.newsletter_store.add(
-                    content=f"Email from {sender}: {subject}\n\n{body}",
+                    body,  # Store the actual content
                     metadata={
                         'email_id': message['id'],
                         'subject': subject,
@@ -142,12 +228,12 @@ class EmbedchainStore:
             logger.error(f"Failed to load and store newsletters: {str(e)}")
             raise
 
-    async def store_repository(self, repository: Dict) -> str:
+    async def store_repository(self, repository: Dict[str, Any]) -> str:
         """
         Store repository data in vector storage.
 
         Args:
-            repository: Repository data including description and metadata
+            repository: Repository data including metadata and summary
 
         Returns:
             Vector storage ID
@@ -156,11 +242,37 @@ class EmbedchainStore:
             Exception: If storing fails
         """
         try:
+            # Create a rich text representation of the repository
+            repo_text = (
+                f"Repository: {repository['name']} ({repository['github_url']})\n"
+                f"Description: {repository['description']}\n\n"
+                f"Summary:\n"
+                f"Primary Purpose: {repository['summary']['primary_purpose']}\n"
+                f"Key Technologies: {', '.join(repository['summary']['key_technologies'])}\n"
+                f"Target Users: {repository['summary']['target_users']}\n"
+                f"Main Features: {', '.join(repository['summary']['main_features'])}\n"
+                f"Technical Domain: {repository['summary']['technical_domain']}\n\n"
+                f"Metadata:\n"
+                f"Language: {repository['metadata']['language']}\n"
+                f"Topics: {', '.join(repository['metadata']['topics'])}\n"
+                f"Stars: {repository['metadata']['stars']}\n"
+                f"Forks: {repository['metadata']['forks']}\n"
+                f"Created: {repository['metadata']['created_at']}\n"
+                f"Updated: {repository['metadata']['updated_at']}"
+            )
+            
+            # Store with complete metadata
             vector_id = self.repository_store.add(
-                content=repository['description'],
+                repo_text,
                 metadata={
                     'github_url': repository['github_url'],
-                    'first_seen_date': repository['first_seen_date']
+                    'name': repository['name'],
+                    'description': repository['description'],
+                    'summary': repository['summary'],
+                    'metadata': repository['metadata'],
+                    'first_seen_date': repository['first_seen_date'],
+                    'source_type': repository['source_type'],
+                    'source_id': repository['source_id']
                 }
             )
             logger.info(f"Stored repository {repository['github_url']} in vector storage")
@@ -218,3 +330,25 @@ class EmbedchainStore:
         except Exception as e:
             logger.error(f"Failed to query repositories: {str(e)}")
             raise
+
+    async def get_embedding(self, vector_id: str) -> Optional[List[float]]:
+        """
+        Get the embedding vector for a stored item.
+        
+        Args:
+            vector_id: Vector storage ID
+            
+        Returns:
+            Embedding vector if found, None otherwise
+        """
+        try:
+            # Try both stores since we don't know which one contains the ID
+            try:
+                embedding = self.newsletter_store.get(vector_id)
+                return embedding
+            except:
+                embedding = self.repository_store.get(vector_id)
+                return embedding
+        except Exception as e:
+            logger.error(f"Failed to get embedding for vector ID {vector_id}: {str(e)}")
+            return None

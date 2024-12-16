@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic_ai import Agent, RunContext
 
 from processing.embedchain_store import EmbedchainStore
-from agents.newsletter_monitor import NewsletterMonitor
+from agents.newsletter_monitor import NewsletterMonitor, Newsletter
 from agents.content_extractor import ContentExtractorAgent
 from agents.topic_analyzer import TopicAnalyzer
 from agents.repository_curator import RepositoryCurator
@@ -28,7 +28,7 @@ class OrchestratorDeps(BaseModel):
     readme_generator: Union[ReadmeGenerator, AsyncMock]
 
 class AgentOrchestrator:
-    """Orchestrates the processing pipeline between different agents."""
+    """Orchestrates the processing pipeline between different components."""
 
     def __init__(
         self,
@@ -44,7 +44,7 @@ class AgentOrchestrator:
 
         Args:
             embedchain_store: Vector storage instance
-            newsletter_monitor: Newsletter monitoring agent
+            newsletter_monitor: Newsletter monitoring component
             content_extractor: Content extraction agent
             topic_analyzer: Topic analysis agent
             repository_curator: Repository curation agent
@@ -57,7 +57,7 @@ class AgentOrchestrator:
                 result_type=bool,
                 system_prompt=(
                     'Coordinate the processing pipeline for GitHub repository curation. '
-                    'Monitor the flow of data between agents and ensure proper error handling. '
+                    'Monitor the flow of data between components and ensure proper error handling. '
                     'Skip subsequent stages if no data is available to process.'
                 )
             )
@@ -102,9 +102,9 @@ class AgentOrchestrator:
         self,
         ctx: RunContext[OrchestratorDeps],
         max_retries: int = 1
-    ) -> List[Dict]:
+    ) -> List[Newsletter]:
         """
-        Process newsletters using the newsletter monitor agent.
+        Process newsletters using the newsletter monitor.
 
         Args:
             ctx: Run context with dependencies
@@ -120,7 +120,8 @@ class AgentOrchestrator:
         while attempt <= max_retries:
             try:
                 logger.info("Processing newsletters")
-                newsletters = await ctx.deps.newsletter_monitor.process_newsletters()
+                result = await ctx.deps.newsletter_monitor.run()
+                newsletters = result.newsletters
                 logger.info(f"Processed {len(newsletters)} newsletters")
                 return newsletters
             except Exception as e:
@@ -135,7 +136,7 @@ class AgentOrchestrator:
     async def extract_repositories(
         self,
         ctx: RunContext[OrchestratorDeps],
-        newsletters: List[Dict]
+        newsletters: List[Newsletter]
     ) -> List[Dict]:
         """
         Extract repositories from newsletters.
@@ -154,8 +155,8 @@ class AgentOrchestrator:
         try:
             logger.info("Extracting repositories from newsletters")
             repositories = await ctx.deps.content_extractor.process_newsletter_content(
-                newsletters[0]['email_id'],
-                newsletters[0]['content']
+                newsletters[0].email_id,  # Access as attribute
+                newsletters[0].content    # Access as attribute
             )
             logger.info(f"Extracted {len(repositories)} repositories")
             return repositories

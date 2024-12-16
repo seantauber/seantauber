@@ -1,13 +1,11 @@
-"""Newsletter Monitor agent for processing and storing newsletters."""
+"""Newsletter Monitor for processing and storing newsletters."""
 
-import json
 import logging
 from typing import List, Dict, Optional, Deque
-from datetime import datetime
+from datetime import datetime, UTC
 from collections import deque
 
 from pydantic import BaseModel, ConfigDict
-from pydantic_ai import Agent, RunContext, ModelRetry
 
 from processing.gmail.client import GmailClient
 from processing.embedchain_store import EmbedchainStore
@@ -28,13 +26,6 @@ class Newsletter(BaseModel):
     queued_date: Optional[str] = None
     processing_status: str = "pending"  # pending, processing, completed, failed
 
-class NewsletterMonitorDeps(BaseModel):
-    """Dependencies for the Newsletter Monitor agent."""
-    gmail_client: GmailClient
-    embedchain_store: EmbedchainStore
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
 class NewsletterMonitorResult(BaseModel):
     """Result from processing newsletters."""
     newsletters: List[Newsletter]
@@ -43,156 +34,164 @@ class NewsletterMonitorResult(BaseModel):
     queued_count: int
 
 class NewsletterMonitor:
-    """Agent responsible for monitoring and processing newsletters."""
+    """Component responsible for monitoring and processing newsletters."""
 
-    def __init__(self):
-        """Initialize the Newsletter Monitor agent."""
-        self.agent = Agent(
-            'openai:gpt-4',
-            deps_type=NewsletterMonitorDeps,
-            result_type=NewsletterMonitorResult,
-            system_prompt=(
-                "You are a newsletter monitoring agent responsible for fetching and processing "
-                "AI/ML newsletters. Your tasks include:\n"
-                "1. Fetching newsletters from Gmail using the provided client\n"
-                "2. Queuing newsletters for processing\n"
-                "3. Processing queued newsletters and storing in vector storage\n"
-                "4. Tracking processing status and results\n"
-                "Use the available tools to accomplish these tasks efficiently."
-            )
-        )
-
+    def __init__(self, gmail_client: GmailClient, embedchain_store: EmbedchainStore):
+        """
+        Initialize the Newsletter Monitor.
+        
+        Args:
+            gmail_client: Instance of GmailClient for fetching newsletters
+            embedchain_store: Instance of EmbedchainStore for storing newsletters
+        """
+        self.gmail_client = gmail_client
+        self.embedchain_store = embedchain_store
+        
         # Initialize processing queue
         self._processing_queue: Deque[Newsletter] = deque()
         
-        # Register tools
-        self._register_tools()
+        # Initialize stats
+        self.processed_count = 0
+        self.error_count = 0
 
-    def _register_tools(self):
-        """Register tools with the agent."""
-        
-        @self.agent.tool(retries=2)
-        async def fetch_newsletters(
-            ctx: RunContext[NewsletterMonitorDeps],
-            max_results: int = 10
-        ) -> List[Newsletter]:
-            """
-            Fetch newsletters from Gmail.
-
-            Args:
-                max_results: Maximum number of newsletters to fetch
-
-            Returns:
-                List of fetched newsletters
-            """
-            try:
-                raw_newsletters = ctx.deps.gmail_client.get_newsletters(max_results=max_results)
-                newsletters = []
-                for n in raw_newsletters:
-                    newsletter = Newsletter(
-                        email_id=n['email_id'],
-                        subject=n['subject'],
-                        received_date=n['received_date'],
-                        content=n['content'],
-                        metadata=n.get('metadata'),
-                        queued_date=datetime.utcnow().isoformat()
-                    )
-                    self._processing_queue.append(newsletter)
-                    newsletters.append(newsletter)
-                
-                logger.info(f"Queued {len(newsletters)} newsletters for processing")
-                return newsletters
-            except FetchError as e:
-                logger.error(f"Failed to fetch newsletters: {str(e)}")
-                raise ModelRetry(f"Failed to fetch newsletters: {str(e)}")
-            except Exception as e:
-                logger.error(f"Unexpected error fetching newsletters: {str(e)}")
-                raise ModelRetry(f"Unexpected error: {str(e)}")
-
-        @self.agent.tool(retries=2)
-        async def process_queued_newsletters(
-            ctx: RunContext[NewsletterMonitorDeps],
-            batch_size: int = 5
-        ) -> List[Newsletter]:
-            """
-            Process a batch of queued newsletters.
-
-            Args:
-                batch_size: Number of newsletters to process in this batch
-
-            Returns:
-                List of processed newsletters
-            """
-            try:
-                if not self._processing_queue:
-                    logger.info("No newsletters in queue")
-                    return []
-
-                # Get batch of newsletters to process
-                to_process = []
-                while len(to_process) < batch_size and self._processing_queue:
-                    newsletter = self._processing_queue.popleft()
-                    newsletter.processing_status = "processing"
-                    to_process.append(newsletter)
-
-                if not to_process:
-                    return []
-
-                # Store in vector storage
-                vector_ids = await ctx.deps.embedchain_store.load_and_store_newsletters(
-                    max_results=len(to_process)
-                )
-                
-                # Update newsletters with vector IDs and processing status
-                processed_date = datetime.utcnow().isoformat()
-                for newsletter, vector_id in zip(to_process, vector_ids):
-                    newsletter.vector_id = vector_id
-                    newsletter.processed_date = processed_date
-                    newsletter.processing_status = "completed"
-                
-                logger.info(f"Processed {len(to_process)} newsletters")
-                return to_process
-            except Exception as e:
-                # Return newsletters to queue on failure
-                for newsletter in to_process:
-                    newsletter.processing_status = "failed"
-                    self._processing_queue.appendleft(newsletter)
-                
-                logger.error(f"Failed to process newsletters: {str(e)}")
-                raise ModelRetry(f"Failed to process newsletters: {str(e)}")
-
-    async def process_newsletters(
-        self,
-        gmail_client: GmailClient,
-        embedchain_store: EmbedchainStore,
-        max_results: int = 10,
-        batch_size: int = 5
-    ) -> NewsletterMonitorResult:
+    async def fetch_newsletters(self, max_results: int = 10) -> List[Newsletter]:
         """
-        Process new newsletters end-to-end.
+        Fetch newsletters from Gmail and queue for processing.
 
         Args:
-            gmail_client: Instance of GmailClient
-            embedchain_store: Instance of EmbedchainStore
+            max_results: Maximum number of newsletters to fetch
+
+        Returns:
+            List of fetched newsletters
+
+        Raises:
+            FetchError: If fetching newsletters fails
+        """
+        try:
+            raw_newsletters = self.gmail_client.get_newsletters(max_results=max_results)
+            newsletters = []
+            
+            for n in raw_newsletters:
+                newsletter = Newsletter(
+                    email_id=n['email_id'],
+                    subject=n['subject'],
+                    received_date=n['received_date'],
+                    content=n['content'],
+                    metadata=n.get('metadata'),
+                    queued_date=datetime.now(UTC).isoformat()
+                )
+                self._processing_queue.append(newsletter)
+                newsletters.append(newsletter)
+            
+            logger.info(f"Queued {len(newsletters)} newsletters for processing")
+            return newsletters
+            
+        except FetchError as e:
+            self.error_count += 1
+            logger.error(f"Failed to fetch newsletters: {str(e)}")
+            raise
+        except Exception as e:
+            self.error_count += 1
+            logger.error(f"Unexpected error fetching newsletters: {str(e)}")
+            raise FetchError(f"Unexpected error: {str(e)}")
+
+    async def process_newsletters(self, batch_size: int = 5) -> List[Newsletter]:
+        """
+        Process queued newsletters in batches.
+
+        Args:
+            batch_size: Number of newsletters to process in each batch
+
+        Returns:
+            List of processed newsletters
+        """
+        try:
+            if not self._processing_queue:
+                logger.info("No newsletters in queue")
+                return []
+
+            # Get batch of newsletters to process
+            to_process = []
+            while len(to_process) < batch_size and self._processing_queue:
+                newsletter = self._processing_queue.popleft()
+                newsletter.processing_status = "processing"
+                to_process.append(newsletter)
+
+            if not to_process:
+                return []
+
+            # Store in vector storage
+            vector_ids = await self.embedchain_store.load_and_store_newsletters(
+                max_results=len(to_process)
+            )
+            
+            # Update newsletters with vector IDs and processing status
+            processed_date = datetime.now(UTC).isoformat()
+            processed_newsletters = []
+            
+            for newsletter, vector_id in zip(to_process, vector_ids):
+                newsletter.vector_id = vector_id
+                newsletter.processed_date = processed_date
+                newsletter.processing_status = "completed"
+                processed_newsletters.append(newsletter)
+                self.processed_count += 1
+            
+            logger.info(f"Processed {len(processed_newsletters)} newsletters")
+            return processed_newsletters
+            
+        except Exception as e:
+            self.error_count += 1
+            # Return newsletters to queue on failure
+            for newsletter in to_process:
+                newsletter.processing_status = "failed"
+                self._processing_queue.appendleft(newsletter)
+            
+            logger.error(f"Failed to process newsletters: {str(e)}")
+            raise
+
+    async def run(self, max_results: int = 10, batch_size: int = 5) -> NewsletterMonitorResult:
+        """
+        Run the complete newsletter processing pipeline.
+
+        Args:
             max_results: Maximum number of newsletters to fetch
             batch_size: Number of newsletters to process in each batch
 
         Returns:
-            Result containing processed newsletters
+            Result containing processed newsletters and stats
         """
-        deps = NewsletterMonitorDeps(
-            gmail_client=gmail_client,
-            embedchain_store=embedchain_store
-        )
-
-        result = await self.agent.run(
-            f"Process up to {max_results} newsletters in batches of {batch_size}",
-            deps=deps
-        )
-        
-        # Parse the JSON content into NewsletterMonitorResult
-        result_data = json.loads(result.content)
-        return NewsletterMonitorResult(**result_data)
+        try:
+            # Reset stats
+            self.processed_count = 0
+            self.error_count = 0
+            
+            # Fetch newsletters
+            newsletters = await self.fetch_newsletters(max_results)
+            if not newsletters:
+                logger.info("No newsletters to process")
+                return NewsletterMonitorResult(
+                    newsletters=[],
+                    total_processed=0,
+                    processing_date=datetime.now(UTC).isoformat(),
+                    queued_count=0
+                )
+            
+            # Process newsletters in batches
+            processed_newsletters = []
+            while self._processing_queue:
+                batch = await self.process_newsletters(batch_size)
+                processed_newsletters.extend(batch)
+            
+            return NewsletterMonitorResult(
+                newsletters=processed_newsletters,
+                total_processed=self.processed_count,
+                processing_date=datetime.now(UTC).isoformat(),
+                queued_count=len(self._processing_queue)
+            )
+            
+        except Exception as e:
+            logger.error(f"Newsletter processing pipeline failed: {str(e)}")
+            raise
 
     @property
     def queue_size(self) -> int:
@@ -202,3 +201,11 @@ class NewsletterMonitor:
     def get_queued_newsletters(self) -> List[Newsletter]:
         """Get list of currently queued newsletters."""
         return list(self._processing_queue)
+
+    def get_stats(self) -> Dict:
+        """Get current processing statistics."""
+        return {
+            'processed_count': self.processed_count,
+            'error_count': self.error_count,
+            'queue_size': self.queue_size
+        }

@@ -4,7 +4,7 @@ import os
 import base64
 import logging
 from typing import List, Dict, Optional
-from datetime import datetime
+from datetime import datetime, UTC
 
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -16,6 +16,9 @@ from .exceptions import AuthenticationError, FetchError
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+# Maximum content length (approximately 2000 tokens)
+MAX_CONTENT_LENGTH = 8000  # characters
 
 class GmailClient:
     """Client for interacting with Gmail API to fetch newsletters."""
@@ -66,6 +69,28 @@ class GmailClient:
             logger.error(f"Failed to authenticate with Gmail API: {str(e)}")
             raise AuthenticationError(f"Authentication failed: {str(e)}")
 
+    def _truncate_content(self, content: str) -> str:
+        """
+        Truncate content to stay within token limits while preserving meaning.
+
+        Args:
+            content: Original content string
+
+        Returns:
+            Truncated content string
+        """
+        if len(content) <= MAX_CONTENT_LENGTH:
+            return content
+
+        # Try to truncate at a sentence boundary
+        truncated = content[:MAX_CONTENT_LENGTH]
+        last_period = truncated.rfind('.')
+        if last_period > 0:
+            truncated = truncated[:last_period + 1]
+        
+        logger.info(f"Truncated content from {len(content)} to {len(truncated)} characters")
+        return truncated
+
     def get_newsletters(self, max_results: int = 10) -> List[Dict]:
         """
         Fetch newsletters with the specified label.
@@ -74,7 +99,14 @@ class GmailClient:
             max_results: Maximum number of newsletters to fetch
 
         Returns:
-            List of dictionaries containing newsletter data
+            List of dictionaries containing newsletter data with structure:
+            {
+                'email_id': str,  # Gmail message ID
+                'subject': str,   # Email subject
+                'received_date': str,  # Email received date
+                'content': str,   # Email content (truncated if needed)
+                'metadata': dict  # Additional metadata
+            }
 
         Raises:
             FetchError: If fetching newsletters fails
@@ -128,9 +160,22 @@ class GmailClient:
             message: Raw message data from Gmail API
 
         Returns:
-            Dictionary containing parsed newsletter data or None if parsing fails
+            Dictionary containing parsed newsletter data or None if parsing fails.
+            The returned dictionary will have the structure:
+            {
+                'email_id': str,  # Gmail message ID
+                'subject': str,   # Email subject
+                'received_date': str,  # Email received date
+                'content': str,   # Email content (truncated if needed)
+                'metadata': dict  # Additional metadata
+            }
         """
         try:
+            # Ensure message ID is present
+            if 'id' not in message:
+                logger.error("Message missing ID")
+                return None
+
             headers = message['payload']['headers']
             subject = next(
                 (header['value'] for header in headers if header['name'].lower() == 'subject'),
@@ -140,6 +185,10 @@ class GmailClient:
                 (header['value'] for header in headers if header['name'].lower() == 'date'),
                 None
             )
+
+            if not date:
+                logger.warning(f"No date found for message {message['id']}")
+                date = datetime.now(UTC).isoformat()
 
             # Get message body
             if 'parts' in message['payload']:
@@ -154,8 +203,15 @@ class GmailClient:
                 data = message['payload']['body'].get('data', '')
                 content = base64.urlsafe_b64decode(data).decode() if data else ''
 
+            if not content:
+                logger.warning(f"No content found for message {message['id']}")
+                return None
+
+            # Truncate content if needed
+            content = self._truncate_content(content)
+
             return {
-                'email_id': message['id'],
+                'email_id': message['id'],  # Ensure email_id is always present
                 'subject': subject,
                 'received_date': date,
                 'content': content,

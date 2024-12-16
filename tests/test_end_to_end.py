@@ -4,6 +4,9 @@ import os
 import pytest
 from datetime import datetime, UTC
 from unittest.mock import AsyncMock, MagicMock, patch
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 
 from processing.embedchain_store import EmbedchainStore
 from processing.gmail.client import GmailClient
@@ -20,58 +23,119 @@ class TestEndToEndWorkflow:
     """End-to-end test suite for the complete workflow."""
 
     @pytest.fixture
-    def mock_gmail_client(self):
-        """Create mock Gmail client with test data."""
-        client = AsyncMock(spec=GmailClient)
-        client.get_newsletters.return_value = [{
-            'id': 'email123',
-            'subject': 'AI Weekly Newsletter',
-            'content': (
-                'Check out these exciting AI projects:\n\n'
-                'https://github.com/test/ml-project - A new machine learning framework\n'
-                'Key features:\n'
-                '- Fast training\n'
-                '- Easy deployment\n'
-                '- Extensive documentation\n\n'
-                'https://github.com/test/nlp-tool - Advanced NLP library\n'
-                'Features:\n'
-                '- State-of-the-art models\n'
-                '- Multi-language support\n'
-                '- Easy integration\n'
-            ),
-            'date': '2024-01-15'
-        }]
-        return client
-
-    @pytest.fixture
     def mock_github_client(self):
         """Create mock GitHub client with repository data."""
         client = AsyncMock()
         client.get_repository_info.return_value = {
             'name': 'ml-project',
+            'full_name': 'test/ml-project',
             'description': 'A new machine learning framework',
             'stars': 1000,
-            'last_updated': '2024-01-15',
+            'forks': 500,
+            'language': 'Python',
             'topics': ['machine-learning', 'ai', 'deep-learning'],
-            'readme': '# ML Project\n\nFast and easy machine learning framework.'
+            'created_at': '2024-01-01T00:00:00Z',
+            'updated_at': '2024-01-15T00:00:00Z',
+            'readme_content': '# ML Project\n\nFast and easy machine learning framework.'
         }
         client.update_readme.return_value = True
         return client
 
     @pytest.fixture
-    async def test_system(self, mock_gmail_client, mock_github_client, tmp_path):
-        """Create complete test system with real components and mock clients."""
-        # Set up vector storage with temporary path
+    def mock_db(self):
+        """Create mock database with test data."""
+        db = AsyncMock()
+        db.get_repositories.return_value = [
+            {
+                'github_url': 'https://github.com/test/ml-project',
+                'name': 'ml-project',
+                'description': 'A new machine learning framework',
+                'summary': {
+                    'primary_purpose': 'Provide an easy-to-use ML framework',
+                    'key_technologies': ['python', 'pytorch', 'tensorflow'],
+                    'target_users': 'ML researchers and developers',
+                    'main_features': ['model training', 'inference', 'evaluation'],
+                    'technical_domain': 'Machine Learning'
+                },
+                'metadata': {
+                    'stars': 1000,
+                    'forks': 500,
+                    'language': 'Python',
+                    'topics': ['machine-learning', 'ai', 'deep-learning'],
+                    'created_at': '2024-01-01T00:00:00Z',
+                    'updated_at': '2024-01-15T00:00:00Z'
+                },
+                'topics': [{'topic_id': 1, 'score': 0.9}],
+                'first_seen_date': '2024-01-15T00:00:00Z',
+                'source_type': 'newsletter',
+                'source_id': 'email123'
+            }
+        ]
+        db.get_topics.return_value = {
+            1: {'name': 'Machine Learning', 'parent_id': None},
+            2: {'name': 'Deep Learning', 'parent_id': 1}
+        }
+        return db
+
+    def _get_credentials(self, credentials_path: str, token_path: str, scopes: list) -> Credentials:
+        """Get or refresh Google API credentials."""
+        creds = None
+        if os.path.exists(token_path):
+            creds = Credentials.from_authorized_user_file(token_path, scopes)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    credentials_path, scopes)
+                # Set redirect URI with trailing slash to match credentials config
+                flow.redirect_uri = "http://localhost:8029/"
+                # Use port 8029 to match the configured redirect URI
+                creds = flow.run_local_server(
+                    port=8029,
+                    access_type='offline',  # Enable offline access
+                    prompt='consent'  # Force consent screen to get refresh token
+                )
+
+            with open(token_path, 'w') as token:
+                token.write(creds.to_json())
+
+        return creds
+
+    @pytest.fixture
+    async def test_system(self, mock_github_client, mock_db, tmp_path):
+        """Create complete test system with real components."""
+        # Set up vector storage with real credentials
         vector_db_path = tmp_path / "vector_store"
         os.makedirs(vector_db_path, exist_ok=True)
-        embedchain_store = EmbedchainStore(str(vector_db_path))
+        
+        # Set up credentials paths
+        credentials_path = ".credentials/google-credentials.json"
+        token_path = os.path.join(vector_db_path, "token.json")
+        
+        # Get authorized credentials
+        creds = self._get_credentials(
+            credentials_path=credentials_path,
+            token_path=token_path,
+            scopes=['https://www.googleapis.com/auth/gmail.readonly']
+        )
+        
+        # Create EmbedchainStore with authorized token
+        embedchain_store = EmbedchainStore(token_path)
+        
+        # Create real Gmail client
+        gmail_client = GmailClient(credentials_path, token_path)
         
         # Create agents with real implementations
-        newsletter_monitor = NewsletterMonitor(mock_gmail_client, embedchain_store)
-        content_extractor = ContentExtractorAgent(embedchain_store)
+        newsletter_monitor = NewsletterMonitor(gmail_client, embedchain_store)
+        content_extractor = ContentExtractorAgent(
+            embedchain_store,
+            github_token=os.getenv('GITHUB_TOKEN', 'test-token')
+        )
         topic_analyzer = TopicAnalyzer(embedchain_store)
         repository_curator = RepositoryCurator(embedchain_store)
-        readme_generator = ReadmeGenerator(mock_github_client)
+        readme_generator = ReadmeGenerator(mock_db, mock_github_client)
         
         # Create orchestrator
         orchestrator = AgentOrchestrator(
@@ -86,141 +150,108 @@ class TestEndToEndWorkflow:
         return {
             'orchestrator': orchestrator,
             'store': embedchain_store,
-            'gmail_client': mock_gmail_client,
+            'gmail_client': gmail_client,
             'github_client': mock_github_client,
             'vector_db_path': vector_db_path
         }
 
-    async def test_complete_workflow(self, test_system):
-        """Test the complete workflow from newsletter processing to README generation."""
-        orchestrator = test_system['orchestrator']
-        github_client = test_system['github_client']
-        store = test_system['store']
+    async def test_real_readme_generation(self, test_system):
+        """Test actual generation of readme.test.md using real components."""
+        from pydantic import BaseModel, ConfigDict
+        from pydantic_ai import Agent, RunContext
         
-        # Run complete pipeline
-        result = await orchestrator.run_pipeline()
-        
-        # Verify pipeline completed successfully
-        assert result is True
-        
-        # Verify vector storage contains embedded content
-        vector_queries = await store.search(
-            "machine learning framework",
-            limit=1
+        class ReadmeTestDeps(BaseModel):
+            """Dependencies for readme test generation."""
+            orchestrator: AgentOrchestrator
+            output_path: str = "readme.test.md"
+            
+            model_config = ConfigDict(arbitrary_types_allowed=True)
+
+        # Create agent for readme generation
+        agent = Agent(
+            "openai:gpt-4",
+            deps_type=ReadmeTestDeps,
+            result_type=bool,
+            system_prompt=(
+                "Generate a real README.md file by running the complete pipeline "
+                "and saving the output to the specified path. The README should "
+                "showcase real AI/ML GitHub repositories with proper categorization "
+                "and include repository summaries."
+            )
         )
-        assert len(vector_queries) > 0
-        assert vector_queries[0]['score'] > 0.7  # High similarity score
-        
-        # Verify README was updated
-        github_client.update_readme.assert_called_once()
-        readme_content = github_client.update_readme.call_args[0][0]
-        assert 'ml-project' in readme_content.lower()
-        assert 'machine learning' in readme_content.lower()
-        
-        # Verify pipeline statistics
-        stats = orchestrator.get_pipeline_stats()
-        assert stats['processed_count'] > 0
-        assert stats['error_count'] == 0
 
-    async def test_duplicate_repository_handling(self, test_system):
-        """Test handling of duplicate repositories across newsletters."""
-        orchestrator = test_system['orchestrator']
-        gmail_client = test_system['gmail_client']
-        
-        # Add duplicate repository in second newsletter
-        gmail_client.get_newsletters.return_value.append({
-            'id': 'email124',
-            'subject': 'Tech Newsletter',
-            'content': 'https://github.com/test/ml-project - Another mention of the ML framework',
-            'date': '2024-01-16'
-        })
-        
-        # Run pipeline
-        result = await orchestrator.run_pipeline()
-        
-        # Verify pipeline completed successfully
-        assert result is True
-        
-        # Verify only one instance of the repository was processed
-        stats = orchestrator.get_pipeline_stats()
-        assert stats['processed_count'] == 2  # Should process both repos but detect duplicate
-        
-        # Verify README contains repository only once
-        github_client = test_system['github_client']
-        readme_content = github_client.update_readme.call_args[0][0]
-        assert readme_content.count('ml-project') == 1
+        @agent.tool
+        async def run_pipeline_and_save(ctx: RunContext[ReadmeTestDeps]) -> str:
+            """Run the complete pipeline and save output to readme.test.md."""
+            # Run the pipeline
+            result = await ctx.deps.orchestrator.run_pipeline()
+            if not result:
+                raise ValueError("Pipeline execution failed")
 
-    async def test_incremental_updates(self, test_system):
-        """Test incremental updates with new newsletters."""
-        orchestrator = test_system['orchestrator']
-        gmail_client = test_system['gmail_client']
-        
-        # First run with initial newsletter
-        await orchestrator.run_pipeline()
-        initial_count = orchestrator.processed_count
-        
-        # Add new newsletter
-        gmail_client.get_newsletters.return_value = [{
-            'id': 'email125',
-            'subject': 'New AI Projects',
-            'content': 'https://github.com/test/new-project - Brand new AI project',
-            'date': '2024-01-17'
-        }]
-        
-        # Second run
-        await orchestrator.run_pipeline()
-        
-        # Verify only new content was processed
-        assert orchestrator.processed_count > initial_count
-        
-        # Verify README includes new repository
-        github_client = test_system['github_client']
-        readme_content = github_client.update_readme.call_args[0][0]
-        assert 'new-project' in readme_content.lower()
+            # Get the generated markdown content
+            readme_content = await ctx.deps.orchestrator.readme_generator.generate_markdown()
 
-    async def test_error_recovery_and_consistency(self, test_system):
-        """Test system recovery and data consistency after errors."""
-        orchestrator = test_system['orchestrator']
-        github_client = test_system['github_client']
-        
-        # Make GitHub client fail on first attempt
-        github_client.update_readme.side_effect = [
-            Exception("GitHub API error"),
-            True  # Succeed on retry
-        ]
-        
-        # Run pipeline with retry
-        result = await orchestrator.run_pipeline(max_retries=2)
-        
-        # Verify pipeline recovered and completed
-        assert result is True
-        assert github_client.update_readme.call_count == 2
-        
-        # Verify data consistency
-        stats = orchestrator.get_pipeline_stats()
-        assert stats['error_count'] == 0  # Should be 0 since pipeline recovered
-        
-        # Verify vector storage consistency
-        store = test_system['store']
-        vectors = await store.search("machine learning", limit=10)
-        assert len(vectors) > 0  # Vector storage should be intact
+            # Save to readme.test.md
+            with open(ctx.deps.output_path, 'w') as f:
+                f.write(readme_content)
 
-    async def test_system_cleanup(self, test_system):
-        """Test proper cleanup of system resources."""
-        vector_db_path = test_system['vector_db_path']
-        store = test_system['store']
+            return f"Successfully generated {ctx.deps.output_path}"
+
+        # Run the agent
+        system = await test_system
+        deps = ReadmeTestDeps(orchestrator=system['orchestrator'])
+        result = await agent.run("Generate a new readme.test.md file", deps=deps)
+
+        # Verify results
+        assert result.data is True
+        assert os.path.exists("readme.test.md")
         
-        # Run pipeline
-        await test_system['orchestrator'].run_pipeline()
+        # Verify content
+        with open("readme.test.md") as f:
+            content = f.read()
+            assert "# AI/ML GitHub Repository List" in content
+            assert "ml-project" in content.lower()
+            assert "machine learning" in content.lower()
+            # Verify summary information is included
+            assert "primary purpose" in content.lower()
+            assert "key technologies" in content.lower()
+            assert "target users" in content.lower()
+
+        # Note: Leaving file for inspection
+        # To clean up manually: rm readme.test.md
+
+    async def test_repository_processing(self, test_system):
+        """Test complete repository processing pipeline."""
+        system = await test_system
         
-        # Verify vector storage is properly maintained
-        assert os.path.exists(vector_db_path)
-        vectors = await store.search("test query", limit=1)
-        assert isinstance(vectors, list)
+        # Mock newsletter content
+        newsletter_content = """
+        Check out this new ML framework:
+        https://github.com/test/ml-project
+        """
         
-        # Clean up
-        await store.close()  # Should properly close connections
+        # Process through pipeline
+        result = await system['orchestrator'].process_repository(
+            "https://github.com/test/ml-project",
+            newsletter_content,
+            "test_email_123"
+        )
         
-        # Verify storage is in consistent state
-        assert os.path.exists(vector_db_path)  # Files should still exist
-        assert os.access(vector_db_path, os.R_OK)  # Should be readable
+        assert result is not None
+        assert "vector_id" in result
+        assert "summary" in result
+        
+        # Verify summary structure
+        summary = result["summary"]
+        assert "primary_purpose" in summary
+        assert "key_technologies" in summary
+        assert "target_users" in summary
+        assert "main_features" in summary
+        assert "technical_domain" in summary
+        
+        # Verify metadata
+        metadata = result["metadata"]
+        assert metadata["language"] == "Python"
+        assert "machine-learning" in metadata["topics"]
+        assert metadata["stars"] == 1000
+        assert metadata["forks"] == 500

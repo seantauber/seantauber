@@ -75,20 +75,60 @@ class ReadmeGenerator:
             )
         )
 
+    def _convert_to_repository(self, repo_dict: Dict) -> Repository:
+        """Convert a dictionary to a Repository model.
+        
+        Args:
+            repo_dict: Dictionary containing repository data
+            
+        Returns:
+            Repository model instance
+            
+        Raises:
+            ValueError: If required fields are missing
+        """
+        try:
+            # Convert topics from database format to expected format
+            topics = repo_dict.get('topics', [])
+            if isinstance(topics, str):
+                # Handle case where topics might be stored as JSON string
+                import json
+                topics = json.loads(topics)
+            
+            return Repository(
+                github_url=repo_dict['github_url'],
+                description=repo_dict['description'],
+                topics=topics,
+                stars=repo_dict.get('stars', 0),
+                last_updated=repo_dict.get('last_updated', '')
+            )
+        except KeyError as e:
+            logger.error(f"Missing required field in repository data: {e}")
+            raise ValueError(f"Missing required field: {e}")
+        except Exception as e:
+            logger.error(f"Failed to convert repository data: {e}")
+            raise ValueError(f"Invalid repository data: {e}")
+
     async def generate_markdown(self) -> str:
         """Generate markdown content for README."""
         try:
             # Get repositories and topics
-            repositories = await self.db.get_repositories()
+            raw_repositories = await self.db.get_repositories()
             topics = await self.db.get_topics()
             
-            logger.debug(f"Retrieved {len(repositories)} repositories and {len(topics)} topics")
+            logger.debug(f"Retrieved {len(raw_repositories)} repositories and {len(topics)} topics")
             
-            # Validate repositories
-            for repo in repositories:
-                if not repo.github_url:
-                    logger.error("Found repository with invalid URL")
-                    raise ValueError("Invalid repository URL")
+            # Convert raw repositories to Repository objects
+            repositories = []
+            for repo_dict in raw_repositories:
+                try:
+                    # Convert from sqlite3.Row to dict if needed
+                    repo_data = dict(repo_dict) if hasattr(repo_dict, 'keys') else repo_dict
+                    repo = self._convert_to_repository(repo_data)
+                    repositories.append(repo)
+                except ValueError as e:
+                    logger.warning(f"Skipping invalid repository: {e}")
+                    continue
             
             # Generate markdown content
             content = ["# AI/ML GitHub Repository List\n"]
@@ -121,7 +161,7 @@ class ReadmeGenerator:
                 }
                 
                 for child_id, child_topic in child_topics.items():
-                    content.append(f"\n## {child_topic['name']}")
+                    content.append(f"\n### {child_topic['name']}")
                     
                     # Add repositories for this subcategory
                     child_repos = [
@@ -165,7 +205,18 @@ class ReadmeGenerator:
         """Get the current category structure with repositories."""
         try:
             topics = await ctx.deps.db.get_topics()
-            repositories = await ctx.deps.db.get_repositories()
+            raw_repositories = await ctx.deps.db.get_repositories()
+            
+            # Convert repositories to proper model objects
+            repositories = []
+            for repo_dict in raw_repositories:
+                try:
+                    repo_data = dict(repo_dict) if hasattr(repo_dict, 'keys') else repo_dict
+                    repo = self._convert_to_repository(repo_data)
+                    repositories.append(repo)
+                except ValueError as e:
+                    logger.warning(f"Skipping invalid repository in category structure: {e}")
+                    continue
             
             structure = {}
             for tid, topic in topics.items():

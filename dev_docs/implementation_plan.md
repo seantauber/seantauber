@@ -52,7 +52,7 @@ This document outlines the implementation plan broken down into discrete, manage
 ### Issue 4: Gmail Integration
 **Priority: High**
 - Set up Gmail API client with credentials
-- Implement Embedchain Gmail loader
+- Implement Gmail client with content truncation
 - Create newsletter filtering system
 - Implement content extraction
 - **Tests:**
@@ -60,6 +60,8 @@ This document outlines the implementation plan broken down into discrete, manage
   - Content filtering
   - Extraction accuracy
   - Error handling
+  - Content truncation
+  - Token limit compliance
 
 ### Issue 5: Firecrawl Integration
 **Priority: High**
@@ -73,19 +75,25 @@ This document outlines the implementation plan broken down into discrete, manage
   - Content processing
   - Storage integration
 
-## Phase 3: Agent Implementation
+## Phase 3: Components & Agents
 
-### Issue 6: Newsletter Monitor Agent
+### Issue 6: Newsletter Monitor Component
 **Priority: High**
-- Implement using Pydantic Agents framework
+- Implement as deterministic pipeline component
 - Add periodic newsletter checking
-- Create processing queue
+- Create processing queue with batching
 - Integrate with vector storage
+- Implement pipeline stages:
+  - fetch_newsletters()
+  - process_newsletters()
+  - run() coordinator
 - **Tests:**
   - Newsletter detection
   - Queue management
+  - Batch processing
   - Storage operations
-  - Error handling
+  - Error handling and recovery
+  - Pipeline stage coordination
 
 ### Issue 7: Content Extractor Agent
 **Priority: High**
@@ -139,15 +147,19 @@ This document outlines the implementation plan broken down into discrete, manage
 
 ### Issue 11: Agent Orchestration
 **Priority: High**
-- Implement agent communication
+- Implement hybrid orchestration system:
+  - Deterministic pipelines for predictable workflows
+  - Agent-based decisions for complex tasks
 - Add workflow management
 - Create error recovery
 - Integrate with SQLite for state
 - **Tests:**
-  - Communication flow
+  - Pipeline execution
+  - Agent communication
   - State management
   - Error handling
   - Database integration
+  - Token usage efficiency
 
 ### Issue 12: Vector Search Integration
 **Priority: Medium**
@@ -181,11 +193,13 @@ This document outlines the implementation plan broken down into discrete, manage
 - Add batch processing
 - Implement parallel execution
 - Create resource management
+- Optimize token usage in LLM interactions
 - **Tests:**
   - Operation speed
   - Resource usage
   - Scalability
   - Stability
+  - Token efficiency
 
 ### Issue 15: Monitoring System
 **Priority: Low**
@@ -219,6 +233,23 @@ This document outlines the implementation plan broken down into discrete, manage
 4. Document all public interfaces
 5. Regular code reviews required
 6. Performance testing for critical paths
+7. Consider token usage in LLM interactions
+8. Use deterministic pipelines for predictable workflows
+9. Reserve agent-based approaches for complex decisions
+
+## Component Architecture Guidelines
+
+1. Deterministic Components:
+   - Use for predictable, sequential workflows
+   - Implement clear pipeline stages
+   - Handle content processing without LLM
+   - Pass only metadata to agents for decisions
+
+2. Agent-Based Components:
+   - Use for complex decision making
+   - Implement with clear input/output contracts
+   - Minimize token usage in prompts
+   - Focus on high-level orchestration
 
 ## Deployment Strategy
 
@@ -236,3 +267,4 @@ This document outlines the implementation plan broken down into discrete, manage
 - Performance metrics met
 - Security requirements satisfied
 - Vector search accuracy > 95%
+- Efficient token usage in LLM interactions

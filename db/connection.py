@@ -157,3 +157,29 @@ class Database:
                 return cursor.fetchall()
         except DatabaseError as e:
             raise DatabaseError(f"Failed to fetch rows: {str(e)}")
+
+@contextmanager
+def get_db_connection() -> Generator[sqlite3.Connection, None, None]:
+    """Get a database connection for use in a context manager.
+    
+    This function provides a convenient way to get a database connection
+    that will be automatically closed when the context is exited.
+    
+    Yields:
+        sqlite3.Connection: Active database connection
+        
+    Example:
+        with get_db_connection() as conn:
+            result = conn.execute("SELECT * FROM table").fetchall()
+    """
+    db = Database()
+    db.connect()
+    try:
+        yield db._conn
+        db._conn.commit()
+    except Exception:
+        if db._conn:
+            db._conn.rollback()
+        raise
+    finally:
+        db.disconnect()

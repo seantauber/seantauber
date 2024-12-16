@@ -7,8 +7,9 @@ This document outlines the test-driven development (TDD) approach for the GenAI 
 1. Write tests first, then implement code
 2. Each feature must have comprehensive test coverage
 3. Tests should be independent and repeatable
-4. Mock external services to ensure reliable testing
-5. Regular test suite execution in CI/CD pipeline
+4. Mock external services to ensure reliable testing for unit and integration tests
+5. Use live dependencies for component testing to verify real-world behavior
+6. Regular test suite execution in CI/CD pipeline
 
 ## Test Categories
 
@@ -114,7 +115,83 @@ This document outlines the test-driven development (TDD) approach for the GenAI 
   - Permanent storage management
   - Data cleanup operations
 
-### 3. System Tests
+### 3. Component Tests
+
+#### Overview
+Component tests verify functionality with live external dependencies to ensure real-world compatibility and performance. These tests:
+- Use actual external services (Gmail, GitHub, LLM)
+- Operate on production-like data
+- Verify end-to-end workflows
+- Collect evidence of functionality
+- Monitor performance metrics
+
+#### Test Environment
+- Separate test credentials
+- Dedicated test database
+- Isolated vector storage
+- Production-like configuration
+- Comprehensive logging
+
+#### Component Test Areas
+
+1. Gmail/Newsletter Component
+   - Live Gmail account integration
+   - Real newsletter fetching
+   - Vector storage creation
+   - Database persistence
+   - Historical tracking
+   Evidence collection:
+   - Fetched newsletters in database
+   - Vector embeddings
+   - Processing timestamps
+   - Duplicate prevention logs
+
+2. Content Extraction Component
+   - Process actual newsletters
+   - Extract live GitHub links
+   - Real API calls for metadata
+   - Live LLM interactions
+   - Production database storage
+   Evidence collection:
+   - Extracted links vs source
+   - GitHub API responses
+   - Embedding quality metrics
+   - Processing step logs
+
+3. Topic Analysis Component
+   - Live LLM categorization
+   - Real repository processing
+   - Actual GitHub topics
+   - Production data updates
+   Evidence collection:
+   - LLM categorization responses
+   - Topic hierarchy verification
+   - Consistency checks
+   - Analysis decision logs
+
+4. Repository Curation Component
+   - Live repository data
+   - Real GitHub API usage
+   - LLM duplicate detection
+   - Actual metadata updates
+   Evidence collection:
+   - Metadata update records
+   - Duplicate detection results
+   - Data consistency checks
+   - Curation decision logs
+
+5. README Generation Component
+   - Live database content
+   - Actual markdown generation
+   - Real category organization
+   - Production README updates
+   Evidence collection:
+   - Generated content validation
+   - Category organization checks
+   - Format verification
+   - Generation process logs
+
+### 4. System Tests
 
 #### End-to-End Workflow
 - Test complete system operation
@@ -217,6 +294,7 @@ jobs:
 ### Minimum Coverage Levels
 - Unit Tests: 90% coverage
 - Integration Tests: 80% coverage
+- Component Tests: 70% coverage
 - System Tests: 70% coverage
 
 ### Critical Areas (100% Coverage Required)
@@ -237,6 +315,10 @@ jobs:
 - pytest-asyncio for async testing
 - factory_boy for test data generation
 - responses for HTTP mocking
+- pytest-env for environment management
+- python-dotenv for configuration
+- requests for live API testing
+- logging for evidence collection
 
 ### Development Tools
 - black for code formatting
@@ -280,7 +362,8 @@ jobs:
 ### Local Development
 1. Run unit tests during development
 2. Run integration tests before commit
-3. Run full suite before push
+3. Run component tests in isolated environment
+4. Run full suite before push
 
 ### CI/CD Pipeline
 1. Run all tests on push
@@ -295,12 +378,24 @@ jobs:
 2. Clean up test data
 3. Update mock data
 4. Review coverage reports
+5. Update test credentials
+6. Verify external service access
+7. Monitor API usage and limits
 
 ### Test Debt Management
 1. Track test issues in GitHub
 2. Regular test refactoring
 3. Update tests for new features
 4. Remove obsolete tests
+
+### Component Test Maintenance
+1. Review and update test credentials monthly
+2. Monitor external service health
+3. Track API quotas and usage
+4. Manage test data lifecycle
+5. Rotate logs and evidence data
+6. Update service expectations
+7. Document API changes
 
 ## Security Testing
 
@@ -333,3 +428,26 @@ jobs:
 3. Rate limit handling
 4. Database scaling
 5. Memory management
+
+## Component Test Success Criteria
+
+### Functionality Verification
+1. All components operate with live services
+2. Data flows through entire system
+3. External APIs respond correctly
+4. Vector operations work properly
+5. Database updates succeed
+
+### Performance Metrics
+1. Response times within limits
+2. API quota compliance
+3. Resource usage acceptable
+4. Error rates minimal
+5. Processing speed adequate
+
+### Evidence Quality
+1. Logs provide clear tracking
+2. All operations documented
+3. Errors properly recorded
+4. Metrics accurately captured
+5. Results easily verified

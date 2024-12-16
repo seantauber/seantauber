@@ -73,29 +73,40 @@ Implement Gmail integration using Embedchain.
 - [x] Handles API errors gracefully
 - [x] Test coverage > 90%
 
-## Core Agents
+## Core Components & Agents
 
-### Issue #4: Newsletter Monitor Agent
+### Issue #4: Newsletter Monitor Component
 **Priority: High**
 **Estimated Time: 2 days**
-**Labels: agent, core-functionality**
+**Labels: core-functionality**
 
-Implement the Newsletter Monitor agent with vector storage integration.
+Implement the Newsletter Monitor as a deterministic pipeline component (not agent-based).
 
 **Tasks:**
-- [x] Create basic agent structure
-- [x] Implement newsletter polling using Embedchain
-- [x] Add content validation
+- [x] Create basic component structure
+- [x] Implement newsletter polling using Gmail client
+- [x] Add content validation and truncation
 - [x] Integrate with vector storage
 - [x] Create processing queue
 - [x] Write unit tests
+- [x] Implement deterministic pipeline stages:
+  - [x] fetch_newsletters()
+  - [x] process_newsletters()
+  - [x] run() pipeline coordinator
 
 **Acceptance Criteria:**
-- [x] Agent successfully polls for newsletters
-- [x] Validates newsletter content
+- [x] Component successfully polls for newsletters
+- [x] Validates and truncates newsletter content
 - [x] Stores content in vector storage
-- [x] Queues content for processing
+- [x] Processes content in batches
+- [x] Handles errors with proper recovery
 - [x] Test coverage > 90%
+
+**Implementation Notes:**
+- Component uses deterministic pipeline approach instead of agent-based
+- Content processing happens in the pipeline without LLM involvement
+- Only metadata/stats passed to orchestrator for decision making
+- Proper content truncation to stay within token limits
 
 ### Issue #5: Content Extractor Agent
 **Priority: High**
@@ -110,11 +121,23 @@ Implement the Content Extractor agent with semantic analysis.
 - [x] Add metadata collection
 - [x] Create storage integration
 - [x] Write unit tests
+- [ ] Add LLM-based repository summarization:
+  - [ ] Fetch and process README content
+  - [ ] Generate structured repository summaries
+  - [ ] Store summaries with vector embeddings
+- [ ] Implement data migration:
+  - [ ] Create migration script for existing repositories
+  - [ ] Add README content to existing entries
+  - [ ] Generate summaries for existing repositories
+  - [ ] Update vector embeddings
+- [ ] Update tests for new functionality
 
 **Acceptance Criteria:**
 - [x] Successfully extracts GitHub links
 - [x] Performs semantic analysis
 - [x] Stores data with vector references
+- [ ] Generates meaningful repository summaries
+- [ ] Successfully migrates existing data
 - [x] Test coverage > 90%
 
 ### Issue #6: Topic Analyzer Agent
@@ -126,15 +149,29 @@ Implement the Topic Analyzer agent with semantic categorization.
 
 **Tasks:**
 - [x] Create fixed category structure
-- [x] Implement semantic topic identification
-- [x] Add parent/child relationship handling
-- [x] Integrate with vector storage
-- [x] Write unit tests
+- [ ] Implement LLM-based category prototype generation:
+  - [ ] Generate variant summaries for each category
+  - [ ] Create embeddings for category prototypes
+  - [ ] Store prototype data and embeddings
+- [ ] Implement semantic similarity matching:
+  - [ ] Compare repository summaries to category prototypes
+  - [ ] Calculate confidence scores
+  - [ ] Handle parent/child relationships
+- [ ] Add data migration:
+  - [ ] Generate category prototypes
+  - [ ] Recategorize existing repositories
+  - [ ] Update category assignments
+- [ ] Write unit tests
+- [ ] Add prototype management:
+  - [ ] Versioning for category prototypes
+  - [ ] Tools for updating prototypes
+  - [ ] Prototype validation
 
 **Acceptance Criteria:**
-- [x] Correctly identifies topics using embeddings
-- [x] Maintains category structure
-- [x] Handles relationships properly
+- [ ] Generates meaningful category prototypes
+- [ ] Correctly matches repositories to categories
+- [ ] Maintains category structure
+- [ ] Successfully migrates existing data
 - [x] Test coverage > 90%
 
 ### Issue #7: Repository Curator Agent
@@ -207,17 +244,26 @@ Implement comprehensive vector storage integration.
 Implement the orchestration system for agent coordination.
 
 **Tasks:**
-- [x] Create agent communication system
+- [x] Create hybrid orchestration system:
+  - [x] Deterministic components for known workflows
+  - [x] Agent-based decision making for complex tasks
 - [x] Implement processing pipeline
 - [x] Add vector storage coordination
 - [x] Create system state management
 - [x] Write integration tests
 
 **Acceptance Criteria:**
-- [x] Agents communicate properly
+- [x] Components and agents communicate properly
 - [x] Pipeline processes correctly
 - [x] Vector storage properly integrated
+- [x] Efficient token usage in LLM interactions
 - [x] Test coverage > 90%
+
+**Implementation Notes:**
+- Use deterministic pipelines for predictable workflows
+- Reserve agent-based decisions for complex tasks
+- Minimize LLM token usage by keeping content in pipeline
+- Pass only necessary metadata to LLM for decisions
 
 ### Issue #11: Testing & Documentation
 **Priority: High**
@@ -249,6 +295,99 @@ Complete testing suite and documentation for MVP, with focus on README updating 
 - [x] Overall test coverage > 90%
 - [x] README updates working properly in test environment
 
+### Issue #13: Component Testing Implementation
+**Priority: High**
+**Estimated Time: 5 days**
+**Labels: testing, core-functionality**
+
+Implement independent tests for each pipeline component to verify correct functionality with live external dependencies.
+
+**Tasks:**
+1. Gmail/Newsletter Component Test
+   - [x] Test with live Gmail account
+   - [x] Verify actual newsletter fetching
+   - [x] Confirm real-time database storage
+   - [x] Validate vector embeddings creation
+   - [x] Test with new incoming newsletters
+   - [x] Verify historical tracking works
+   - [x] Evidence collection:
+     - [x] Show fetched newsletters in database
+     - [x] Display vector embeddings
+     - [x] Demonstrate duplicate prevention
+     - [x] Log processing timestamps
+
+2. Content Extraction Component Test
+   - [x] Process actual newsletter content
+   - [x] Extract live GitHub repository links
+   - [x] Make real API calls for repository metadata
+   - [x] Create embeddings with live LLM service
+   - [x] Store in production database
+   - [ ] Generate repository summaries with LLM
+   - [ ] Validate summary quality and structure
+   - [x] Add human-readable verification:
+     - [x] Show extracted links vs source content
+     - [x] Display GitHub API responses
+     - [x] Show metadata collection results
+     - [ ] Display repository summaries
+     - [x] Summarize processing statistics
+
+3. Topic Analysis Component Test
+   - [ ] Generate and validate category prototypes
+   - [ ] Test prototype versioning and updates
+   - [ ] Process real repository descriptions
+   - [ ] Generate repository summaries
+   - [ ] Test similarity matching
+   - [ ] Update production database
+   - [ ] Add human-readable verification:
+     - [ ] Display category prototypes
+     - [ ] Show repository summaries
+     - [ ] Present similarity scores
+     - [ ] Display categorization rationale
+     - [ ] Summarize analysis decisions
+
+4. Repository Curation Component Test
+   - [ ] Test with live repository data
+   - [ ] Make real GitHub API calls
+   - [ ] Use LLM for duplicate detection
+   - [ ] Update actual metadata
+   - [ ] Add human-readable verification:
+     - [ ] Show metadata updates
+     - [ ] Display duplicate detection results
+     - [ ] Present similarity scores
+     - [ ] Summarize curation decisions
+
+5. README Generation Component Test
+   - [ ] Use live database content
+   - [ ] Generate actual markdown
+   - [ ] Test with real categories
+   - [ ] Create production README
+   - [ ] Add human-readable verification:
+     - [ ] Show category organization
+     - [ ] Display repository grouping
+     - [ ] Present markdown formatting
+     - [ ] Summarize generation process
+
+**Acceptance Criteria:**
+- Each component successfully processes live data
+- External API calls (Gmail, GitHub, LLM) work correctly
+- Data flows properly through production database
+- Vector operations work with real embeddings
+- Clear evidence of successful processing
+- Proper error handling with live services
+- Documentation of test procedures
+- Reproducible test process
+- Human-readable verification output for all components
+
+**Implementation Notes:**
+- Use production API credentials
+- Test with real-world data volumes
+- Monitor API rate limits
+- Track processing times
+- Log all external service interactions
+- Document any service-specific limitations
+- Maintain error recovery procedures
+- Implement clear, formatted output for verification
+
 ### Issue #12: GitHub Actions Setup
 **Priority: High**
 **Estimated Time: 1 day**
@@ -277,6 +416,9 @@ Set up GitHub Actions for automated execution. Requires Issue #11 to be complete
 3. Write tests before implementation
 4. Update documentation as you go
 5. Regular code reviews required
+6. Consider token usage and LLM interaction efficiency
+7. Use deterministic pipelines where workflow is predictable
+8. Reserve agent-based approaches for complex decision making
 
 ## Success Metrics
 
@@ -286,3 +428,52 @@ Set up GitHub Actions for automated execution. Requires Issue #11 to be complete
 - Vector operations performing within targets
 - GitHub Actions workflow successful
 - README updates working properly
+- Efficient token usage in LLM interactions
+
+## Data Migration Notes
+
+1. Content Extractor Migration:
+- Existing repositories need README content fetched
+- LLM summaries must be generated
+- New vector embeddings created
+- Maintain existing metadata
+
+2. Topic Analyzer Migration:
+- Generate category prototypes before migration
+- Create prototype embeddings
+- Recategorize all existing repositories
+- Validate new categorizations
+
+3. Database Considerations:
+- Add new columns for summaries
+- Version control for category prototypes
+- Backup existing data before migration
+- Rollback plan if needed
+
+4. Testing Requirements:
+- Verify data integrity after migration
+- Compare old vs new categorizations
+- Validate embedding quality
+- Test system performance with new data structure
+
+## Implementation Strategy
+
+1. Phase 1: Infrastructure Updates
+- Add new database fields
+- Implement prototype storage
+- Create migration scripts
+
+2. Phase 2: Content Enhancement
+- Fetch README content
+- Generate repository summaries
+- Update vector embeddings
+
+3. Phase 3: Categorization
+- Generate category prototypes
+- Implement new matching logic
+- Migrate existing categorizations
+
+4. Phase 4: Validation
+- Test all components
+- Verify data integrity
+- Document changes
