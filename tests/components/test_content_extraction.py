@@ -50,9 +50,11 @@ class TestContentExtractionComponent:
                 print("\nProcessing Source Newsletters:")
                 print_newsletter_summary("Input Newsletters", newsletters, show_content=True)
                 
-                # Track GitHub URL counts
-                url_counts = Counter()
-                total_urls = 0
+                # Track URL counts
+                github_url_counts = Counter()
+                other_url_counts = Counter()
+                total_github_urls = 0
+                total_other_urls = 0
                 
                 print("\nNewsletter Processing Results:")
                 print("=" * 80)
@@ -63,80 +65,85 @@ class TestContentExtractionComponent:
                     print("-" * 40)
                     
                     try:
-                        # Extract repositories
-                        repos = content_extractor.extract_repository_links(newsletter['content'])
-                        url_counts[len(repos)] += 1
-                        total_urls += len(repos)
+                        # Process newsletter content
+                        results = await content_extractor.process_newsletter_content(
+                            email_id=newsletter['email_id'],
+                            content=newsletter['content']
+                        )
                         
-                        # Print content preview and found URLs
-                        content_preview = newsletter['content'][:200].replace('\n', ' ').strip()
-                        print(f"Content Preview: {content_preview}...")
+                        if not results:
+                            print("No results from processing")
+                            continue
+                            
+                        result = results[0]
+                        
+                        # Process GitHub repositories
+                        repos = result.get('repositories', [])
+                        github_url_counts[len(repos)] += 1
+                        total_github_urls += len(repos)
                         
                         if repos:
-                            print(f"\nFound {len(repos)} GitHub URLs:")
-                            for url in repos:
-                                print(f"- {url}")
-                                
-                                # Process repository
-                                try:
-                                    print(f"\nProcessing repository: {url}")
-                                    result = await content_extractor.process_newsletter_content(
-                                        email_id=newsletter['email_id'],
-                                        content=url
-                                    )
+                            print(f"\nFound {len(repos)} GitHub repositories:")
+                            for repo_data in repos:
+                                print(f"\nRepository: {repo_data['url']}")
+                                if repo_data['repository_id'] > 0:
+                                    stored_urls.add(repo_data['url'])
                                     
-                                    if result and result[0]['repository_id'] > 0:
-                                        repo_data = result[0]
-                                        stored_urls.add(url)
-                                        
-                                        # Print repository information
-                                        print("\nRepository Analysis:")
-                                        print("-" * 40)
-                                        print(f"URL: {url}")
-                                        print(f"Repository ID: {repo_data['repository_id']}")
-                                        
-                                        # Print metadata
-                                        metadata = repo_data['metadata']
-                                        print("\nMetadata:")
-                                        print(f"Name: {metadata['name']}")
-                                        print(f"Description: {metadata['description']}")
-                                        print(f"Stars: {metadata['stars']}")
-                                        print(f"Forks: {metadata['forks']}")
-                                        print(f"Language: {metadata['language']}")
-                                        print(f"Topics: {', '.join(metadata['topics'])}")
-                                        
-                                        # Print summary and categories
-                                        summary = repo_data['summary']
-                                        print("\nSummary:")
-                                        print(f"Primary Purpose: {summary['primary_purpose']}")
-                                        print(f"Technical Domain: {summary['technical_domain']}")
-                                        print(f"Key Technologies: {', '.join(summary['key_technologies'])}")
-                                        print(f"Target Users: {summary['target_users']}")
-                                        print(f"Main Features: {', '.join(summary['main_features'])}")
-                                        
-                                        if summary.get('is_genai', False):
-                                            print("\nCategories:")
-                                            for cat in summary['ranked_categories']:
-                                                print(f"{cat['rank']}. {cat['category']}")
-                                            
-                                            suggestion = summary.get('new_category_suggestion')
-                                            if suggestion is not None:
-                                                print("\nNew Category Suggestion:")
-                                                print(f"Name: {suggestion['name']}")
-                                                print(f"Parent: {suggestion.get('parent_category', 'N/A')}")
-                                                print(f"Description: {suggestion['description']}")
-                                        else:
-                                            print("\nNot a GenAI Repository:")
-                                            print(f"Category: {summary.get('other_category_description', 'N/A')}")
-                                        
-                                        # Store result
-                                        extraction_results.append(repo_data)
+                                    # Print repository information
+                                    print("\nRepository Analysis:")
+                                    print("-" * 40)
                                     
-                                except Exception as e:
-                                    print(f"Error processing repository: {str(e)}")
-                                    continue
-                        else:
-                            print("No GitHub URLs found")
+                                    # Print metadata
+                                    metadata = repo_data['metadata']
+                                    print("\nMetadata:")
+                                    print(f"Name: {metadata['name']}")
+                                    print(f"Description: {metadata['description']}")
+                                    print(f"Stars: {metadata['stars']}")
+                                    print(f"Forks: {metadata['forks']}")
+                                    print(f"Language: {metadata['language']}")
+                                    print(f"Topics: {', '.join(metadata['topics'])}")
+                                    
+                                    # Print summary and categories
+                                    summary = repo_data['summary']
+                                    print("\nSummary:")
+                                    print(f"Primary Purpose: {summary['primary_purpose']}")
+                                    print(f"Technical Domain: {summary['technical_domain']}")
+                                    print(f"Key Technologies: {', '.join(summary['key_technologies'])}")
+                                    print(f"Target Users: {summary['target_users']}")
+                                    print(f"Main Features: {', '.join(summary['main_features'])}")
+                                    
+                                    if summary.get('is_genai', False):
+                                        print("\nCategories:")
+                                        for cat in summary['ranked_categories']:
+                                            print(f"{cat['rank']}. {cat['category']}")
+                                        
+                                        suggestion = summary.get('new_category_suggestion')
+                                        if suggestion is not None:
+                                            print("\nNew Category Suggestion:")
+                                            print(f"Name: {suggestion['name']}")
+                                            print(f"Parent: {suggestion.get('parent_category', 'N/A')}")
+                                            print(f"Description: {suggestion['description']}")
+                                    else:
+                                        print("\nNot a GenAI Repository:")
+                                        print(f"Category: {summary.get('other_category_description', 'N/A')}")
+                                    
+                                    # Store result
+                                    extraction_results.append(repo_data)
+                        
+                        # Process other URLs
+                        urls = result.get('urls', [])
+                        other_url_counts[len(urls)] += 1
+                        total_other_urls += len(urls)
+                        
+                        if urls:
+                            print(f"\nFound {len(urls)} other URLs:")
+                            for url_data in urls:
+                                print(f"\nURL: {url_data['url']}")
+                                print(f"Content Length: {len(url_data['content'])} characters")
+                                print("\nContent Preview:")
+                                print("-" * 40)
+                                preview = url_data['content'][:200].replace('\n', ' ').strip()
+                                print(f"{preview}...")
                             
                     except Exception as e:
                         print(f"Error processing newsletter: {str(e)}")
@@ -146,17 +153,24 @@ class TestContentExtractionComponent:
                 print("\nProcessing Summary:")
                 print("=" * 80)
                 print(f"Total Newsletters Processed: {len(newsletters)}")
-                print(f"Total GitHub URLs Found: {total_urls}")
+                print(f"\nGitHub Repositories:")
+                print(f"Total Found: {total_github_urls}")
                 print(f"Successfully Processed: {len(extraction_results)}")
-                print("\nNewsletter URL Distribution:")
-                for url_count, newsletter_count in sorted(url_counts.items()):
+                print("\nRepository Distribution:")
+                for url_count, newsletter_count in sorted(github_url_counts.items()):
+                    print(f"- Newsletters with {url_count} repositories: {newsletter_count}")
+                
+                print(f"\nOther URLs:")
+                print(f"Total Found: {total_other_urls}")
+                print("\nURL Distribution:")
+                for url_count, newsletter_count in sorted(other_url_counts.items()):
                     print(f"- Newsletters with {url_count} URLs: {newsletter_count}")
                 
                 # Verify database storage
                 print("\nVerifying Database Storage:")
                 print("=" * 80)
                 
-                # Check repositories table
+                # Check repositories
                 repo_count = db.fetch_one(
                     "SELECT COUNT(*) as count FROM repositories"
                 )['count']
@@ -173,13 +187,21 @@ class TestContentExtractionComponent:
                 )['count']
                 print(f"Category Relationships: {category_count}")
                 
+                # Check cached URLs
+                cached_url_count = db.fetch_one(
+                    "SELECT COUNT(*) as count FROM content_cache"
+                )['count']
+                print(f"Cached URLs: {cached_url_count}")
+                
                 # Basic validation
                 assert len(newsletters) > 0, "No newsletters were found to process"
-                assert total_urls >= 0, "URL counting error"
+                assert total_github_urls >= 0, "Repository counting error"
+                assert total_other_urls >= 0, "URL counting error"
                 assert len(extraction_results) > 0, "No repositories were processed"
                 assert repo_count > 0, "No repositories were stored in database"
                 assert topic_count > 0, "No topics were stored in database"
                 assert category_count > 0, "No categories were stored in database"
+                assert cached_url_count > 0, "No URLs were cached"
                 
                 print("\nExtraction pipeline completed successfully")
             

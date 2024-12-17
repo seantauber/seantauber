@@ -3,7 +3,10 @@
 import logging
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Any
+import importlib.util
+import os
+from pathlib import Path
 
 from db.connection import Database, DatabaseError
 
@@ -151,6 +154,27 @@ class InitialMigration(Migration):
         except DatabaseError as e:
             raise DatabaseError(f"Failed to remove tables: {str(e)}")
 
+class MigrationWrapper(Migration):
+    """Wrapper for migration modules."""
+    
+    def __init__(self, name: str, module: Any) -> None:
+        """Initialize migration wrapper.
+        
+        Args:
+            name: Migration name
+            module: Migration module
+        """
+        self.name = name
+        self.module = module
+    
+    def upgrade(self, db: Database) -> None:
+        """Apply migration changes."""
+        self.module.upgrade(db)
+    
+    def downgrade(self, db: Database) -> None:
+        """Revert migration changes."""
+        self.module.downgrade(db)
+
 class MigrationManager:
     """Manages database migrations."""
     
@@ -161,9 +185,39 @@ class MigrationManager:
             db: Database instance.
         """
         self.db = db
-        self._migrations: List[Migration] = [
-            InitialMigration()
-        ]
+        self._migrations: List[Migration] = self._load_migrations()
+    
+    def _load_migrations(self) -> List[Migration]:
+        """Load all migrations in order.
+        
+        Returns:
+            List of migrations.
+        """
+        migrations = [InitialMigration()]
+        
+        # Get migration files
+        migration_dir = Path(__file__).parent / "migrations"
+        if not migration_dir.exists():
+            return migrations
+            
+        migration_files = sorted([
+            f for f in migration_dir.glob("*.py")
+            if f.name.startswith("0")
+        ])
+        
+        # Load each migration module
+        for file_path in migration_files:
+            name = file_path.stem
+            spec = importlib.util.spec_from_file_location(name, file_path)
+            if spec is None or spec.loader is None:
+                continue
+                
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            
+            migrations.append(MigrationWrapper(name, module))
+        
+        return migrations
     
     def _migrations_table_exists(self) -> bool:
         """Check if migrations table exists.
@@ -250,7 +304,11 @@ class MigrationManager:
         applied = self._get_applied_migrations()
         
         for migration in self._migrations:
-            name = migration.__class__.__name__
+            name = (
+                migration.name 
+                if isinstance(migration, MigrationWrapper)
+                else migration.__class__.__name__
+            )
             if name not in applied:
                 logger.info(f"Applying migration: {name}")
                 try:
@@ -275,7 +333,11 @@ class MigrationManager:
         applied = self._get_applied_migrations()
         
         for migration in reversed(self._migrations):
-            name = migration.__class__.__name__
+            name = (
+                migration.name 
+                if isinstance(migration, MigrationWrapper)
+                else migration.__class__.__name__
+            )
             if name in applied:
                 logger.info(f"Reverting migration: {name}")
                 try:

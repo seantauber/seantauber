@@ -13,6 +13,7 @@ from pathlib import Path
 from pydantic import BaseModel
 from pydantic_ai import Agent, RunContext, ModelRetry
 from db.connection import Database
+from processing.core.newsletter_url_processor import NewsletterUrlProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +64,10 @@ class ContentExtractorAgent:
         self.github_token = github_token
         self.db = db or Database()
         self.max_age_hours = max_age_hours
-        self.processed_repos = set()  # Track processed repos to avoid duplicates
+        self.processed_repos = set()
+        
+        # Add URL processor
+        self.url_processor = NewsletterUrlProcessor(db=self.db)
         
         # Load taxonomy
         taxonomy_path = Path(__file__).parent.parent / "config" / "taxonomy.yaml"
@@ -73,9 +77,8 @@ class ContentExtractorAgent:
         # Build valid category set
         self.valid_categories = set()
         for category, data in self.taxonomy.items():
-            self.valid_categories.add(category)  # Add top-level category
+            self.valid_categories.add(category)
             for subcategory in data["subcategories"]:
-                # Add both full path and subcategory name
                 self.valid_categories.add(f"{category}/{subcategory}")
                 self.valid_categories.add(subcategory)
         
@@ -89,8 +92,8 @@ class ContentExtractorAgent:
         # Agent for repository summarization and categorization
         self.summarization_agent = Agent(
             "openai:gpt-4o-mini",
-            result_type=RepositorySummary,  # Use Pydantic model for structured output
-            retries=2,  # Allow retries for validation failures
+            result_type=RepositorySummary,
+            retries=2,
             system_prompt=(
                 "You are a specialized agent for analyzing GitHub repositories in the "
                 "Generative AI and Large Language Model (LLM) space. Your task is to:\n\n"
@@ -522,14 +525,52 @@ class ContentExtractorAgent:
         try:
             logger.info(f"Processing newsletter content for email {email_id}")
             
-            # Extract repository links
-            repo_urls = self.extract_repository_links(content)
-            if not repo_urls:
-                logger.info("No repository links found in content")
-                return []
+            # Get newsletter ID
+            newsletter = self.db.fetch_one(
+                "SELECT id FROM newsletters WHERE email_id = ?",
+                (email_id,)
+            )
+            if not newsletter:
+                raise ContentExtractionError(f"Newsletter not found: {email_id}")
             
-            # Process each repository
-            results = []
+            newsletter_id = newsletter['id']
+            
+            # Extract repository links from newsletter content
+            repo_urls = set(self.extract_repository_links(content))
+            logger.info(f"Found {len(repo_urls)} GitHub repositories in newsletter content")
+            
+            # Extract and process other URLs
+            all_urls = self.url_processor.url_fetcher.extract_urls(content)
+            other_urls = [url for url in all_urls if url not in repo_urls]
+            
+            # Process other URLs and extract GitHub links from their content
+            url_results = []
+            for url in other_urls:
+                try:
+                    url_content = await self.url_processor.fetch_and_cache_url_content(
+                        url,
+                        newsletter_id
+                    )
+                    if url_content:
+                        # Store URL content result
+                        url_results.append({
+                            "url": url,
+                            "content": url_content
+                        })
+                        
+                        # Extract GitHub links from URL content
+                        content_repo_urls = set(self.extract_repository_links(url_content))
+                        if content_repo_urls:
+                            logger.info(
+                                f"Found {len(content_repo_urls)} GitHub repositories in content from {url}"
+                            )
+                            repo_urls.update(content_repo_urls)
+                except Exception as e:
+                    logger.error(f"Failed to process URL {url}: {str(e)}")
+                    continue
+            
+            # Process all found repository URLs
+            repo_results = []
             for url in repo_urls:
                 try:
                     # Skip if already processed
@@ -561,7 +602,7 @@ class ContentExtractorAgent:
                     # Mark as processed
                     self.processed_repos.add(url)
                     
-                    results.append({
+                    repo_results.append({
                         "url": url,
                         "repository_id": repo_id,
                         "summary": summary.model_dump(),
@@ -570,11 +611,18 @@ class ContentExtractorAgent:
                     
                 except Exception as e:
                     logger.error(f"Failed to process repository {url}: {str(e)}")
-                    # Continue processing other repositories
                     continue
             
-            logger.info(f"Successfully processed {len(results)} repositories")
-            return results
+            logger.info(
+                f"Successfully processed {len(repo_results)} repositories "
+                f"({len(repo_urls - set(r['url'] for r in repo_results))} failed) "
+                f"and {len(url_results)} other URLs"
+            )
+            
+            return [{
+                "repositories": repo_results,
+                "urls": url_results
+            }]
             
         except Exception as e:
             logger.error(f"Failed to process newsletter content: {str(e)}")

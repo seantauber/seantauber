@@ -3,7 +3,7 @@
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator, Optional
+from typing import Generator, Optional, Dict, List, Any
 
 class DatabaseError(Exception):
     """Base exception for database operations."""
@@ -157,6 +157,70 @@ class Database:
                 return cursor.fetchall()
         except DatabaseError as e:
             raise DatabaseError(f"Failed to fetch rows: {str(e)}")
+
+    async def get_repositories(self) -> List[Dict[str, Any]]:
+        """Get all repositories from the database.
+        
+        Returns:
+            List of repository dictionaries.
+            
+        Raises:
+            DatabaseError: If query fails.
+        """
+        try:
+            rows = self.fetch_all(
+                """
+                SELECT r.*, GROUP_CONCAT(rc.topic_id) as topic_ids,
+                       GROUP_CONCAT(rc.confidence_score) as confidence_scores
+                FROM repositories r
+                LEFT JOIN repository_categories rc ON r.id = rc.repository_id
+                GROUP BY r.id
+                """
+            )
+            
+            # Convert rows to dictionaries and process topic relationships
+            repositories = []
+            for row in rows:
+                repo_dict = dict(row)
+                
+                # Process topic relationships
+                topic_ids = row['topic_ids']
+                confidence_scores = row['confidence_scores']
+                
+                if topic_ids and confidence_scores:
+                    topic_ids = [int(id) for id in topic_ids.split(',')]
+                    confidence_scores = [float(score) for score in confidence_scores.split(',')]
+                    repo_dict['topics'] = [
+                        {'topic_id': tid, 'confidence_score': score}
+                        for tid, score in zip(topic_ids, confidence_scores)
+                    ]
+                else:
+                    repo_dict['topics'] = []
+                
+                repositories.append(repo_dict)
+            
+            return repositories
+            
+        except Exception as e:
+            raise DatabaseError(f"Failed to get repositories: {str(e)}")
+
+    async def get_topics(self) -> Dict[int, Dict[str, Any]]:
+        """Get all topics from the database.
+        
+        Returns:
+            Dictionary mapping topic IDs to topic data.
+            
+        Raises:
+            DatabaseError: If query fails.
+        """
+        try:
+            rows = self.fetch_all("SELECT * FROM topics")
+            
+            # Convert to dictionary keyed by topic ID
+            return {row['id']: dict(row) for row in rows}
+            
+        except Exception as e:
+            raise DatabaseError(f"Failed to get topics: {str(e)}")
 
 @contextmanager
 def get_db_connection() -> Generator[sqlite3.Connection, None, None]:

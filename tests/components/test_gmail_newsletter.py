@@ -55,9 +55,9 @@ class TestGmailNewsletterComponent:
         
         db = setup_database
         try:
-            # Fetch new newsletters
+            # Fetch new newsletters (limited to 10)
             print("\nFetching newsletters from Gmail...")
-            newsletters = await newsletter_monitor.fetch_newsletters()
+            newsletters = await newsletter_monitor.fetch_newsletters(max_results=10)
             
             # Save newsletters to database
             for newsletter in newsletters:
@@ -150,7 +150,7 @@ class TestGmailNewsletterComponent:
             
             if not unprocessed:
                 print("\nFetching new newsletters for processing...")
-                newsletters = await newsletter_monitor.fetch_newsletters(max_results=5)
+                newsletters = await newsletter_monitor.fetch_newsletters(max_results=10)  # Updated to 10
                 
                 # Save new newsletters
                 for newsletter in newsletters:

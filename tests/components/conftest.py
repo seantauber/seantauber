@@ -3,11 +3,13 @@ import json
 import os
 from datetime import datetime, timezone, UTC
 import re
+import sqlite3
 
 import pytest
 from processing.embedchain_store import EmbedchainStore
 from tests.config import get_test_settings
 from db.connection import Database
+from db.migrations import MigrationManager
 
 def print_newsletter_summary(title: str, newsletters: list, show_content: bool = False):
     """Print summary of newsletters."""
@@ -71,143 +73,75 @@ def vector_store() -> EmbedchainStore:
     store = EmbedchainStore(token_path=settings.GMAIL_TOKEN_PATH)
     yield store
 
+def ensure_content_cache_table(db_path: str) -> None:
+    """Ensure content_cache table exists with correct schema."""
+    # Use direct SQLite connection to avoid transaction issues
+    conn = sqlite3.connect(db_path)
+    try:
+        # Check if table exists
+        result = conn.execute("""
+            SELECT name FROM sqlite_master 
+            WHERE type='table' AND name='content_cache'
+        """).fetchone()
+        
+        if result:
+            # Drop existing table to ensure clean schema
+            conn.execute("DROP TABLE content_cache")
+        
+        # Create table and indexes in a single transaction
+        conn.executescript("""
+            BEGIN TRANSACTION;
+            
+            CREATE TABLE content_cache (
+                id INTEGER PRIMARY KEY,
+                url TEXT NOT NULL UNIQUE,
+                content_type TEXT NOT NULL DEFAULT 'text/markdown',
+                content TEXT NOT NULL,
+                last_accessed TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                expires_at TIMESTAMP NOT NULL,
+                newsletter_id INTEGER,
+                source TEXT NOT NULL DEFAULT 'manual',
+                FOREIGN KEY (newsletter_id) REFERENCES newsletters(id)
+                    ON DELETE SET NULL
+                    ON UPDATE CASCADE
+            );
+            
+            CREATE INDEX idx_content_cache_url 
+            ON content_cache(url);
+            
+            CREATE INDEX idx_content_cache_expires 
+            ON content_cache(expires_at);
+            
+            CREATE INDEX idx_content_cache_newsletter 
+            ON content_cache(newsletter_id);
+            
+            COMMIT;
+        """)
+        
+        # Verify table structure
+        columns = conn.execute("PRAGMA table_info(content_cache)").fetchall()
+        print("\nContent Cache Table Structure:")
+        for col in columns:
+            print(f"Column: {col[1]}, Type: {col[2]}")
+        
+    finally:
+        conn.close()
+
 @pytest.fixture(autouse=True)
 def setup_test_database():
-    """Set up test database with sample data."""
+    """Set up test database with schema."""
     settings = get_test_settings()
-    db = Database(settings.TEST_DATABASE_PATH)
+    db_path = settings.TEST_DATABASE_PATH
+    
+    # Ensure content_cache table exists with correct schema
+    ensure_content_cache_table(db_path)
+    
+    # Create database connection for tests
+    db = Database(db_path)
     db.connect()
     
     try:
-        with db.transaction() as conn:
-            # Clear existing data
-            conn.execute("DELETE FROM newsletters")
-            conn.execute("DELETE FROM repositories")
-            
-            # Insert sample newsletters
-            now = datetime.now(UTC)
-            newsletters = [
-                {
-                    'email_id': 'test_email_1',
-                    'subject': 'AI/ML Weekly Newsletter #1',
-                    'content': """
-                    Check out these awesome AI/ML projects:
-                    
-                    1. https://github.com/huggingface/transformers - State-of-the-art NLP
-                    2. https://github.com/pytorch/pytorch - Deep learning framework
-                    3. https://github.com/microsoft/DeepSpeed - Deep learning optimization
-                    """,
-                    'received_date': now.isoformat(),
-                    'processed_date': None,
-                    'storage_status': 'active',
-                    'processing_status': 'completed',
-                    'vector_id': None,
-                    'metadata': json.dumps({
-                        'source': 'test',
-                        'importance': 'high'
-                    })
-                },
-                {
-                    'email_id': 'test_email_2',
-                    'subject': 'AI/ML Weekly Newsletter #2',
-                    'content': """
-                    More great AI/ML repositories:
-                    
-                    1. https://github.com/tensorflow/tensorflow - Machine learning platform
-                    2. https://github.com/scikit-learn/scikit-learn - ML tools
-                    3. https://github.com/ray-project/ray - Distributed computing
-                    """,
-                    'received_date': now.isoformat(),
-                    'processed_date': None,
-                    'storage_status': 'active',
-                    'processing_status': 'completed',
-                    'vector_id': None,
-                    'metadata': json.dumps({
-                        'source': 'test',
-                        'importance': 'high'
-                    })
-                }
-            ]
-            
-            for newsletter in newsletters:
-                conn.execute(
-                    """
-                    INSERT INTO newsletters 
-                    (email_id, subject, content, received_date, processed_date,
-                    storage_status, processing_status, vector_id, metadata)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """,
-                    (
-                        newsletter['email_id'],
-                        newsletter['subject'],
-                        newsletter['content'],
-                        newsletter['received_date'],
-                        newsletter['processed_date'],
-                        newsletter['storage_status'],
-                        newsletter['processing_status'],
-                        newsletter['vector_id'],
-                        newsletter['metadata']
-                    )
-                )
-            
-            # Insert sample repositories
-            repositories = [
-                {
-                    'github_url': 'https://github.com/huggingface/transformers',
-                    'name': 'transformers',
-                    'description': 'State-of-the-art Natural Language Processing',
-                    'first_seen_date': now.isoformat(),
-                    'last_mentioned_date': now.isoformat(),
-                    'mention_count': 1,
-                    'vector_id': None,
-                    'metadata': json.dumps({
-                        'stars': 1000,
-                        'forks': 500,
-                        'language': 'Python',
-                        'topics': ['nlp', 'machine-learning'],
-                        'created_at': '2024-01-01T00:00:00Z',
-                        'updated_at': '2024-01-02T00:00:00Z'
-                    })
-                },
-                {
-                    'github_url': 'https://github.com/pytorch/pytorch',
-                    'name': 'pytorch',
-                    'description': 'Deep Learning Framework',
-                    'first_seen_date': now.isoformat(),
-                    'last_mentioned_date': now.isoformat(),
-                    'mention_count': 1,
-                    'vector_id': None,
-                    'metadata': json.dumps({
-                        'stars': 2000,
-                        'forks': 1000,
-                        'language': 'Python',
-                        'topics': ['deep-learning', 'machine-learning'],
-                        'created_at': '2024-01-01T00:00:00Z',
-                        'updated_at': '2024-01-02T00:00:00Z'
-                    })
-                }
-            ]
-            
-            for repo in repositories:
-                conn.execute(
-                    """
-                    INSERT INTO repositories
-                    (github_url, first_seen_date, last_mentioned_date, mention_count,
-                    vector_id, metadata)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                    """,
-                    (
-                        repo['github_url'],
-                        repo['first_seen_date'],
-                        repo['last_mentioned_date'],
-                        repo['mention_count'],
-                        repo['vector_id'],
-                        repo['metadata']
-                    )
-                )
-        
         yield db
-        
     finally:
         db.disconnect()
 

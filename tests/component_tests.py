@@ -12,16 +12,20 @@ Components:
    categories and confidence thresholds
 4. Repository Curation - Tests repository metadata management and semantic
    duplicate detection
+5. README Generation - Tests generation of repository listing with live database
+   content and proper category organization
 """
 
 from tests.components.test_gmail_newsletter import TestGmailNewsletterComponent
 from tests.components.test_content_extraction import TestContentExtractionComponent
 from tests.components.test_topic_analysis import TestTopicAnalysisComponent
 from tests.components.test_repository_curation import TestRepositoryCurationComponent
+from tests.components.test_readme_generation import TestReadmeGenerationComponent
 
 __all__ = [
     'TestGmailNewsletterComponent',
     'TestContentExtractionComponent',
     'TestTopicAnalysisComponent',
-    'TestRepositoryCurationComponent'
+    'TestRepositoryCurationComponent',
+    'TestReadmeGenerationComponent'
 ]
