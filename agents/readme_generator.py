@@ -1,9 +1,10 @@
 """README Generator agent for maintaining the repository list."""
 
+import json
 import logging
+import logfire
 from datetime import datetime
 from typing import Dict, List, Optional
-from pathlib import Path
 
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext, ModelRetry
@@ -38,27 +39,27 @@ class ReadmeContent(BaseModel):
 class ReadmeGenerator:
     """Agent for generating and updating the repository README."""
     
-    def __init__(self, db, github_client):
+    def __init__(self, db):
         """Initialize the ReadmeGenerator agent.
         
         Args:
-            db: Database connection
-            github_client: GitHub client for README updates
+            db: Database connection for fetching repository and topic data
         """
         try:
+            self.db = db
+
             # Initialize agent for markdown generation
             self._agent = Agent(
-                "openai:gpt-4",
-                result_type=ReadmeContent,
+                "openai:gpt-4o",
+                result_type=str,  # Final result is markdown string
+                deps_type=ReadmeContent,
                 retries=2,
                 system_prompt=(
                     "You are a specialized agent for generating a well-organized markdown README "
                     "listing AI/ML GitHub repositories. Your task is to:\n\n"
-                    "1. Organize repositories by their categories\n"
-                    "2. Format each repository entry with description, stars, and update date\n"
-                    "3. Ensure proper markdown hierarchy with categories and subcategories\n"
-                    "4. Generate clean, consistent formatting\n\n"
-                    "Guidelines:\n"
+                    "1. First call get_category_data() to retrieve the repository and category data\n"
+                    "2. Then call format_markdown() with the retrieved data to generate the final markdown\n\n"
+                    "The markdown should follow these guidelines:\n"
                     "- Use h1 (#) for main title\n"
                     "- Use h2 (##) for parent categories\n"
                     "- Use h3 (###) for subcategories\n"
@@ -68,13 +69,26 @@ class ReadmeGenerator:
                     "- Ensure proper spacing and readability"
                 )
             )
-            self.db = db
-            self.github = github_client
+
+            # Register tools
+            self._agent.tool(self.get_category_data)
+            self._agent.tool(self.format_markdown)
 
             logger.info("ReadmeGenerator agent initialized successfully")
+            logfire.info("ReadmeGenerator agent initialized", component="readme_generator")
         except Exception as e:
             logger.error(f"Failed to initialize ReadmeGenerator agent: {str(e)}")
+            logfire.error(
+                "Failed to initialize ReadmeGenerator agent",
+                component="readme_generator",
+                error=str(e)
+            )
             raise
+
+    @property
+    def agent(self):
+        """Get the underlying agent instance."""
+        return self._agent
 
     async def _convert_to_repository(self, repo_dict: Dict) -> Repository:
         """Convert a dictionary to a Repository model.
@@ -92,8 +106,6 @@ class ReadmeGenerator:
             # Convert topics from database format to expected format
             topics = repo_dict.get('topics', [])
             if isinstance(topics, str):
-                # Handle case where topics might be stored as JSON string
-                import json
                 topics = json.loads(topics)
             
             # Extract metadata from JSON if needed
@@ -110,19 +122,28 @@ class ReadmeGenerator:
             )
         except KeyError as e:
             logger.error(f"Missing required field in repository data: {e}")
+            logfire.error(
+                "Missing required field in repository data",
+                component="readme_generator",
+                error=str(e),
+                repository=repo_dict.get('github_url', 'unknown')
+            )
             raise ValueError(f"Missing required field: {e}")
         except Exception as e:
             logger.error(f"Failed to convert repository data: {e}")
+            logfire.error(
+                "Failed to convert repository data",
+                component="readme_generator",
+                error=str(e),
+                repository=repo_dict.get('github_url', 'unknown')
+            )
             raise ValueError(f"Invalid repository data: {e}")
 
-    async def generate_markdown(self) -> str:
-        """Generate markdown content for README.
+    async def get_category_data(self, ctx: RunContext[ReadmeContent]) -> ReadmeContent:
+        """Get categorized repository data.
         
         Returns:
-            Generated markdown content
-            
-        Raises:
-            Exception: If generation fails
+            ReadmeContent object with categorized repositories
         """
         try:
             # Get repositories and topics
@@ -130,6 +151,12 @@ class ReadmeGenerator:
             topics = await self.db.get_topics()
             
             logger.debug(f"Retrieved {len(raw_repositories)} repositories and {len(topics)} topics")
+            logfire.info(
+                "Retrieved repository and topic data",
+                component="readme_generator",
+                repository_count=len(raw_repositories),
+                topic_count=len(topics)
+            )
             
             # Convert raw repositories to Repository objects
             repositories = []
@@ -140,6 +167,12 @@ class ReadmeGenerator:
                     repositories.append(repo)
                 except ValueError as e:
                     logger.warning(f"Skipping invalid repository: {e}")
+                    logfire.warning(
+                        "Skipping invalid repository",
+                        component="readme_generator",
+                        error=str(e),
+                        repository=repo_data.get('github_url', 'unknown')
+                    )
                     continue
 
             # Build category structure
@@ -147,27 +180,45 @@ class ReadmeGenerator:
             for tid, topic in topics.items():
                 category_structure[str(tid)] = CategoryStructure(
                     name=topic["name"],
-                    parent_id=topic["parent_id"],
+                    parent_id=topic.get("parent_id"),
                     repositories=[
                         repo for repo in repositories
                         if any(t["topic_id"] == tid for t in repo.topics)
                     ]
                 )
 
-            # Generate markdown using agent
-            result = await self._agent.run(
-                "Generate a well-organized markdown README using the provided category structure.",
-                deps=ReadmeContent(categories=category_structure)
+            logfire.info(
+                "Built category structure",
+                component="readme_generator",
+                category_count=len(category_structure)
             )
-            content = result.data
+            return ReadmeContent(categories=category_structure)
+        except Exception as e:
+            logger.error(f"Failed to get category data: {e}")
+            logfire.error(
+                "Failed to get category data",
+                component="readme_generator",
+                error=str(e)
+            )
+            raise ModelRetry(f"Error getting category data: {str(e)}")
 
+    async def format_markdown(self, ctx: RunContext[ReadmeContent], content: ReadmeContent) -> str:
+        """Format the README content as markdown.
+        
+        Args:
+            content: ReadmeContent object with categorized repositories
+            
+        Returns:
+            Formatted markdown string
+        """
+        try:
             # Format markdown
             markdown = [f"# {content.title}\n"]
             
             # Add parent categories first
             parent_categories = {
                 tid: cat for tid, cat in content.categories.items() 
-                if cat.parent_id is None
+                if not cat.parent_id
             }
             
             for tid, category in parent_categories.items():
@@ -207,33 +258,56 @@ class ReadmeGenerator:
                             )
                     else:
                         markdown.append("\nNo repositories in this category.")
+
+            logfire.info(
+                "Generated markdown content",
+                component="readme_generator",
+                parent_categories=len(parent_categories),
+                total_categories=len(content.categories)
+            )
+            return "\n".join(markdown)
+        except Exception as e:
+            logger.error(f"Failed to format markdown: {e}")
+            logfire.error(
+                "Failed to format markdown",
+                component="readme_generator",
+                error=str(e)
+            )
+            raise ModelRetry(f"Error formatting markdown: {str(e)}")
+
+    async def generate_markdown(self) -> str:
+        """Generate markdown content for README.
+        
+        Returns:
+            Generated markdown content
+            
+        Raises:
+            Exception: If generation fails
+        """
+        try:
+            # Get initial data
+            initial_data = await self.get_category_data(ctx=None)
+            
+            # Generate content using agent
+            result = await self._agent.run(
+                "Generate a well-organized markdown README using the provided category structure. "
+                "First call get_category_data() to get the data, then call format_markdown() to format it.",
+                deps=initial_data
+            )
             
             logger.info("Successfully generated markdown content")
-            return "\n".join(markdown)
+            logfire.info(
+                "Successfully generated markdown content",
+                component="readme_generator",
+                content_length=len(result.data)
+            )
+            return result.data
             
         except Exception as e:
             logger.error(f"Failed to generate markdown: {str(e)}")
+            logfire.error(
+                "Failed to generate markdown",
+                component="readme_generator",
+                error=str(e)
+            )
             raise
-
-    async def update_github_readme(self) -> bool:
-        """Generate and update the GitHub README.
-        
-        Returns:
-            True if update successful, False otherwise
-        """
-        try:
-            # Generate new markdown content
-            markdown = await self.generate_markdown()
-            
-            # Update GitHub README
-            success = await self.github.update_readme(markdown)
-            
-            if success:
-                logger.info("Successfully updated GitHub README")
-            else:
-                logger.warning("GitHub README update returned False")
-            
-            return success
-        except Exception as e:
-            logger.error(f"Failed to update README: {str(e)}")
-            return False

@@ -20,13 +20,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-class TestGitHubClient:
-    """Test GitHub client that writes to test file."""
-    async def update_readme(self, content):
-        test_file = Path("readme.test.md")
-        test_file.write_text(content)
-        return True
-
 @pytest.mark.asyncio
 class TestReadmeGenerationComponent:
     """Test README generation with live database content."""
@@ -34,20 +27,32 @@ class TestReadmeGenerationComponent:
     @pytest.fixture(scope="class")
     def db(self):
         """Get database connection with content from previous component tests."""
-        db = Database()  # Use default database that has content extractor results
+        db = Database("tests/test.db")  # Use the test database where content extractor stored data
         db.connect()
         yield db
         db.disconnect()
 
     @pytest.fixture(scope="class")
-    def github_client(self):
-        """Create GitHub client that writes to test file instead of actual repo."""
-        return TestGitHubClient()
-
-    @pytest.fixture(scope="class")
-    def readme_generator(self, db, github_client):
+    def readme_generator(self, db):
         """Create ReadmeGenerator instance."""
-        return ReadmeGenerator(db, github_client)
+        return ReadmeGenerator(db)
+
+    async def write_test_readme(self, content: str) -> bool:
+        """Write content to test README file.
+        
+        Args:
+            content: Markdown content to write
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            test_file = Path("readme.test.md")
+            test_file.write_text(content)
+            return True
+        except Exception as e:
+            logger.error(f"Failed to write test README: {e}")
+            return False
 
     async def test_live_data_generation(self, readme_generator, db):
         """Test README generation with live database content."""
@@ -68,8 +73,7 @@ class TestReadmeGenerationComponent:
 
             # Print sample of repositories
             print("\nSample Repositories:")
-            for repo in repositories[:3]:  # Show first 3
-                print_repository_summary(repo)
+            print_repository_summary("Sample Repositories", repositories[:3])  # Show first 3
 
             # Generate markdown
             print("\nGenerating README content...")
@@ -94,7 +98,7 @@ class TestReadmeGenerationComponent:
             missing_topics = []
             for topic_id, topic in topics.items():
                 topic_name = topic['name']
-                if topic['parent_id'] is None:
+                if not topic.get('parent_id'):  # Use get() to handle missing parent_id
                     if f"## {topic_name}" not in markdown:
                         missing_topics.append(topic_name)
                 else:
@@ -133,13 +137,13 @@ class TestReadmeGenerationComponent:
             print("\nVerifying category hierarchy:")
             # Verify parent categories come before child categories
             for topic_id, topic in structure.items():
-                if topic['parent_id'] is None:
+                if not topic.get('parent_id'):  # Use get() to handle missing parent_id
                     parent_pos = markdown.find(f"## {topic['name']}")
                     assert parent_pos >= 0, f"Parent category not found: {topic['name']}"
                     print(f"✓ Found parent category: {topic['name']}")
                     
                     # Find child topics
-                    children = [t for t in structure.values() if t['parent_id'] == topic_id]
+                    children = [t for t in structure.values() if t.get('parent_id') == topic_id]
                     for child in children:
                         child_pos = markdown.find(f"### {child['name']}")
                         assert child_pos >= 0, f"Child category not found: {child['name']}"
@@ -174,10 +178,16 @@ class TestReadmeGenerationComponent:
                     if repo_url in line
                 )
                 
+                # Get metadata from JSON if needed
+                metadata = repo.get('metadata', {})
+                if isinstance(metadata, str):
+                    import json
+                    metadata = json.loads(metadata)
+                
                 # Verify metadata
                 assert f"[{repo_name}]" in repo_line, f"Repository name not formatted correctly: {repo_name}"
-                assert str(repo['stars']) in repo_line, f"Stars count missing for {repo_name}"
-                assert repo['last_updated'] in repo_line, f"Update date missing for {repo_name}"
+                assert str(metadata.get('stars', 0)) in repo_line, f"Stars count missing for {repo_name}"
+                assert metadata.get('updated_at', '') in repo_line, f"Update date missing for {repo_name}"
                 
                 print(f"✓ Verified metadata for {repo_name}")
                 print(f"  Entry: {repo_line.strip()}")
@@ -195,15 +205,18 @@ class TestReadmeGenerationComponent:
         print("\nStarting README file generation test...")
 
         try:
-            # Generate and update README
-            success = await readme_generator.update_github_readme()
-            assert success, "README update returned False"
-            print("✓ README update successful")
+            # Generate markdown
+            markdown = await readme_generator.generate_markdown()
+            
+            # Write to test file
+            success = await self.write_test_readme(markdown)
+            assert success, "Failed to write test README file"
+            print("✓ README file written successfully")
 
             # Verify test file was created
             test_file = Path("readme.test.md")
             assert test_file.exists(), "Test README file was not created"
-            print("✓ Test file created")
+            print("✓ Test file exists")
             
             # Read and validate content
             content = test_file.read_text()
@@ -237,8 +250,8 @@ class TestReadmeGenerationComponent:
             initial_stats = {
                 "repository_count": len(repositories),
                 "topic_count": len(topics),
-                "parent_topics": len([t for t in topics.values() if t['parent_id'] is None]),
-                "child_topics": len([t for t in topics.values() if t['parent_id'] is not None])
+                "parent_topics": len([t for t in topics.values() if not t.get('parent_id')]),
+                "child_topics": len([t for t in topics.values() if t.get('parent_id')])
             }
             
             print("\nInitial Statistics:")
@@ -247,8 +260,9 @@ class TestReadmeGenerationComponent:
 
             # 2. Generate README
             print("\nGenerating README...")
-            success = await readme_generator.update_github_readme()
-            assert success, "README generation failed"
+            markdown = await readme_generator.generate_markdown()
+            success = await self.write_test_readme(markdown)
+            assert success, "Failed to write test README file"
             print("✓ README generation successful")
 
             # 3. Analyze generated content

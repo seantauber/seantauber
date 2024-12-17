@@ -22,6 +22,9 @@ class TestSettings(BaseSettings):
     # LLM Configuration
     OPENAI_API_KEY: str
     
+    # Logfire Configuration
+    LOGFIRE_TOKEN: str
+    
     # Vector Storage
     VECTOR_STORAGE_PATH: Path = PROJECT_ROOT / "tests" / "vector_storage"
     
@@ -98,6 +101,9 @@ GITHUB_TOKEN=your_github_token
 
 # LLM Configuration
 OPENAI_API_KEY=your_openai_key
+
+# Logfire Configuration
+LOGFIRE_TOKEN=your_logfire_token
 
 # Test Control
 ENABLE_LIVE_TESTS=true
