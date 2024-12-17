@@ -1,12 +1,11 @@
 """Shared fixtures and utilities for component tests."""
 import json
 import os
-from datetime import datetime
-from zoneinfo import UTC
+from datetime import datetime, timezone
 
 import pytest
 from processing.embedchain_store import EmbedchainStore
-from tests.config import get_test_settings, TEST_DB_PATH
+from tests.config import get_test_settings
 
 def print_newsletter_summary(title: str, newsletters: list, show_content: bool = False):
     """Print summary of newsletters."""
@@ -49,7 +48,5 @@ def print_extraction_results(title: str, results: list):
 def vector_store() -> EmbedchainStore:
     """Initialize vector store for testing."""
     settings = get_test_settings()
-    store = EmbedchainStore(
-        openai_api_key=os.getenv('OPENAI_API_KEY', settings.OPENAI_API_KEY)
-    )
+    store = EmbedchainStore(token_path=settings.GMAIL_TOKEN_PATH)
     yield store

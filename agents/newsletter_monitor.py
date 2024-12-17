@@ -77,7 +77,7 @@ class NewsletterMonitor:
                     subject=n['subject'],
                     received_date=n['received_date'],
                     content=n['content'],
-                    metadata=n.get('metadata'),
+                    metadata=n.get('metadata', {}),  # Default to empty dict if None
                     queued_date=datetime.now(UTC).isoformat()
                 )
                 self._processing_queue.append(newsletter)
@@ -94,6 +94,37 @@ class NewsletterMonitor:
             self.error_count += 1
             logger.error(f"Unexpected error fetching newsletters: {str(e)}")
             raise FetchError(f"Unexpected error: {str(e)}")
+
+    async def process_newsletter_content(self, email_id: str, content: str) -> str:
+        """
+        Process individual newsletter content and create vector embedding.
+        
+        Args:
+            email_id: ID of the email to process
+            content: Content of the newsletter
+            
+        Returns:
+            Vector ID for the processed content
+            
+        Raises:
+            Exception: If processing fails
+        """
+        try:
+            # Store content in vector storage
+            vector_id = self.embedchain_store.newsletter_store.add(
+                content,
+                metadata={"email_id": email_id}
+            )
+            
+            if not vector_id:
+                raise ValueError("Failed to generate vector embedding")
+                
+            logger.info(f"Created vector embedding for newsletter {email_id}")
+            return vector_id
+            
+        except Exception as e:
+            logger.error(f"Failed to process newsletter {email_id}: {str(e)}")
+            raise
 
     async def process_newsletters(self, batch_size: int = 5) -> List[Newsletter]:
         """
@@ -120,21 +151,25 @@ class NewsletterMonitor:
             if not to_process:
                 return []
 
-            # Store in vector storage
-            vector_ids = await self.embedchain_store.load_and_store_newsletters(
-                max_results=len(to_process)
-            )
-            
-            # Update newsletters with vector IDs and processing status
-            processed_date = datetime.now(UTC).isoformat()
             processed_newsletters = []
+            processed_date = datetime.now(UTC).isoformat()
             
-            for newsletter, vector_id in zip(to_process, vector_ids):
-                newsletter.vector_id = vector_id
-                newsletter.processed_date = processed_date
-                newsletter.processing_status = "completed"
-                processed_newsletters.append(newsletter)
-                self.processed_count += 1
+            # Process each newsletter individually
+            for newsletter in to_process:
+                try:
+                    vector_id = await self.process_newsletter_content(
+                        newsletter.email_id,
+                        newsletter.content
+                    )
+                    newsletter.vector_id = vector_id
+                    newsletter.processed_date = processed_date
+                    newsletter.processing_status = "completed"
+                    processed_newsletters.append(newsletter)
+                    self.processed_count += 1
+                except Exception as e:
+                    logger.error(f"Failed to process newsletter {newsletter.email_id}: {str(e)}")
+                    newsletter.processing_status = "failed"
+                    self._processing_queue.appendleft(newsletter)
             
             logger.info(f"Processed {len(processed_newsletters)} newsletters")
             return processed_newsletters
@@ -143,8 +178,9 @@ class NewsletterMonitor:
             self.error_count += 1
             # Return newsletters to queue on failure
             for newsletter in to_process:
-                newsletter.processing_status = "failed"
-                self._processing_queue.appendleft(newsletter)
+                if newsletter.processing_status != "completed":
+                    newsletter.processing_status = "failed"
+                    self._processing_queue.appendleft(newsletter)
             
             logger.error(f"Failed to process newsletters: {str(e)}")
             raise

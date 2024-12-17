@@ -63,9 +63,12 @@ class InitialMigration(Migration):
                 CREATE TABLE newsletters (
                     id INTEGER PRIMARY KEY,
                     email_id TEXT NOT NULL UNIQUE,
+                    subject TEXT,
                     received_date TIMESTAMP NOT NULL,
                     processed_date TIMESTAMP,
+                    content TEXT,
                     storage_status TEXT NOT NULL DEFAULT 'active',
+                    processing_status TEXT NOT NULL DEFAULT 'pending',
                     vector_id TEXT,
                     metadata JSON,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
