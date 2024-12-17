@@ -39,6 +39,9 @@ class EmbedchainStore:
         # Initialize Embedchain apps for different collections
         self.newsletter_store = App()
         self.repository_store = App()
+        
+        # Cache for repository data
+        self._repository_cache: Dict[str, Dict[str, Any]] = {}
 
     def _find_available_port(self) -> Tuple[int, bool]:
         """Find an available port starting from BASE_PORT."""
@@ -242,39 +245,28 @@ class EmbedchainStore:
             Exception: If storing fails
         """
         try:
-            # Create a rich text representation of the repository
-            repo_text = (
+            # Create searchable text representation
+            search_text = (
                 f"Repository: {repository['name']} ({repository['github_url']})\n"
-                f"Description: {repository['description']}\n\n"
-                f"Summary:\n"
-                f"Primary Purpose: {repository['summary']['primary_purpose']}\n"
-                f"Key Technologies: {', '.join(repository['summary']['key_technologies'])}\n"
-                f"Target Users: {repository['summary']['target_users']}\n"
-                f"Main Features: {', '.join(repository['summary']['main_features'])}\n"
-                f"Technical Domain: {repository['summary']['technical_domain']}\n\n"
-                f"Metadata:\n"
+                f"Description: {repository['description']}\n"
                 f"Language: {repository['metadata']['language']}\n"
                 f"Topics: {', '.join(repository['metadata']['topics'])}\n"
-                f"Stars: {repository['metadata']['stars']}\n"
-                f"Forks: {repository['metadata']['forks']}\n"
-                f"Created: {repository['metadata']['created_at']}\n"
-                f"Updated: {repository['metadata']['updated_at']}"
+                f"Primary Purpose: {repository['summary']['primary_purpose']}\n"
+                f"Technical Domain: {repository['summary']['technical_domain']}"
             )
             
-            # Store with complete metadata
+            # Store with minimal metadata for search
             vector_id = self.repository_store.add(
-                repo_text,
+                search_text,
                 metadata={
                     'github_url': repository['github_url'],
-                    'name': repository['name'],
-                    'description': repository['description'],
-                    'summary': repository['summary'],
-                    'metadata': repository['metadata'],
-                    'first_seen_date': repository['first_seen_date'],
-                    'source_type': repository['source_type'],
-                    'source_id': repository['source_id']
+                    'name': repository['name']
                 }
             )
+            
+            # Cache complete repository data
+            self._repository_cache[repository['github_url']] = repository
+            
             logger.info(f"Stored repository {repository['github_url']} in vector storage")
             return vector_id
         except Exception as e:
@@ -322,11 +314,37 @@ class EmbedchainStore:
             List of relevant repository content
         """
         try:
+            # Get search results
             results = self.repository_store.query(
                 query,
                 top_k=limit
             )
-            return results
+            
+            # Extract stored data from cache
+            processed_results = []
+            for result in results:
+                try:
+                    # Handle string response format
+                    if isinstance(result, str):
+                        # Try to extract github_url from the text
+                        import re
+                        url_match = re.search(r'https://github\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-_.]+', result)
+                        if url_match:
+                            github_url = url_match.group(0)
+                            if github_url in self._repository_cache:
+                                processed_results.append(self._repository_cache[github_url])
+                            else:
+                                logger.warning(f"Repository not found in cache: {github_url}")
+                        else:
+                            logger.warning(f"Could not extract GitHub URL from result: {result}")
+                    else:
+                        processed_results.append(result)
+                except Exception as e:
+                    logger.warning(f"Error processing result: {str(e)}")
+                    continue
+            
+            return processed_results
+            
         except Exception as e:
             logger.error(f"Failed to query repositories: {str(e)}")
             raise

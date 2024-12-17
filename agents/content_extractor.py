@@ -4,11 +4,15 @@ import re
 import logging
 import aiohttp
 import base64
-from datetime import datetime, UTC
-from typing import List, Dict, Optional, Any
+import json
+import yaml
+from datetime import datetime, UTC, timedelta
+from typing import List, Dict, Optional, Any, Set, Tuple
+from pathlib import Path
 
-from pydantic_ai import Agent, RunContext
-from processing.embedchain_store import EmbedchainStore
+from pydantic import BaseModel
+from pydantic_ai import Agent, RunContext, ModelRetry
+from db.connection import Database
 
 logger = logging.getLogger(__name__)
 
@@ -16,23 +20,102 @@ class ContentExtractionError(Exception):
     """Raised when content extraction fails."""
     pass
 
+class CategoryValidationError(Exception):
+    """Raised when category validation fails."""
+    pass
+
+class CategoryRank(BaseModel):
+    """Category ranking model."""
+    rank: int
+    category: str
+
+class NewCategorySuggestion(BaseModel):
+    """New category suggestion model."""
+    name: str
+    parent_category: Optional[str]
+    description: str
+    example_repos: List[str]
+    differentiation: str
+
+class RepositorySummary(BaseModel):
+    """Repository summary model."""
+    is_genai: bool
+    other_category_description: Optional[str]
+    primary_purpose: str
+    key_technologies: List[str]
+    target_users: str
+    main_features: List[str]
+    technical_domain: str
+    ranked_categories: Optional[List[CategoryRank]]
+    new_category_suggestion: Optional[NewCategorySuggestion]
+
 class ContentExtractorAgent:
     """Agent responsible for extracting and summarizing GitHub repositories from newsletter content."""
     
-    def __init__(self, vector_store: EmbedchainStore, github_token: str):
+    def __init__(self, github_token: str, db: Optional[Database] = None, max_age_hours: float = 0):
         """Initialize the Content Extractor agent.
         
         Args:
-            vector_store: Vector storage instance for content analysis
             github_token: GitHub API token for repository access
+            db: Optional database connection. If None, creates new connection.
+            max_age_hours: Maximum age in hours before repository data is refreshed (0 means always refresh)
         """
-        self.vector_store = vector_store
         self.github_token = github_token
-        self.agent = Agent(
-            "openai:gpt-4",
+        self.db = db or Database()
+        self.max_age_hours = max_age_hours
+        self.processed_repos = set()  # Track processed repos to avoid duplicates
+        
+        # Load taxonomy
+        taxonomy_path = Path(__file__).parent.parent / "config" / "taxonomy.yaml"
+        with open(taxonomy_path) as f:
+            self.taxonomy = yaml.safe_load(f)["taxonomy"]
+        
+        # Build valid category set
+        self.valid_categories = set()
+        for category, data in self.taxonomy.items():
+            self.valid_categories.add(category)  # Add top-level category
+            for subcategory in data["subcategories"]:
+                # Add both full path and subcategory name
+                self.valid_categories.add(f"{category}/{subcategory}")
+                self.valid_categories.add(subcategory)
+        
+        # Format taxonomy for prompt
+        taxonomy_text = "Current Taxonomy:\n"
+        for category, data in self.taxonomy.items():
+            taxonomy_text += f"\n{category}\n"
+            for subcategory in data["subcategories"]:
+                taxonomy_text += f"- {subcategory}\n"
+        
+        # Agent for repository summarization and categorization
+        self.summarization_agent = Agent(
+            "openai:gpt-4o-mini",
+            result_type=RepositorySummary,  # Use Pydantic model for structured output
+            retries=2,  # Allow retries for validation failures
             system_prompt=(
-                "Extract and analyze GitHub repository links from newsletter content. "
-                "Focus on identifying relevant AI/ML repositories and their context."
+                "You are a specialized agent for analyzing GitHub repositories in the "
+                "Generative AI and Large Language Model (LLM) space. Your task is to:\n\n"
+                "1. Determine if a repository is GenAI/LLM-related\n"
+                "2. Generate a structured summary of relevant repositories\n"
+                "3. Categorize repositories using the provided taxonomy\n"
+                "4. Identify potential new categories when needed\n\n"
+                f"{taxonomy_text}\n"
+                "Instructions:\n\n"
+                "1. First, determine if the repository is related to GenAI/LLMs. If not, "
+                "mark is_genai as false and provide a brief explanation in other_category_description.\n\n"
+                "2. For GenAI/LLM repositories:\n"
+                "   - Assign 1-5 categories from the taxonomy above\n"
+                "   - Use EXACT category names from taxonomy (including parent category if using subcategory)\n"
+                "   - Rank categories by relevance (1 = most relevant)\n"
+                "   - Categories can be either top-level or subcategories\n"
+                "   - Repository MUST be categorized using existing taxonomy\n\n"
+                "3. If you identify a clear need for a new category:\n"
+                "   - Still categorize using existing taxonomy\n"
+                "   - Provide new category suggestion following these criteria:\n"
+                "     * Must be at same hierarchical level as current categories\n"
+                "     * For subcategory: Specify parent category\n"
+                "     * For top-level: May include optional subcategories\n"
+                "     * Must represent a distinct, significant area not covered by existing categories\n"
+                "     * Must be clearly the best categorization for this repository"
             )
         )
         
@@ -40,17 +123,29 @@ class ContentExtractorAgent:
         self.github_url_pattern = re.compile(
             r'https://github\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-_.]+/?(?:#[a-zA-Z0-9-_]*)?'
         )
+    
+    def validate_categories(self, summary: RepositorySummary) -> List[str]:
+        """Validate categories against taxonomy.
         
-        # Agent for repository summarization
-        self.summarization_agent = Agent(
-            "openai:gpt-4",
-            system_prompt=(
-                "Generate structured summaries of GitHub repositories based on their "
-                "README content and metadata. Focus on capturing the repository's "
-                "primary purpose, key technologies, target users, main features, "
-                "and technical domain."
-            )
-        )
+        Args:
+            summary: Repository summary including categories
+            
+        Returns:
+            List of invalid categories found
+            
+        Raises:
+            CategoryValidationError: If validation fails
+        """
+        if not summary.is_genai:
+            return []  # Non-GenAI repos don't need category validation
+            
+        invalid_categories = []
+        if summary.ranked_categories:
+            for category_data in summary.ranked_categories:
+                if category_data.category not in self.valid_categories:
+                    invalid_categories.append(category_data.category)
+        
+        return invalid_categories
     
     def validate_github_url(self, url: Optional[str]) -> bool:
         """Validate if a URL is a valid GitHub repository URL.
@@ -168,12 +263,14 @@ class ContentExtractorAgent:
     
     async def generate_repository_summary(
         self,
-        metadata: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        metadata: Dict[str, Any],
+        invalid_categories: Optional[List[str]] = None
+    ) -> RepositorySummary:
         """Generate structured summary of repository using LLM.
         
         Args:
             metadata: Repository metadata including README
+            invalid_categories: Optional list of invalid categories from previous attempt
             
         Returns:
             Structured summary following defined format
@@ -182,50 +279,225 @@ class ContentExtractorAgent:
             ContentExtractionError: If summary generation fails
         """
         try:
-            # Prepare context for LLM
-            context = (
+            # Prepare base prompt
+            base_prompt = (
                 f"Repository: {metadata['full_name']}\n"
                 f"Description: {metadata['description']}\n"
                 f"Language: {metadata['language']}\n"
                 f"Topics: {', '.join(metadata['topics'])}\n"
                 f"Stars: {metadata['stars']}\n"
                 f"Forks: {metadata['forks']}\n\n"
-                f"README Content:\n{metadata['readme_content']}"
+                f"README Content:\n{metadata['readme_content']}\n\n"
             )
             
-            # Generate summary using LLM
-            prompt = (
-                "Based on the repository information and README content, generate a "
-                "structured summary with the following format:\n"
-                "{\n"
-                '    "primary_purpose": "Main goal or function",\n'
-                '    "key_technologies": ["tech1", "tech2"],\n'
-                '    "target_users": "Primary audience",\n'
-                '    "main_features": ["feature1", "feature2"],\n'
-                '    "technical_domain": "Specific technical area"\n'
-                "}\n\n"
-                "Ensure the summary is concise but comprehensive."
+            # Add feedback if there were invalid categories
+            if invalid_categories:
+                base_prompt += (
+                    "\nPrevious attempt used invalid categories:\n"
+                    f"{', '.join(invalid_categories)}\n"
+                    "Please use EXACT category names from the taxonomy, "
+                    "including parent category for subcategories (e.g. 'Model Development/Pretraining').\n\n"
+                )
+            
+            base_prompt += (
+                "Based on the repository information and README content above, "
+                "determine if this is a GenAI/LLM-related repository and if so, "
+                "generate a structured summary with appropriate categorization. "
+                "Follow the format and categorization guidelines carefully."
             )
             
-            response = await self.summarization_agent.complete(
-                prompt,
-                context=context
-            )
+            # Call LLM using run method - PydanticAI will handle parsing and validation
+            response = await self.summarization_agent.run(base_prompt)
+            summary = response.data
             
-            # Parse and validate summary
-            summary = eval(response.content)  # Safe since we control the LLM output format
-            required_fields = [
-                "primary_purpose", "key_technologies", "target_users",
-                "main_features", "technical_domain"
-            ]
-            if not all(field in summary for field in required_fields):
-                raise ContentExtractionError("Invalid summary format")
+            # Validate categories against taxonomy
+            invalid_cats = self.validate_categories(summary)
+            if invalid_cats:
+                # Retry once with feedback
+                if invalid_categories is None:  # Only retry once
+                    logger.info(f"Invalid categories found: {invalid_cats}, retrying...")
+                    raise ModelRetry(
+                        f"Invalid categories used: {', '.join(invalid_cats)}. "
+                        "Please use exact category names from the taxonomy."
+                    )
+                else:
+                    raise CategoryValidationError(
+                        f"Invalid categories after retry: {invalid_cats}"
+                    )
             
             return summary
             
         except Exception as e:
             logger.error(f"Failed to generate repository summary: {str(e)}")
+            if isinstance(e, ModelRetry):
+                raise  # Let PydanticAI handle the retry
             raise ContentExtractionError(f"Summary generation failed: {str(e)}")
+    
+    async def _should_update_repository(self, repo_url: str) -> bool:
+        """Check if repository should be updated based on age.
+        
+        Args:
+            repo_url: Repository URL
+            
+        Returns:
+            True if repository should be updated, False otherwise
+        """
+        try:
+            # Query for existing repository
+            row = self.db.fetch_one(
+                "SELECT first_seen_date FROM repositories WHERE github_url = ?",
+                (repo_url,)
+            )
+            
+            # If no results or max_age_hours is 0, should update
+            if not row or self.max_age_hours == 0:
+                return True
+                
+            # Parse stored data
+            try:
+                first_seen = datetime.fromisoformat(row['first_seen_date'])
+                age = datetime.now(UTC) - first_seen
+                
+                return age > timedelta(hours=self.max_age_hours)
+                
+            except (ValueError, KeyError) as e:
+                logger.warning(f"Error parsing stored data, will update: {str(e)}")
+                return True
+                
+        except Exception as e:
+            logger.warning(f"Error checking repository age, will update: {str(e)}")
+            return True
+    
+    async def store_repository_data(
+        self,
+        repo_url: str,
+        metadata: Dict[str, Any],
+        summary: RepositorySummary,
+        source_id: str
+    ) -> int:
+        """Store repository data and categories in database.
+        
+        Args:
+            repo_url: Repository URL
+            metadata: Repository metadata
+            summary: Generated summary with categories
+            source_id: Source identifier (e.g. newsletter-{email_id})
+            
+        Returns:
+            Repository ID from database
+            
+        Raises:
+            ContentExtractionError: If database operations fail
+        """
+        try:
+            now = datetime.now(UTC)
+            
+            # Only store GenAI repositories
+            if not summary.is_genai:
+                logger.info(f"Skipping non-GenAI repository: {repo_url}")
+                return 0
+            
+            # Insert repository
+            with self.db.transaction() as conn:
+                cursor = conn.execute(
+                    """
+                    INSERT INTO repositories (
+                        github_url, first_seen_date, last_mentioned_date,
+                        mention_count, metadata
+                    ) VALUES (?, ?, ?, 1, ?)
+                    ON CONFLICT(github_url) DO UPDATE SET
+                        last_mentioned_date = ?,
+                        mention_count = mention_count + 1,
+                        metadata = ?
+                    RETURNING id
+                    """,
+                    (
+                        repo_url,
+                        now.isoformat(),
+                        now.isoformat(),
+                        json.dumps({
+                            **metadata,
+                            "summary": summary.model_dump(),
+                            "source_id": source_id
+                        }),
+                        now.isoformat(),
+                        json.dumps({
+                            **metadata,
+                            "summary": summary.model_dump(),
+                            "source_id": source_id
+                        })
+                    )
+                )
+                repo_id = cursor.fetchone()[0]
+                
+                # Store categories
+                if summary.ranked_categories:
+                    for category in summary.ranked_categories:
+                        # First insert/get topic
+                        cursor = conn.execute(
+                            """
+                            INSERT INTO topics (
+                                name, first_seen_date, last_seen_date,
+                                mention_count
+                            ) VALUES (?, ?, ?, 1)
+                            ON CONFLICT(name) DO UPDATE SET
+                                last_seen_date = ?,
+                                mention_count = mention_count + 1
+                            RETURNING id
+                            """,
+                            (
+                                category.category,
+                                now.isoformat(),
+                                now.isoformat(),
+                                now.isoformat()
+                            )
+                        )
+                        topic_id = cursor.fetchone()[0]
+                        
+                        # Check if relationship exists
+                        cursor = conn.execute(
+                            """
+                            SELECT id FROM repository_categories 
+                            WHERE repository_id = ? AND topic_id = ?
+                            """,
+                            (repo_id, topic_id)
+                        )
+                        existing = cursor.fetchone()
+                        
+                        if existing:
+                            # Update existing relationship
+                            conn.execute(
+                                """
+                                UPDATE repository_categories 
+                                SET confidence_score = ?
+                                WHERE repository_id = ? AND topic_id = ?
+                                """,
+                                (
+                                    1.0 / category.rank,  # Convert rank to confidence score
+                                    repo_id,
+                                    topic_id
+                                )
+                            )
+                        else:
+                            # Insert new relationship
+                            conn.execute(
+                                """
+                                INSERT INTO repository_categories (
+                                    repository_id, topic_id, confidence_score
+                                ) VALUES (?, ?, ?)
+                                """,
+                                (
+                                    repo_id,
+                                    topic_id,
+                                    1.0 / category.rank  # Convert rank to confidence score
+                                )
+                            )
+            
+            return repo_id
+            
+        except Exception as e:
+            logger.error(f"Failed to store repository data: {str(e)}")
+            raise ContentExtractionError(f"Database storage failed: {str(e)}")
     
     async def process_newsletter_content(
         self,
@@ -239,7 +511,7 @@ class ContentExtractorAgent:
             content: Raw newsletter content
             
         Returns:
-            List of dictionaries containing repository information and vector IDs
+            List of dictionaries containing repository information
             
         Raises:
             ContentExtractionError: If processing fails
@@ -260,39 +532,40 @@ class ContentExtractorAgent:
             results = []
             for url in repo_urls:
                 try:
+                    # Skip if already processed
+                    if url in self.processed_repos:
+                        logger.info(f"Skipping already processed repository: {url}")
+                        continue
+                    
+                    # Check if repository needs updating
+                    if not await self._should_update_repository(url):
+                        logger.info(f"Skipping up-to-date repository: {url}")
+                        continue
+                    
                     # Fetch metadata and README
                     metadata = await self.fetch_repository_metadata(url)
                     
-                    # Generate structured summary
+                    # Generate structured summary with categories
                     summary = await self.generate_repository_summary(metadata)
                     
-                    # Prepare repository data
-                    repo_data = {
-                        "github_url": url,
-                        "name": metadata["name"],
-                        "description": metadata["description"],
-                        "summary": summary,
-                        "metadata": {
-                            "stars": metadata["stars"],
-                            "forks": metadata["forks"],
-                            "language": metadata["language"],
-                            "topics": metadata["topics"],
-                            "created_at": metadata["created_at"],
-                            "updated_at": metadata["updated_at"]
-                        },
-                        "first_seen_date": datetime.now(UTC).isoformat(),
-                        "source_type": "newsletter",
-                        "source_id": email_id
-                    }
+                    # Store in database if GenAI-related
+                    repo_id = 0
+                    if summary.is_genai:
+                        repo_id = await self.store_repository_data(
+                            url,
+                            metadata,
+                            summary,
+                            f"newsletter-{email_id}"
+                        )
                     
-                    # Store in vector storage
-                    vector_id = await self.vector_store.store_repository(repo_data)
+                    # Mark as processed
+                    self.processed_repos.add(url)
                     
                     results.append({
                         "url": url,
-                        "vector_id": vector_id,
-                        "summary": summary,
-                        "metadata": repo_data["metadata"]
+                        "repository_id": repo_id,
+                        "summary": summary.model_dump(),
+                        "metadata": metadata
                     })
                     
                 except Exception as e:
@@ -306,68 +579,3 @@ class ContentExtractorAgent:
         except Exception as e:
             logger.error(f"Failed to process newsletter content: {str(e)}")
             raise ContentExtractionError(f"Newsletter processing failed: {str(e)}")
-    
-    async def migrate_existing_repositories(self) -> None:
-        """Migrate existing repositories to include summaries.
-        
-        This method fetches all existing repositories from vector storage,
-        generates summaries for them, and updates their records.
-        
-        Raises:
-            ContentExtractionError: If migration fails
-        """
-        try:
-            logger.info("Starting repository migration")
-            
-            # Query all existing repositories
-            repositories = await self.vector_store.query_repositories(
-                "type:repository",
-                limit=1000  # Adjust based on expected repository count
-            )
-            
-            migrated_count = 0
-            for repo in repositories:
-                try:
-                    # Extract URL from stored data
-                    repo_url = repo['metadata']['github_url']
-                    
-                    # Fetch current metadata and README
-                    metadata = await self.fetch_repository_metadata(repo_url)
-                    
-                    # Generate new summary
-                    summary = await self.generate_repository_summary(metadata)
-                    
-                    # Update repository data
-                    repo_data = {
-                        "github_url": repo_url,
-                        "name": metadata["name"],
-                        "description": metadata["description"],
-                        "summary": summary,
-                        "metadata": {
-                            "stars": metadata["stars"],
-                            "forks": metadata["forks"],
-                            "language": metadata["language"],
-                            "topics": metadata["topics"],
-                            "created_at": metadata["created_at"],
-                            "updated_at": metadata["updated_at"]
-                        },
-                        "first_seen_date": repo['metadata'].get('first_seen_date'),
-                        "source_type": repo['metadata'].get('source_type'),
-                        "source_id": repo['metadata'].get('source_id')
-                    }
-                    
-                    # Store updated data
-                    await self.vector_store.store_repository(repo_data)
-                    migrated_count += 1
-                    
-                except Exception as e:
-                    logger.error(
-                        f"Failed to migrate repository {repo.get('github_url', 'unknown')}: {str(e)}"
-                    )
-                    continue
-            
-            logger.info(f"Successfully migrated {migrated_count} repositories")
-            
-        except Exception as e:
-            logger.error(f"Repository migration failed: {str(e)}")
-            raise ContentExtractionError(f"Migration failed: {str(e)}")

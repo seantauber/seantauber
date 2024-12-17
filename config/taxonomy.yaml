@@ -1,0 +1,61 @@
+taxonomy:
+  Model Development:
+    subcategories:
+      - Pretraining
+      - Fine-tuning techniques
+      - Model architectures
+      - Small language models
+      - Large language models
+  Infrastructure:
+    subcategories:
+      - Deployment and scaling
+      - Distributed training frameworks
+      - GPU cluster management
+      - Running LLMs locally
+  AI Engineering:
+    subcategories:
+      - Prompt engineering
+      - Retrieval-Augmented Generation
+      - Function calling
+      - Autonomous LLM agents
+      - AI application development frameworks
+  Evaluation and Testing:
+    subcategories:
+      - Benchmarking
+      - Model analysis and debugging
+      - LLM evaluation metrics
+      - Testing frameworks
+  MLOps and LLMOps:
+    subcategories:
+      - Monitoring and observability
+      - Versioning
+      - Continuous integration and deployment
+      - Experiment tracking
+  Data Processing:
+    subcategories:
+      - Data preparation and augmentation
+      - Vector databases
+      - Embedding storage and retrieval
+      - Dataset creation for LLMs
+  Optimization:
+    subcategories:
+      - Model quantization
+      - Efficient inference methods
+      - Performance optimization
+      - Resource management
+  Security and Privacy:
+    subcategories:
+      - Secure AI deployment techniques
+      - Privacy-preserving machine learning
+      - Ethical AI considerations
+      - Attacks on LLMs and defenses
+  Domain-Specific Solutions:
+    subcategories:
+      - Industry-specific LLM applications
+      - Fine-tuned models for particular use cases
+      - Specialized datasets
+  Multimodal AI:
+    subcategories:
+      - Vision-language models
+      - Audio-text integration
+      - Multi-modal reasoning systems

@@ -115,6 +115,7 @@ class InitialMigration(Migration):
                     topic_id INTEGER NOT NULL,
                     confidence_score FLOAT NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(repository_id, topic_id),
                     FOREIGN KEY (repository_id) REFERENCES repositories(id)
                         ON DELETE CASCADE
                         ON UPDATE CASCADE,
