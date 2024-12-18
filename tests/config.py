@@ -37,7 +37,6 @@ class TestSettings(BaseSettings):
     
     # Test Control
     ENABLE_LIVE_TESTS: bool = True
-    MAX_TEST_REPOSITORIES: int = 5
     API_RETRY_ATTEMPTS: int = 3
     
     class Config:
@@ -107,7 +106,6 @@ LOGFIRE_TOKEN=your_logfire_token
 
 # Test Control
 ENABLE_LIVE_TESTS=true
-MAX_TEST_REPOSITORIES=5
 API_RETRY_ATTEMPTS=3
 
 # Logging

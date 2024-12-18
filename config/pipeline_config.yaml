@@ -1,0 +1,10 @@
+# Pipeline Configuration
+
+# Newsletter Processing
+max_newsletters: 10  # Maximum newsletters to process per run
+
+# Content Processing
+max_urls_per_newsletter: 20  # Maximum URLs to process from each newsletter
+
+# Pipeline Control
+max_retries: 2  # Maximum retry attempts for failed operations

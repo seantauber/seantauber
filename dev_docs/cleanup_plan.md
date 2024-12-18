@@ -28,115 +28,75 @@ The most up-to-date implementation is defined in the component tests. These test
    - config/taxonomy.yaml
    - README.template.md
 
-Everything else in the project needs to be evaluated for cleanup, as the component tests represent the latest working implementation.
-
-## Files to Remove
+## Files Removed
 
 ### 1. Removed Component Files
 - [x] agents/repository_curator.py
 - [x] tests/components/test_repository_curation.py
 
 ### 2. Outdated Tests
-- [ ] tests/test_end_to_end.py (uses removed curator)
-- [ ] tests/agents/test_repository_curator.py
-- [ ] tests/agents/test_integration.py
-- [ ] tests/components/test_topic_analysis.py
-- [ ] tests/agents/test_orchestrator.py (needs review)
-- [ ] tests/agents/test_readme_generator.py (needs review)
+- [x] tests/test_end_to_end.py (used removed curator)
+- [x] tests/agents/test_repository_curator.py
+- [x] tests/agents/test_integration.py
+- [x] tests/components/test_topic_analysis.py
+- [x] tests/agents/test_orchestrator.py (used removed curator and topic analyzer)
 
 ### 3. Outdated Production Scripts
-- [ ] scripts/update_readme.py (replace with new pipeline runner)
+- [x] scripts/update_readme.py (replaced with new pipeline runner)
 
-## Files to Update
+## Files Updated
 
 ### 1. Configuration Files
-- [ ] .env.test.template
-- [ ] tests/config.py
-- [ ] tests/conftest.py (remove curator references)
+- [x] tests/config.py (removed MAX_TEST_REPOSITORIES setting)
+- [x] .env.test.template
+- [x] tests/conftest.py (no changes needed - clean configuration)
 
 ### 2. Documentation
-- [ ] README.md
-- [ ] dev_docs/setup_guide.md
-- [ ] dev_docs/mvp_system_architecture.md
-- [ ] dev_docs/implementation_plan.md
+- [x] README.md
+- [x] dev_docs/setup_guide.md
+- [x] dev_docs/mvp_system_architecture.md
+- [x] dev_docs/implementation_plan.md
 
-## Files to Create
+## Files Created
 
 ### 1. Production Scripts
-```python
-# scripts/run_pipeline.py
-"""Main pipeline runner script."""
-import asyncio
-import logging
-from pathlib import Path
-from agents.orchestrator import AgentOrchestrator
-from processing.embedchain_store import EmbedchainStore
-from agents.newsletter_monitor import NewsletterMonitor
-from agents.content_extractor import ContentExtractorAgent
-from agents.readme_generator import ReadmeGenerator
-from db.connection import Database
-
-async def main():
-    """Run the complete pipeline."""
-    # Initialize components
-    db = Database()
-    store = EmbedchainStore(token_path)
-    
-    # Create agents
-    newsletter_monitor = NewsletterMonitor(gmail_client, store)
-    content_extractor = ContentExtractorAgent(store, github_token)
-    readme_generator = ReadmeGenerator(db)
-    
-    # Create orchestrator
-    orchestrator = AgentOrchestrator(
-        embedchain_store=store,
-        newsletter_monitor=newsletter_monitor,
-        content_extractor=content_extractor,
-        readme_generator=readme_generator
-    )
-    
-    # Run pipeline
-    await orchestrator.run_pipeline()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
+- [x] scripts/run_pipeline.py (new simplified implementation)
 
 ### 2. Configuration Files
-- [ ] config/pipeline_config.yaml
-- [ ] .env.template (updated version)
-- [ ] config/logging_config.yaml
+- [x] config/pipeline_config.yaml (minimal settings)
+- [x] config/logging_config.yaml (basic logging)
+- [x] .env.template (essential variables)
 
 ### 3. Documentation
-- [ ] docs/production_deployment.md
-- [ ] docs/configuration_guide.md
-- [ ] docs/monitoring_guide.md
+- [x] docs/production_deployment.md (clear setup steps)
+- [x] docs/configuration_guide.md (essential settings)
+- [x] docs/monitoring_guide.md (basic monitoring)
 
-## Implementation Order
+## Important Context Discovered
 
-1. Remove Outdated Files
-   - Start with test files
-   - Remove production scripts
-   - Clean up documentation
+1. Component Tests:
+   - test_gmail_newsletter.py uses max_results=10 for fetching newsletters
+   - test_content_extraction.py handles repository processing without curator
+   - test_readme_generation.py remains valid and unchanged
 
-2. Create New Files
-   - Implement pipeline runner
-   - Add configuration files
-   - Create new documentation
+2. Configuration:
+   - Simpler configuration is better - focus on essential settings
+   - Keep logging basic but functional
+   - Environment variables should be clearly documented
 
-3. Update Existing Files
-   - Update configuration
-   - Update remaining tests
-   - Update documentation
+3. Dependencies:
+   - Working components have minimal interdependencies
+   - Pipeline flow is streamlined without curator
+   - Error handling should focus on common cases
 
-4. Testing
-   - Verify component tests still pass
-   - Test new pipeline runner
-   - Validate configurations
+4. Production Setup:
+   - Keep monitoring simple but effective
+   - Focus on essential maintenance tasks
+   - Document common issues and solutions
 
-## Notes
+## Next Steps
 
-- Keep backup of removed files until new implementation is verified
-- Document all removed functionality in case it needs to be referenced
-- Update issue tracker with cleanup progress
-- Consider creating migration guide for any breaking changes
+1. Set up automated scheduling
+2. Monitor initial production runs
+3. Gather feedback on documentation
+4. Consider backup strategy
