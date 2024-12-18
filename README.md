@@ -21,7 +21,6 @@ Here's how it works:
   - [Large Language Models (LLMs)](#large-language-models-llms)
 - [Artificial Intelligence](#artificial-intelligence)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [TTS & Speech](#tts--speech)
 - [Productivity Tools](#productivity-tools)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
@@ -41,7 +40,6 @@ Here's how it works:
 
 ## Artificial Intelligence
 
-- [NousResearch/Hermes-Function-Calling](https://github.com/NousResearch/Hermes-Function-Calling) - None.
 - [vercel/ai](https://github.com/vercel/ai) - Build AI-powered applications with React, Svelte, Vue, and Solid.
 - [run-llama/chat-ui](https://github.com/run-llama/chat-ui) - Chat UI components for LLM apps.
 - [kennethreitz/simplemind](https://github.com/kennethreitz/simplemind) - Python API client for AI providers that intends to replace LangChain and LangGraph for most common use cases.
@@ -61,15 +59,12 @@ Here's how it works:
 - [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) - The official Python SDK for Model Context Protocol servers and clients.
 - [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) - Model Context Protocol Servers.
 
-## TTS & Speech
-
-- [bytedance/SALMONN](https://github.com/bytedance/SALMONN) - SALMONN: Speech Audio Language Music Open Neural Network.
-
 ## Productivity Tools
 
 - [Kozea/Radicale](https://github.com/Kozea/Radicale) - A simple CalDAV (calendar) and CardDAV (contact) server.
 - [collective/icalendar](https://github.com/collective/icalendar) - icalendar parser library for Python.
 - [kanboard/kanboard](https://github.com/kanboard/kanboard) - Kanban project management software.
+- [microsoft/markitdown](https://github.com/microsoft/markitdown) - Python tool for converting files and office documents to Markdown.
 
 ## Other
 
@@ -77,6 +72,7 @@ Here's how it works:
 - [caspianmoon/memoripy](https://github.com/caspianmoon/memoripy) - An AI memory layer with short- and long-term storage, semantic clustering, and optional memory decay for context-aware applications.
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
 - [huggingface/smol-course](https://github.com/huggingface/smol-course) - A course on aligning smol models.
+- [Portkey-AI/gateway](https://github.com/Portkey-AI/gateway) - A Blazing Fast AI Gateway with integrated Guardrails. Route to 200+ LLMs, 50+ AI Guardrails with 1 fast & friendly API.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -136,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2024-12-17*
+📊 *Last edited: 2024-12-18*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
