@@ -10,8 +10,6 @@ from pydantic_ai import Agent, RunContext
 from processing.embedchain_store import EmbedchainStore
 from agents.newsletter_monitor import NewsletterMonitor, Newsletter
 from agents.content_extractor import ContentExtractorAgent
-from agents.topic_analyzer import TopicAnalyzer
-from agents.repository_curator import RepositoryCurator
 from agents.readme_generator import ReadmeGenerator
 
 logger = logging.getLogger(__name__)
@@ -23,8 +21,6 @@ class OrchestratorDeps(BaseModel):
     store: Union[EmbedchainStore, AsyncMock]
     newsletter_monitor: Union[NewsletterMonitor, AsyncMock]
     content_extractor: Union[ContentExtractorAgent, AsyncMock]
-    topic_analyzer: Union[TopicAnalyzer, AsyncMock]
-    repository_curator: Union[RepositoryCurator, AsyncMock]
     readme_generator: Union[ReadmeGenerator, AsyncMock]
 
 class AgentOrchestrator:
@@ -35,8 +31,6 @@ class AgentOrchestrator:
         embedchain_store: EmbedchainStore,
         newsletter_monitor: NewsletterMonitor,
         content_extractor: ContentExtractorAgent,
-        topic_analyzer: TopicAnalyzer,
-        repository_curator: RepositoryCurator,
         readme_generator: ReadmeGenerator
     ):
         """
@@ -46,8 +40,6 @@ class AgentOrchestrator:
             embedchain_store: Vector storage instance
             newsletter_monitor: Newsletter monitoring component
             content_extractor: Content extraction agent
-            topic_analyzer: Topic analysis agent
-            repository_curator: Repository curation agent
             readme_generator: README generation agent
         """
         try:
@@ -65,8 +57,6 @@ class AgentOrchestrator:
             self.store = embedchain_store
             self.newsletter_monitor = newsletter_monitor
             self.content_extractor = content_extractor
-            self.topic_analyzer = topic_analyzer
-            self.repository_curator = repository_curator
             self.readme_generator = readme_generator
 
             # Pipeline state tracking
@@ -77,8 +67,6 @@ class AgentOrchestrator:
             # Register tools
             self._agent.tool(self.process_newsletters)
             self._agent.tool(self.extract_repositories)
-            self._agent.tool(self.analyze_repositories)
-            self._agent.tool(self.curate_repositories)
             self._agent.tool(self.generate_readme)
 
             logger.info("Initialized Agent Orchestrator")
@@ -93,8 +81,6 @@ class AgentOrchestrator:
             store=self.store,
             newsletter_monitor=self.newsletter_monitor,
             content_extractor=self.content_extractor,
-            topic_analyzer=self.topic_analyzer,
-            repository_curator=self.repository_curator,
             readme_generator=self.readme_generator
         )
 
@@ -165,92 +151,17 @@ class AgentOrchestrator:
             logger.error("Repository extraction failed")
             raise Exception("Pipeline failed at repository extraction") from e
 
-    async def analyze_repositories(
-        self,
-        ctx: RunContext[OrchestratorDeps],
-        repositories: List[Dict]
-    ) -> List[Dict]:
-        """
-        Analyze repositories for topics.
-
-        Args:
-            ctx: Run context with dependencies
-            repositories: List of repositories to analyze
-
-        Returns:
-            List of analyzed repositories with topics
-        """
-        if not repositories:
-            logger.info("No repositories to analyze, skipping topic analysis")
-            return []
-
-        try:
-            logger.info("Analyzing repository topics")
-            analyzed_repos = []
-            for repo in repositories:
-                if not repo.get('github_url'):
-                    self.error_count += 1
-                    logger.error("Invalid repository data: missing github_url")
-                    raise ValueError("Invalid repository URL")
-                
-                topics = await ctx.deps.topic_analyzer.analyze_repository_topics(repo)
-                analyzed = {**repo, 'topics': topics}
-                analyzed_repos.append(analyzed)
-            logger.info(f"Analyzed {len(analyzed_repos)} repositories")
-            return analyzed_repos
-        except Exception as e:
-            self.error_count += 1
-            logger.error("Repository analysis failed")
-            raise Exception("Pipeline failed at repository analysis") from e
-
-    async def curate_repositories(
-        self,
-        ctx: RunContext[OrchestratorDeps],
-        repositories: List[Dict]
-    ) -> List[Dict]:
-        """
-        Curate repositories with metadata and vector storage.
-
-        Args:
-            ctx: Run context with dependencies
-            repositories: List of repositories to curate
-
-        Returns:
-            List of curated repositories
-        """
-        if not repositories:
-            logger.info("No repositories to curate, skipping curation")
-            return []
-
-        try:
-            logger.info("Curating repositories")
-            curated_repos = []
-            for repo in repositories:
-                # Ensure repository has required fields
-                if not repo.get('github_url'):
-                    logger.warning("Repository missing github_url, skipping")
-                    continue
-                
-                curated = await ctx.deps.repository_curator.process_repository(repo)
-                curated_repos.append(curated)
-            logger.info(f"Curated {len(curated_repos)} repositories")
-            return curated_repos
-        except Exception as e:
-            self.error_count += 1
-            logger.error("Repository curation failed")
-            raise Exception("Pipeline failed at repository curation") from e
-
     async def generate_readme(
         self,
         ctx: RunContext[OrchestratorDeps],
         repositories: List[Dict]
     ) -> bool:
         """
-        Generate README with curated repositories.
+        Generate README with extracted repositories.
 
         Args:
             ctx: Run context with dependencies
-            repositories: List of curated repositories
+            repositories: List of extracted repositories
 
         Returns:
             True if README generation succeeded
@@ -306,23 +217,11 @@ class AgentOrchestrator:
                 logger.info("No repositories extracted, ending pipeline early")
                 return True
 
-            # Analyze repositories
-            analyzed_repos = await self.analyze_repositories(ctx, repositories)
-            if not analyzed_repos:
-                logger.info("No repositories to analyze, ending pipeline early")
-                return True
-
-            # Curate repositories
-            curated_repos = await self.curate_repositories(ctx, analyzed_repos)
-            if not curated_repos:
-                logger.info("No repositories to curate, ending pipeline early")
-                return True
-
-            # Generate README
-            await self.generate_readme(ctx, curated_repos)
+            # Generate README directly from extracted repositories
+            await self.generate_readme(ctx, repositories)
 
             # Update pipeline stats
-            self.processed_count = len(curated_repos)
+            self.processed_count = len(repositories)
             logger.info(
                 f"Pipeline completed successfully. Processed {self.processed_count} repositories"
             )

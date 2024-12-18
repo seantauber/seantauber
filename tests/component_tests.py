@@ -8,24 +8,20 @@ Components:
    storage, vector embeddings, and historical tracking
 2. Content Extraction - Tests repository extraction from newsletters, metadata
    collection, and summary generation
-3. Topic Analysis - Tests semantic categorization of repositories using fixed
-   categories and confidence thresholds
-4. Repository Curation - Tests repository metadata management and semantic
+3. Repository Curation - Tests repository metadata management and semantic
    duplicate detection
-5. README Generation - Tests generation of repository listing with live database
+4. README Generation - Tests generation of repository listing with live database
    content and proper category organization
 """
 
 from tests.components.test_gmail_newsletter import TestGmailNewsletterComponent
 from tests.components.test_content_extraction import TestContentExtractionComponent
-from tests.components.test_topic_analysis import TestTopicAnalysisComponent
 from tests.components.test_repository_curation import TestRepositoryCurationComponent
 from tests.components.test_readme_generation import TestReadmeGenerationComponent
 
 __all__ = [
     'TestGmailNewsletterComponent',
     'TestContentExtractionComponent',
-    'TestTopicAnalysisComponent',
     'TestRepositoryCurationComponent',
     'TestReadmeGenerationComponent'
 ]

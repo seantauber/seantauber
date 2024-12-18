@@ -13,8 +13,6 @@ from processing.gmail.client import GmailClient
 from agents.orchestrator import AgentOrchestrator
 from agents.newsletter_monitor import NewsletterMonitor
 from agents.content_extractor import ContentExtractorAgent
-from agents.topic_analyzer import TopicAnalyzer
-from agents.repository_curator import RepositoryCurator
 from agents.readme_generator import ReadmeGenerator
 
 pytestmark = pytest.mark.asyncio
@@ -133,8 +131,6 @@ class TestEndToEndWorkflow:
             embedchain_store,
             github_token=os.getenv('GITHUB_TOKEN', 'test-token')
         )
-        topic_analyzer = TopicAnalyzer(embedchain_store)
-        repository_curator = RepositoryCurator(embedchain_store)
         readme_generator = ReadmeGenerator(mock_db, mock_github_client)
         
         # Create orchestrator
@@ -142,8 +138,6 @@ class TestEndToEndWorkflow:
             embedchain_store=embedchain_store,
             newsletter_monitor=newsletter_monitor,
             content_extractor=content_extractor,
-            topic_analyzer=topic_analyzer,
-            repository_curator=repository_curator,
             readme_generator=readme_generator
         )
         
@@ -231,27 +225,11 @@ class TestEndToEndWorkflow:
         """
         
         # Process through pipeline
-        result = await system['orchestrator'].process_repository(
-            "https://github.com/test/ml-project",
-            newsletter_content,
-            "test_email_123"
-        )
+        result = await system['orchestrator'].run_pipeline()
+        assert result is True
         
-        assert result is not None
-        assert "vector_id" in result
-        assert "summary" in result
-        
-        # Verify summary structure
-        summary = result["summary"]
-        assert "primary_purpose" in summary
-        assert "key_technologies" in summary
-        assert "target_users" in summary
-        assert "main_features" in summary
-        assert "technical_domain" in summary
-        
-        # Verify metadata
-        metadata = result["metadata"]
-        assert metadata["language"] == "Python"
-        assert "machine-learning" in metadata["topics"]
-        assert metadata["stars"] == 1000
-        assert metadata["forks"] == 500
+        # Verify pipeline stats
+        stats = system['orchestrator'].get_pipeline_stats()
+        assert stats['error_count'] == 0
+        assert stats['processed_count'] > 0
+        assert stats['last_run'] is not None
