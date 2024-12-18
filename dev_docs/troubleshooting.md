@@ -1,294 +1,300 @@
 # Troubleshooting Guide
 
-This guide helps diagnose and resolve common issues in the GitHub repository curation system.
+This guide covers common issues and their solutions when running the pipeline.
 
-## Diagnostic Tools
+## Pipeline Issues
 
-1. **System Health Check**
-   ```bash
-   python scripts/health_check.py
-   ```
-   Verifies:
-   - API connections
-   - Vector storage status
-   - Agent availability
-   - Pipeline state
+### 1. Pipeline Hangs or Seems Stuck
 
-2. **Log Analysis**
-   ```bash
-   python scripts/analyze_logs.py
-   ```
-   Shows:
-   - Error patterns
-   - Performance metrics
-   - Pipeline statistics
+**Symptoms:**
+- Pipeline appears to be running but no progress
+- No new log entries
+- Process doesn't complete
 
-## Common Issues
+**Solutions:**
+1. Check worker status:
+```bash
+ps aux | grep dramatiq
+```
 
-### 1. Pipeline Failures
+2. Verify Redis connection:
+```bash
+redis-cli ping
+```
 
-#### Symptoms
-- Pipeline stops mid-execution
-- Incomplete README updates
-- Error messages in logs
+3. Check queue status:
+```bash
+redis-cli
+> LLEN queue:newsletters
+> LLEN queue:content
+> LLEN queue:readme
+```
 
-#### Possible Causes
-1. **API Rate Limits**
-   - Check GitHub API limits:
-     ```bash
-     curl -H "Authorization: token YOUR_TOKEN" https://api.github.com/rate_limit
-     ```
-   - Monitor OpenAI API usage
+4. Restart workers if needed:
+```bash
+pkill -f dramatiq
+dramatiq processing.tasks -p 3 --queues newsletters &
+dramatiq processing.tasks -p 2 --queues content &
+dramatiq processing.tasks -p 1 --queues readme &
+```
 
-2. **Vector Storage Issues**
-   - Insufficient disk space
-   - Corrupted indexes
-   - Connection timeouts
+### 2. Worker Memory Usage
 
-3. **Agent Failures**
-   - Invalid configurations
-   - Resource exhaustion
-   - Timeout issues
+**Symptoms:**
+- Workers consuming excessive memory
+- System slowdown
+- Worker crashes
 
-#### Solutions
-1. **API Issues**
-   - Implement rate limiting:
-     ```python
-     from time import sleep
-     
-     def rate_limited_call():
-         try:
-             return api.call()
-         except RateLimitError:
-             sleep(60)
-             return api.call()
-     ```
-   - Use API key rotation
-   - Monitor usage patterns
+**Solutions:**
+1. Adjust batch sizes:
+```bash
+# Smaller batches for newsletter processing
+python scripts/run_newsletter_stage.py --batch-size 3
 
-2. **Vector Storage**
-   - Clean up old vectors:
-     ```bash
-     python scripts/cleanup_vectors.py --age 30
-     ```
-   - Rebuild indexes:
-     ```bash
-     python scripts/rebuild_indexes.py
-     ```
-   - Check storage health:
-     ```bash
-     python scripts/check_storage.py
-     ```
+# Reduce content extraction batch size
+python scripts/run_extraction_stage.py --batch-size 2
+```
 
-3. **Agent Recovery**
-   - Reset agent state:
-     ```bash
-     python scripts/reset_agents.py
-     ```
-   - Clear agent caches
-   - Restart pipeline
+2. Monitor memory usage:
+```bash
+watch -n 1 "ps aux | grep dramatiq"
+```
 
-### 2. Data Quality Issues
+3. Configure worker memory limits in dramatiq settings:
+```python
+# In processing/tasks.py
+@dramatiq.actor(max_memory=512)  # Memory limit in MB
+```
 
-#### Symptoms
-- Missing or duplicate entries
-- Poor content extraction
-- Incorrect repository information
+## Database Issues
 
-#### Possible Causes
-1. **Vector Similarity Issues**
-   - Inappropriate thresholds
-   - Poor embedding quality
-   - Inconsistent chunking
+### 1. Migration Failures
 
-2. **Content Processing Errors**
-   - Invalid content format
-   - Character encoding issues
-   - HTML parsing errors
+**Symptoms:**
+- Migration script errors
+- Database locked errors
+- Incomplete migrations
 
-#### Solutions
-1. **Vector Quality**
-   - Adjust similarity thresholds:
-     ```python
-     # config/pipeline_config.yaml
-     vector_store:
-       similarity_threshold: 0.8
-       chunk_size: 500
-     ```
-   - Reprocess problematic content:
-     ```bash
-     python scripts/reprocess_content.py --id <content_id>
-     ```
+**Solutions:**
+1. Check database state:
+```bash
+sqlite3 your_database.sqlite
+> SELECT version FROM schema_version;
+```
 
-2. **Content Processing**
-   - Validate input format
-   - Fix encoding issues:
-     ```python
-     content = content.encode('utf-8', errors='ignore').decode('utf-8')
-     ```
-   - Update parsing rules
+2. Backup before retrying:
+```bash
+cp your_database.sqlite your_database.backup.sqlite
+```
 
-### 3. Performance Issues
+3. Force single connection:
+```bash
+# Stop all pipeline processes
+pkill -f dramatiq
+pkill -f run_parallel_pipeline
 
-#### Symptoms
-- Slow pipeline execution
-- High memory usage
-- Delayed updates
+# Run migration with exclusive access
+python scripts/run_migrations.py
+```
 
-#### Possible Causes
-1. **Resource Constraints**
-   - Insufficient memory
-   - CPU bottlenecks
-   - Disk I/O limitations
+### 2. Database Locks
 
-2. **Inefficient Operations**
-   - Large batch sizes
-   - Unoptimized queries
-   - Missing indexes
+**Symptoms:**
+- "database is locked" errors
+- Concurrent access issues
+- Hanging queries
 
-#### Solutions
-1. **Resource Management**
-   - Monitor resource usage:
-     ```bash
-     python scripts/monitor_resources.py
-     ```
-   - Implement batch processing:
-     ```python
-     async def process_batch(items, batch_size=10):
-         for i in range(0, len(items), batch_size):
-             batch = items[i:i + batch_size]
-             await process_items(batch)
-     ```
-   - Clean up temporary files
+**Solutions:**
+1. Check active connections:
+```bash
+sqlite3 your_database.sqlite
+> SELECT * FROM sqlite_master WHERE type='table';
+```
 
-2. **Optimization**
-   - Adjust batch sizes
-   - Optimize queries
-   - Add indexes:
-     ```python
-     await store.create_index('metadata.url')
-     ```
+2. Use pragmas for better concurrency:
+```sql
+PRAGMA journal_mode=WAL;
+PRAGMA busy_timeout=5000;
+```
 
-### 4. Integration Issues
+3. Reduce concurrent database access:
+```bash
+# Run stages sequentially instead of parallel
+python scripts/run_newsletter_stage.py
+python scripts/run_extraction_stage.py
+python scripts/run_readme_stage.py
+```
 
-#### Symptoms
-- Failed API connections
-- Authentication errors
-- Webhook failures
+## Vector Store Issues
 
-#### Possible Causes
-1. **Configuration Problems**
-   - Invalid credentials
-   - Expired tokens
-   - Incorrect endpoints
+### 1. Embedding Creation Failures
 
-2. **Network Issues**
-   - Firewall blocks
-   - DNS problems
-   - Proxy configuration
+**Symptoms:**
+- Vector ID generation fails
+- OpenAI API errors
+- Missing embeddings
 
-#### Solutions
-1. **Configuration**
-   - Verify credentials:
-     ```bash
-     python scripts/verify_credentials.py
-     ```
-   - Update tokens:
-     ```bash
-     python scripts/refresh_tokens.py
-     ```
-   - Check endpoints:
-     ```bash
-     python scripts/check_endpoints.py
-     ```
+**Solutions:**
+1. Verify OpenAI API:
+```bash
+curl https://api.openai.com/v1/models \
+  -H "Authorization: Bearer $OPENAI_API_KEY"
+```
 
-2. **Network**
-   - Test connectivity:
-     ```bash
-     python scripts/test_connectivity.py
-     ```
-   - Configure proxies:
-     ```python
-     os.environ['HTTPS_PROXY'] = 'http://proxy:port'
-     ```
-   - Update DNS settings
+2. Check vector store integrity:
+```python
+from processing.embedchain_store import EmbedchainStore
+store = EmbedchainStore("path/to/store")
+store.newsletter_store.health_check()
+```
 
-## Monitoring and Prevention
+3. Reprocess failed items:
+```bash
+python scripts/run_extraction_stage.py --reprocess
+```
+
+## Gmail Integration Issues
+
+### 1. Authentication Failures
+
+**Symptoms:**
+- Token refresh errors
+- Permission denied
+- API quota exceeded
+
+**Solutions:**
+1. Refresh credentials:
+```bash
+rm token.json
+python scripts/setup_gmail.py
+```
+
+2. Check API quotas in Google Cloud Console
+
+3. Verify label exists:
+```python
+from processing.gmail.client import GmailClient
+client = GmailClient("credentials.json", "token.json")
+labels = client.service.users().labels().list(userId='me').execute()
+```
+
+### 2. Newsletter Processing Issues
+
+**Symptoms:**
+- Duplicate processing
+- Missing newsletters
+- Content truncation
+
+**Solutions:**
+1. Check processing status:
+```sql
+SELECT * FROM newsletters 
+WHERE processed_date IS NOT NULL 
+ORDER BY processed_date DESC LIMIT 5;
+```
+
+2. Verify email IDs:
+```sql
+SELECT COUNT(*), COUNT(DISTINCT email_id) 
+FROM newsletters;
+```
+
+3. Monitor content length:
+```sql
+SELECT AVG(LENGTH(content)) as avg_length 
+FROM newsletters;
+```
+
+## Redis Issues
+
+### 1. Connection Problems
+
+**Symptoms:**
+- Redis connection refused
+- Queue operations fail
+- Worker startup errors
+
+**Solutions:**
+1. Check Redis service:
+```bash
+sudo systemctl status redis
+# or
+brew services list | grep redis
+```
+
+2. Verify connection settings:
+```bash
+redis-cli -u $REDIS_URL ping
+```
+
+3. Clear stuck queues:
+```bash
+redis-cli
+> FLUSHALL
+```
+
+### 2. Queue Management
+
+**Symptoms:**
+- Tasks stuck in queue
+- Uneven worker distribution
+- Memory pressure
+
+**Solutions:**
+1. Monitor queue sizes:
+```bash
+watch -n 1 'redis-cli info | grep list'
+```
+
+2. Check task distribution:
+```bash
+redis-cli
+> LLEN queue:newsletters
+> LLEN queue:content
+> LLEN queue:readme
+```
+
+3. Adjust worker counts:
+```bash
+# More newsletter workers for backlog
+dramatiq processing.tasks -p 5 --queues newsletters
+```
+
+## General Debugging
 
 ### 1. Logging
 
-Configure detailed logging:
-```python
-import logging
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('debug.log'),
-        logging.StreamHandler()
-    ]
-)
+Enable debug logging in config/logging_config.yaml:
+```yaml
+root:
+  level: DEBUG
+  handlers: [console, file]
 ```
 
-### 2. Alerts
+### 2. Process Monitoring
 
-Set up monitoring alerts:
-```python
-async def check_system_health():
-    if not await store.is_healthy():
-        send_alert("Vector store unhealthy")
-    if not await check_api_quotas():
-        send_alert("API quota low")
-```
-
-### 3. Regular Maintenance
-
-Schedule maintenance tasks:
+Monitor all components:
 ```bash
-# Add to crontab
-0 0 * * * python scripts/maintenance.py
+# Watch logs
+tail -f pipeline.log
+
+# Monitor workers
+watch -n 1 "ps aux | grep dramatiq"
+
+# Watch Redis
+redis-cli monitor
+
+# Database queries
+sqlite3 your_database.sqlite
+> .timeout 5000
+> PRAGMA busy_timeout = 5000;
 ```
 
-## Recovery Procedures
+### 3. Performance Tuning
 
-### 1. Data Recovery
+1. Adjust batch sizes based on system resources
+2. Scale worker counts based on queue sizes
+3. Monitor memory usage and adjust as needed
+4. Use appropriate timeouts for operations
 
-Restore from backup:
-```bash
-python scripts/restore.py --backup latest
-```
-
-### 2. Pipeline Reset
-
-Reset pipeline state:
-```bash
-python scripts/reset_pipeline.py --clean
-```
-
-### 3. Emergency Shutdown
-
-Graceful shutdown:
-```bash
-python scripts/shutdown.py --graceful
-```
-
-## Getting Help
-
-1. Check logs:
-   ```bash
-   tail -f logs/error.log
-   ```
-
-2. Generate diagnostic report:
-   ```bash
-   python scripts/generate_report.py
-   ```
-
-3. Contact support with:
-   - Diagnostic report
-   - Error messages
-   - Steps to reproduce
-   - System configuration
-
-Remember to always check the logs first and gather relevant information before attempting any fixes.
+Remember to check the logs (pipeline.log) for detailed error messages and stack traces when troubleshooting issues.

@@ -14,6 +14,10 @@ This guide walks through the setup process for the GitHub repository curation sy
    - Gmail API credentials
    - GitHub Personal Access Token
 
+3. **Infrastructure**
+   - Redis server (for message queuing)
+   - SQLite (for data storage)
+
 ## Installation Steps
 
 1. **Clone Repository**
@@ -35,6 +39,12 @@ This guide walks through the setup process for the GitHub repository curation sy
 
    # Using uv (recommended)
    uv pip install -r requirements.txt
+
+   # Install Redis (macOS)
+   brew install redis
+
+   # Install Redis (Ubuntu)
+   sudo apt-get install redis-server
    ```
 
 4. **Configure Environment Variables**
@@ -52,8 +62,12 @@ This guide walks through the setup process for the GitHub repository curation sy
    GITHUB_TOKEN=your_github_token
    GITHUB_REPO=yourusername/github-genai-list
 
-   # Vector Storage
+   # Storage
+   DATABASE_PATH=path/to/database.sqlite
    VECTOR_STORE_PATH=path/to/vector/storage
+
+   # Redis
+   REDIS_URL=redis://localhost:6379
    ```
 
 5. **Set Up Gmail API**
@@ -67,62 +81,90 @@ This guide walks through the setup process for the GitHub repository curation sy
       python scripts/setup_gmail.py
       ```
 
-6. **Initialize Vector Storage**
+6. **Initialize Database**
+   ```bash
+   python scripts/run_migrations.py
+   ```
+
+7. **Initialize Vector Storage**
    ```bash
    python scripts/init_vector_store.py
    ```
 
-7. **Run Tests**
-   ```bash
-   pytest tests/
-   ```
-
-## Configuration
-
-### Vector Storage Settings
-
-Edit `config/pipeline_config.yaml`:
-```yaml
-vector_store:
-  collections:
-    newsletters:
-      chunk_size: 500
-      similarity_threshold: 0.7
-    repositories:
-      chunk_size: 500
-      similarity_threshold: 0.8
-```
-
-### Agent Configuration
-
-Edit `config/pipeline_config.yaml`:
-```yaml
-agents:
-  newsletter_monitor:
-    poll_interval: 3600
-    batch_size: 10
-  content_extractor:
-    min_confidence: 0.7
-```
-
 ## Running the System
 
-1. **Start the Pipeline**
-   ```bash
-   python scripts/run_pipeline.py
-   ```
+### 1. Start Required Services
 
-2. **Monitor Logs**
-   ```bash
-   tail -f logs/pipeline.log
-   ```
+```bash
+# Start Redis server
+redis-server
 
-3. **Check Results**
-   - View updated README in GitHub repository
-   - Check vector storage status:
-     ```bash
-     python scripts/check_vector_store.py
-     ```
+# Start Dramatiq workers (in separate terminals)
+# Newsletter processing workers
+dramatiq processing.tasks -p 3 --queues newsletters
+
+# Content extraction workers
+dramatiq processing.tasks -p 2 --queues content
+
+# README update worker
+dramatiq processing.tasks -p 1 --queues readme
+```
+
+### 2. Run Pipeline
+
+You can run the pipeline in three ways:
+
+#### A. Full Pipeline
+Runs all stages in parallel with proper coordination:
+```bash
+python scripts/run_parallel_pipeline.py
+```
+
+#### B. Individual Stages
+Run specific stages independently:
+
+1. Newsletter Processing:
+```bash
+# Basic usage
+python scripts/run_newsletter_stage.py
+
+# With options
+python scripts/run_newsletter_stage.py \
+  --max-results 100 \
+  --batch-size 10 \
+  --start-date 2024-01-01
+```
+
+2. Content Extraction:
+```bash
+# Basic usage
+python scripts/run_extraction_stage.py
+
+# With options
+python scripts/run_extraction_stage.py \
+  --batch-size 5 \
+  --days-back 14 \
+  --reprocess
+```
+
+3. README Generation:
+```bash
+# Basic usage
+python scripts/run_readme_stage.py
+
+# Force update
+python scripts/run_readme_stage.py --force
+```
+
+### 3. Monitor Progress
+
+```bash
+# View pipeline logs
+tail -f pipeline.log
+
+# Monitor Redis queue
+redis-cli monitor
+```
 
 ## Development Setup
 
@@ -154,20 +196,25 @@ agents:
 
 ## Common Issues
 
-1. **Gmail Authentication**
-   - Ensure credentials are correctly configured
-   - Check token refresh process
-   - Verify API access permissions
+1. **Redis Connection**
+   - Ensure Redis server is running
+   - Check REDIS_URL in .env
+   - Verify Redis port availability
 
-2. **Vector Storage**
-   - Check disk space for vector storage
-   - Verify file permissions
-   - Monitor memory usage
+2. **Worker Management**
+   - Each stage has its own worker pool
+   - Workers can be scaled independently
+   - Monitor worker logs for issues
 
-3. **GitHub Integration**
-   - Verify token permissions
-   - Check API rate limits
-   - Ensure repository access
+3. **Database Migrations**
+   - Run migrations after schema changes
+   - Back up database before migrations
+   - Check migration logs for errors
+
+4. **Gmail Integration**
+   - Verify credentials and token
+   - Check label configuration
+   - Monitor API quota usage
 
 ## Next Steps
 
