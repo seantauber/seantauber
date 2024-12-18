@@ -147,3 +147,19 @@ Temporary Items
 
 # Credentials
 .credentials/
+
+# Database files - cover all possible locations
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/*.sqlite3-journal
+
+# Chroma database files - cover all possible locations
+**/chroma.sqlite3
+**/db/*/data_level0.bin
+**/db/*/header.bin
+**/db/*/length.bin
+**/db/*/link_lists.bin
+
+# Test files
+readme.test*

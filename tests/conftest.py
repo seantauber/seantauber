@@ -21,8 +21,9 @@ def pytest_configure(config):
         raise RuntimeError("LOGFIRE_TOKEN not found in environment")
 
     logfire.configure(
-        service_name="github-genai-list-test",
+        service_name="github-genai-list",
         service_version="0.1.0",
         environment="test",
-        token=logfire_token
+        token=logfire_token,
+        send_to_logfire=True
     )
