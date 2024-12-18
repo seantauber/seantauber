@@ -55,49 +55,6 @@ CREATE TABLE repositories (
 );
 ```
 
-### Topics
-```sql
-CREATE TABLE topics (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
-    first_seen_date TIMESTAMP NOT NULL,
-    last_seen_date TIMESTAMP NOT NULL,
-    mention_count INTEGER DEFAULT 1,
-    parent_topic_id INTEGER,
-    vector_id TEXT,              -- Reference to vector storage
-    metadata JSON,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (parent_topic_id) REFERENCES topics(id)
-);
-```
-
-### Topic Relationships
-```sql
-CREATE TABLE topic_relationships (
-    id INTEGER PRIMARY KEY,
-    source_topic_id INTEGER NOT NULL,
-    target_topic_id INTEGER NOT NULL,
-    relationship_type TEXT NOT NULL, -- 'sibling', 'evolution', etc.
-    strength FLOAT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (source_topic_id) REFERENCES topics(id),
-    FOREIGN KEY (target_topic_id) REFERENCES topics(id)
-);
-```
-
-### Repository Categories
-```sql
-CREATE TABLE repository_categories (
-    id INTEGER PRIMARY KEY,
-    repository_id INTEGER NOT NULL,
-    topic_id INTEGER NOT NULL,
-    confidence_score FLOAT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (repository_id) REFERENCES repositories(id),
-    FOREIGN KEY (topic_id) REFERENCES topics(id)
-);
-```
-
 ### Content Cache
 ```sql
 CREATE TABLE content_cache (
@@ -121,7 +78,7 @@ CREATE TABLE content_cache (
     "embedding": "[float_array]",
     "metadata": {
         "source_id": "reference_to_sqlite_id",
-        "source_type": "newsletter|repository|topic",
+        "source_type": "newsletter|repository",
         "creation_date": "timestamp",
         "last_updated": "timestamp",
         "storage_status": "active|archived|summarized",
@@ -155,10 +112,6 @@ CREATE TABLE content_cache (
 2. Repository Information
    - SQLite: GitHub metadata and mention statistics
    - Vector: README content, documentation embeddings
-
-3. Topic Representations
-   - SQLite: Hierarchical relationships and statistics
-   - Vector: Semantic meaning and contextual relationships
 
 ## 4. Archival/Retention Implementation
 

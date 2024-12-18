@@ -61,17 +61,39 @@ class InitialMigration(Migration):
                 )
             """)
             
+            # Create system_config table
+            db.execute("""
+                CREATE TABLE system_config (
+                    id INTEGER PRIMARY KEY,
+                    key TEXT NOT NULL UNIQUE,
+                    value TEXT NOT NULL,
+                    description TEXT,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Create agent_operations table
+            db.execute("""
+                CREATE TABLE agent_operations (
+                    id INTEGER PRIMARY KEY,
+                    agent_type TEXT NOT NULL,
+                    operation_type TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    started_at TIMESTAMP NOT NULL,
+                    completed_at TIMESTAMP,
+                    error_message TEXT,
+                    metadata JSON
+                )
+            """)
+            
             # Create newsletters table
             db.execute("""
                 CREATE TABLE newsletters (
                     id INTEGER PRIMARY KEY,
                     email_id TEXT NOT NULL UNIQUE,
-                    subject TEXT,
                     received_date TIMESTAMP NOT NULL,
                     processed_date TIMESTAMP,
-                    content TEXT,
-                    storage_status TEXT NOT NULL DEFAULT 'active',
-                    processing_status TEXT NOT NULL DEFAULT 'pending',
+                    storage_status TEXT NOT NULL,
                     vector_id TEXT,
                     metadata JSON,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -91,42 +113,94 @@ class InitialMigration(Migration):
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
-            
-            # Create topics table
+
+            # Create content_cache table
             db.execute("""
-                CREATE TABLE topics (
+                CREATE TABLE content_cache (
                     id INTEGER PRIMARY KEY,
-                    name TEXT NOT NULL UNIQUE,
-                    first_seen_date TIMESTAMP NOT NULL,
-                    last_seen_date TIMESTAMP NOT NULL,
-                    mention_count INTEGER DEFAULT 1,
-                    parent_topic_id INTEGER,
-                    vector_id TEXT,
+                    url TEXT NOT NULL UNIQUE,
+                    content_type TEXT NOT NULL,
+                    content BLOB,
+                    last_accessed TIMESTAMP NOT NULL,
+                    expires_at TIMESTAMP NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Create active_storage_rules table
+            db.execute("""
+                CREATE TABLE active_storage_rules (
+                    id INTEGER PRIMARY KEY,
+                    content_type TEXT NOT NULL,
+                    retention_period_days INTEGER NOT NULL,
+                    archival_policy TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Create archive_storage_rules table
+            db.execute("""
+                CREATE TABLE archive_storage_rules (
+                    id INTEGER PRIMARY KEY,
+                    content_type TEXT NOT NULL,
+                    retention_period_days INTEGER NOT NULL,
+                    summarization_policy TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Create permanent_storage_rules table
+            db.execute("""
+                CREATE TABLE permanent_storage_rules (
+                    id INTEGER PRIMARY KEY,
+                    content_type TEXT NOT NULL,
+                    criteria JSON NOT NULL,
+                    storage_policy TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+
+            # Create archival_jobs table
+            db.execute("""
+                CREATE TABLE archival_jobs (
+                    id INTEGER PRIMARY KEY,
+                    content_type TEXT NOT NULL,
+                    source_id INTEGER NOT NULL,
+                    status TEXT NOT NULL,
+                    started_at TIMESTAMP NOT NULL,
+                    completed_at TIMESTAMP,
+                    summary_vector_id TEXT,
                     metadata JSON,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (parent_topic_id) REFERENCES topics(id)
-                        ON DELETE SET NULL
-                        ON UPDATE CASCADE
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
-            
-            # Create repository_categories table
+
+            # Create retention_triggers table
             db.execute("""
-                CREATE TABLE repository_categories (
+                CREATE TABLE retention_triggers (
                     id INTEGER PRIMARY KEY,
-                    repository_id INTEGER NOT NULL,
-                    topic_id INTEGER NOT NULL,
-                    confidence_score FLOAT NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    UNIQUE(repository_id, topic_id),
-                    FOREIGN KEY (repository_id) REFERENCES repositories(id)
-                        ON DELETE CASCADE
-                        ON UPDATE CASCADE,
-                    FOREIGN KEY (topic_id) REFERENCES topics(id)
-                        ON DELETE CASCADE
-                        ON UPDATE CASCADE
+                    trigger_type TEXT NOT NULL,
+                    content_type TEXT NOT NULL,
+                    condition_sql TEXT NOT NULL,
+                    action_type TEXT NOT NULL,
+                    enabled BOOLEAN DEFAULT true,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
+
+            # Create content_summaries table
+            db.execute("""
+                CREATE TABLE content_summaries (
+                    id INTEGER PRIMARY KEY,
+                    original_content_id INTEGER NOT NULL,
+                    content_type TEXT NOT NULL,
+                    summary_type TEXT NOT NULL,
+                    vector_id TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    metadata JSON
+                )
+            """)
+
         except DatabaseError as e:
             raise DatabaseError(f"Failed to create tables: {str(e)}")
     
@@ -142,10 +216,17 @@ class InitialMigration(Migration):
         try:
             # Drop tables in reverse order of creation
             tables = [
-                "repository_categories",
-                "topics",
+                "content_summaries",
+                "retention_triggers",
+                "archival_jobs",
+                "permanent_storage_rules",
+                "archive_storage_rules",
+                "active_storage_rules",
+                "content_cache",
                 "repositories",
                 "newsletters",
+                "agent_operations",
+                "system_config",
                 "migrations"
             ]
             

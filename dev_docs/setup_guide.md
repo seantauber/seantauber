@@ -81,38 +81,28 @@ This guide walks through the setup process for the GitHub repository curation sy
 
 ### Vector Storage Settings
 
-Edit `config/vector_store.json`:
-```json
-{
-  "collections": {
-    "newsletters": {
-      "chunk_size": 500,
-      "similarity_threshold": 0.7
-    },
-    "repositories": {
-      "chunk_size": 500,
-      "similarity_threshold": 0.8
-    }
-  }
-}
+Edit `config/pipeline_config.yaml`:
+```yaml
+vector_store:
+  collections:
+    newsletters:
+      chunk_size: 500
+      similarity_threshold: 0.7
+    repositories:
+      chunk_size: 500
+      similarity_threshold: 0.8
 ```
 
 ### Agent Configuration
 
-Edit `config/agents.json`:
-```json
-{
-  "newsletter_monitor": {
-    "poll_interval": 3600,
-    "batch_size": 10
-  },
-  "content_extractor": {
-    "min_confidence": 0.7
-  },
-  "topic_analyzer": {
-    "min_topic_confidence": 0.8
-  }
-}
+Edit `config/pipeline_config.yaml`:
+```yaml
+agents:
+  newsletter_monitor:
+    poll_interval: 3600
+    batch_size: 10
+  content_extractor:
+    min_confidence: 0.7
 ```
 
 ## Running the System

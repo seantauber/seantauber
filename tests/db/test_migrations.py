@@ -31,10 +31,17 @@ def test_initial_migration_creates_tables(db, migration_manager):
     # Verify all required tables were created
     tables = [
         "migrations",
+        "system_config",
+        "agent_operations",
         "newsletters",
         "repositories",
-        "topics",
-        "repository_categories"
+        "content_cache",
+        "active_storage_rules",
+        "archive_storage_rules",
+        "permanent_storage_rules",
+        "archival_jobs",
+        "retention_triggers",
+        "content_summaries"
     ]
     
     for table in tables:
@@ -66,10 +73,17 @@ def test_migration_reversion(db, migration_manager):
     # Verify all tables were removed
     tables = [
         "migrations",
+        "system_config",
+        "agent_operations",
         "newsletters",
         "repositories",
-        "topics",
-        "repository_categories"
+        "content_cache",
+        "active_storage_rules",
+        "archive_storage_rules",
+        "permanent_storage_rules",
+        "archival_jobs",
+        "retention_triggers",
+        "content_summaries"
     ]
     
     for table in tables:
@@ -118,31 +132,33 @@ def test_failed_migration_handling(db):
     """)
     assert result is None, "Migrations table should not exist after failed migration"
 
-def test_table_constraints(db, migration_manager):
-    """Test foreign key constraints are properly created."""
+def test_system_config_schema(db, migration_manager):
+    """Test system_config table schema and constraints."""
     # Apply migrations
     migration_manager.apply_migrations()
     
-    # Test topics self-reference constraint
-    with pytest.raises(DatabaseError):
-        db.execute("""
-            INSERT INTO topics 
-            (name, first_seen_date, last_seen_date, parent_topic_id)
-            VALUES (?, ?, ?, ?)
-        """, (
-            "test_topic",
-            datetime.utcnow().isoformat(),
-            datetime.utcnow().isoformat(),
-            999  # Non-existent parent_topic_id
-        ))
+    # Test unique key constraint
+    db.execute("""
+        INSERT INTO system_config 
+        (key, value, description)
+        VALUES (?, ?, ?)
+    """, (
+        "test_key",
+        "test_value",
+        "test description"
+    ))
     
-    # Test repository_categories constraints
+    # Attempt to insert duplicate key
     with pytest.raises(DatabaseError):
         db.execute("""
-            INSERT INTO repository_categories 
-            (repository_id, topic_id, confidence_score)
+            INSERT INTO system_config 
+            (key, value, description)
             VALUES (?, ?, ?)
-        """, (999, 999, 1.0))  # Non-existent repository_id and topic_id
+        """, (
+            "test_key",
+            "another_value",
+            "another description"
+        ))
 
 def test_newsletter_schema(db, migration_manager):
     """Test newsletter table schema and constraints."""
@@ -196,6 +212,38 @@ def test_repository_schema(db, migration_manager):
             VALUES (?, ?, ?)
         """, (
             "https://github.com/test/repo",
+            datetime.utcnow().isoformat(),
+            datetime.utcnow().isoformat()
+        ))
+
+def test_content_cache_schema(db, migration_manager):
+    """Test content_cache table schema and constraints."""
+    # Apply migrations
+    migration_manager.apply_migrations()
+    
+    # Test unique url constraint
+    db.execute("""
+        INSERT INTO content_cache 
+        (url, content_type, content, last_accessed, expires_at)
+        VALUES (?, ?, ?, ?, ?)
+    """, (
+        "https://example.com",
+        "html",
+        b"test content",
+        datetime.utcnow().isoformat(),
+        datetime.utcnow().isoformat()
+    ))
+    
+    # Attempt to insert duplicate url
+    with pytest.raises(DatabaseError):
+        db.execute("""
+            INSERT INTO content_cache 
+            (url, content_type, content, last_accessed, expires_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            "https://example.com",
+            "html",
+            b"other content",
             datetime.utcnow().isoformat(),
             datetime.utcnow().isoformat()
         ))

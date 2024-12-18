@@ -29,14 +29,6 @@ The system uses Embedchain for vector storage operations, providing semantic sea
    - Uses vector search for content similarity
    - Extracts and embeds repository information
 
-3. **Topic Analyzer**
-   - Leverages embeddings for topic classification
-   - Maintains topic-vector relationships
-
-4. **Repository Curator**
-   - Uses vector similarity for duplicate detection
-   - Manages repository metadata with vector references
-
 ## Usage
 
 ### Initialization

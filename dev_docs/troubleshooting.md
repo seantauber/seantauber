@@ -91,9 +91,9 @@ This guide helps diagnose and resolve common issues in the GitHub repository cur
 ### 2. Data Quality Issues
 
 #### Symptoms
-- Incorrect repository categorization
 - Missing or duplicate entries
-- Poor topic matching
+- Poor content extraction
+- Incorrect repository information
 
 #### Possible Causes
 1. **Vector Similarity Issues**
@@ -110,11 +110,10 @@ This guide helps diagnose and resolve common issues in the GitHub repository cur
 1. **Vector Quality**
    - Adjust similarity thresholds:
      ```python
-     # config/vector_store.json
-     {
-       "similarity_threshold": 0.8,
-       "chunk_size": 500
-     }
+     # config/pipeline_config.yaml
+     vector_store:
+       similarity_threshold: 0.8
+       chunk_size: 500
      ```
    - Reprocess problematic content:
      ```bash
