@@ -108,12 +108,17 @@ class GmailClient:
         logger.info(f"Truncated content from {len(content)} to {len(truncated)} characters")
         return truncated
 
-    def get_newsletters(self, max_results: int = 10) -> List[Dict]:
+    def get_newsletters(
+        self, 
+        max_results: int = 10, 
+        after_date: Optional[datetime] = None
+    ) -> List[Dict]:
         """
-        Fetch newsletters with the specified label.
+        Fetch newsletters with date filtering.
 
         Args:
             max_results: Maximum number of newsletters to fetch
+            after_date: Only fetch emails after this date
 
         Returns:
             List of dictionaries containing newsletter data with structure:
@@ -141,17 +146,33 @@ class GmailClient:
                 logger.warning(f"Label '{self.NEWSLETTER_LABEL}' not found")
                 return []
 
-            # Fetch emails with the newsletter label
+            # Build query with date filter
+            query = f"label:{self.NEWSLETTER_LABEL}"
+            if after_date:
+                # Gmail search uses format: after:2024/01/01
+                date_str = after_date.strftime("%Y/%m/%d")
+                query += f" after:{date_str}"
+                logger.info(f"Fetching newsletters after {date_str}")
+            else:
+                logger.info("Fetching all newsletters (no date filter)")
+
+            # Fetch emails with query
             results = self.service.users().messages().list(
                 userId='me',
-                labelIds=[label_id],
+                q=query,
                 maxResults=max_results
             ).execute()
 
             messages = results.get('messages', [])
+            if not messages:
+                logger.info("No newsletters found matching criteria")
+                return []
+
+            logger.info(f"Found {len(messages)} newsletters to process")
             newsletters = []
 
-            for message in messages:
+            for i, message in enumerate(messages, 1):
+                logger.info(f"Processing newsletter {i}/{len(messages)} (ID: {message['id']})")
                 msg_data = self.service.users().messages().get(
                     userId='me',
                     id=message['id'],
