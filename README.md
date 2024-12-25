@@ -33,9 +33,9 @@ Here's how it works:
 
 - [VincentGranville/Large-Language-Models](https://github.com/VincentGranville/Large-Language-Models) - Large language Models (LLM).
 - [microsoft/TinyTroupe](https://github.com/microsoft/TinyTroupe) - LLM-powered multiagent persona simulation for imagination enhancement and business insights.
-- [camel-ai/camel](https://github.com/camel-ai/camel) - 🐫 CAMEL: Finding the Scaling Law of Agents. The first and the best multi-agent framework.
 - [andrewyng/aisuite](https://github.com/andrewyng/aisuite) - Simple, unified interface to multiple Generative AI providers.
 - [microsoft/lida](https://github.com/microsoft/lida) - Automatic Generation of Visualizations and Infographics using Large Language Models.
+- [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
 
 ## Artificial Intelligence
 
@@ -47,9 +47,8 @@ Here's how it works:
 - [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI.
 - [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
 - [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
-- [cline/cline](https://github.com/cline/cline) - Autonomous coding agent right in your IDE, capable of creating/editing files, executing commands, using the browser, and more with your permission every step of the way.
 - [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
-- [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
+- [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 
 ## MLOps & AI Infrastructure
 
@@ -57,6 +56,7 @@ Here's how it works:
 - [anaisbetts/mcp-youtube](https://github.com/anaisbetts/mcp-youtube) - A Model-Context Protocol Server for YouTube.
 - [modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) - The official Python SDK for Model Context Protocol servers and clients.
 - [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) - Model Context Protocol Servers.
+- [Portkey-AI/gateway](https://github.com/Portkey-AI/gateway) - A blazing fast AI Gateway with integrated guardrails. Route to 200+ LLMs, 50+ AI Guardrails with 1 fast & friendly API.
 
 ## Productivity Tools
 
@@ -71,8 +71,8 @@ Here's how it works:
 - [caspianmoon/memoripy](https://github.com/caspianmoon/memoripy) - An AI memory layer with short- and long-term storage, semantic clustering, and optional memory decay for context-aware applications.
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
 - [huggingface/smol-course](https://github.com/huggingface/smol-course) - A course on aligning smol models.
-- [Portkey-AI/gateway](https://github.com/Portkey-AI/gateway) - A blazing fast AI Gateway with integrated guardrails. Route to 200+ LLMs, 50+ AI Guardrails with 1 fast & friendly API.
-- [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
+- [Ironclad/rivet](https://github.com/Ironclad/rivet) - The open-source visual AI programming environment and TypeScript library.
+- [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -132,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2024-12-24*
+📊 *Last edited: 2024-12-25*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
