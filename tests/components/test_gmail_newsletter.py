@@ -1,4 +1,101 @@
-"""Tests for Gmail newsletter ingestion with live dependencies."""
+"""Tests for Gmail newsletter ingestion and processing pipeline.
+
+This test suite validates the complete Gmail newsletter ingestion pipeline, including:
+1. Fetching newsletters from Gmail
+2. Storing newsletter data in the database
+3. Processing newsletter content into vector embeddings
+4. Tracking historical newsletter data
+
+Data Flow:
+----------
+Input:
+- Gmail emails (fetched via GmailClient)
+  - Format: Raw email data including subject, content, received date
+  - Source: Gmail account configured via GMAIL_CREDENTIALS_PATH and GMAIL_TOKEN_PATH
+
+Processing Steps:
+1. Newsletter Ingestion (test_newsletter_ingestion):
+   - Fetches up to 10 most recent newsletters from Gmail
+   - For each newsletter:
+     - Checks for existing entry in database
+     - Updates existing or inserts new record with:
+       * email_id: Unique Gmail message ID
+       * subject: Email subject line
+       * received_date: Date email was received
+       * content: Raw email content
+       * vector_id: Initially null
+       * metadata: Additional email metadata as JSON string
+       * processing_status: Initial 'pending' status
+       * created_at/processed_date: Timestamps
+
+2. Content Processing (test_content_processing):
+   - Identifies unprocessed newsletters (where vector_id is NULL)
+   - For each unprocessed newsletter:
+     - Generates vector embedding from content
+     - Updates database record with:
+       * vector_id: Unique identifier for stored embedding
+       * processing_status: Updated to 'completed'
+       * processed_date: Timestamp of processing
+
+3. Historical Tracking (test_historical_tracking):
+   - Analyzes processed newsletters to verify:
+     * Date distribution (earliest to latest)
+     * Processing status counts
+     * Timeline of newsletter receipts
+
+Output/Storage:
+--------------
+1. Database (newsletters table):
+   - Schema:
+     * email_id: TEXT (primary key)
+     * subject: TEXT
+     * received_date: TEXT (ISO format)
+     * content: TEXT
+     * vector_id: TEXT (null until processed)
+     * metadata: TEXT (JSON string)
+     * processing_status: TEXT
+     * created_at: TEXT (ISO format)
+     * processed_date: TEXT (ISO format)
+
+2. Vector Store:
+   - Stores embeddings generated from newsletter content
+   - Each embedding has unique vector_id referenced in database
+   - Enables semantic search/similarity operations
+
+Usage Notes:
+------------
+- Requires configured Gmail credentials and token
+- Uses test database path from settings
+- Cleans database before each test
+- Limited to 10 newsletters per fetch for testing
+- Processes both new and existing newsletters
+- Handles duplicate prevention via email_id
+
+Integration Points:
+-----------------
+- GmailClient: Fetches raw newsletter data
+- NewsletterMonitor: Orchestrates ingestion and processing
+- EmbedchainStore: Generates and stores vector embeddings
+- Database: Persists newsletter data and processing state
+
+For developers building additional modules:
+----------------------------------------
+1. Accessing newsletter data:
+   - Query newsletters table for processed content
+   - Join on vector_id for embedding access
+   - Use processing_status to identify state
+
+2. Processing pipeline integration:
+   - Monitor 'pending' status for new content
+   - Update processing_status for tracking
+   - Reference vector_id for similarity searches
+
+3. Historical analysis:
+   - received_date and processed_date enable timeline analysis
+   - metadata field stores additional context
+   - vector_id enables semantic clustering
+"""
+
 import pytest
 from agents.newsletter_monitor import NewsletterMonitor
 from db.connection import Database
