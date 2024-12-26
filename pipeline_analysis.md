@@ -97,161 +97,92 @@ The parallel pipeline attempts to parallelize the same workflow using Dramatiq w
    - Incomplete error state tracking
    - Difficult to implement partial retries
 
-## Recommendations
+## Current Implementation Status
 
-1. **Database Layer**
-   - Implement proper connection pooling
-   - Consider switching to a more concurrent-friendly database
-   - Add transaction isolation levels
+### Completed (Newsletter Stage)
+1. Queue-based Database Access
+   - DatabaseQueue implementation for safe concurrent writes
+   - Task integration with queue system
+   - Concurrent operation testing
 
-2. **Resource Management**
-   - Implement rate limiting for GitHub API calls
-   - Add memory monitoring and worker backpressure
-   - Create resource pools for shared services
+2. Basic Resource Management
+   - Initial connection pooling
+   - Basic rate limiting structure
 
-3. **State Management**
-   - Add pipeline state tracking
-   - Implement proper checkpointing
-   - Create monitoring for parallel execution
+3. State Tracking
+   - Basic pipeline state implementation
+   - Initial batch processing logic
 
-4. **Error Handling**
-   - Implement proper retry mechanisms
-   - Add dead letter queues for failed items
-   - Create error recovery workflows
+## Next Steps (Content Extraction Stage)
 
-The parallel implementation attempts to improve performance through concurrent processing but introduces complexity without proper handling of concurrent access patterns. The sequential pipeline's simpler architecture actually provides better reliability and data consistency.
+### Phase 1: Core Content Extractor Setup
+1. Update test_content_extraction.py:
+   - Implement async context manager pattern
+   - Add proper resource cleanup
+   - Set up concurrent processing tests
 
-## GitHub Actions Compatible Implementation Plan
-
-### Phase 1: Optimize SQLite for CI Environment
-1. Replace parallel database writes with queue-based approach
-   ```python
-   # In db/connection.py
-   from queue import Queue
-   from threading import Thread
-   
-   class DatabaseQueue:
-       def __init__(self):
-           self.queue = Queue()
-           self.worker = Thread(target=self._process_queue, daemon=True)
-           self.worker.start()
-   
-       def _process_queue(self):
-           while True:
-               sql, params = self.queue.get()
-               if sql is None:  # Shutdown signal
-                   break
-               with self.db.get_connection() as conn:
-                   conn.execute(sql, params)
-   
-       def enqueue(self, sql, params=()):
-           self.queue.put((sql, params))
-   ```
-
-2. Modify tasks to use queue
-   ```python
-   # In processing/tasks.py
-   @dramatiq.actor
-   def process_newsletter_batch(...):
-       db_queue = DatabaseQueue()
-       for newsletter in batch:
-           # Process newsletter
-           db_queue.enqueue(
-               "INSERT INTO newsletters (email_id, content) VALUES (?, ?)",
-               (newsletter.email_id, newsletter.content)
-           )
-   ```
-
-### Phase 2: Resource Management (Essential)
-1. Add GitHub API rate limiting with local tracking
+2. Enhance GitHub API Integration:
    ```python
    # In processing/github_client.py
-   from datetime import datetime, timedelta
-   from threading import Lock
-   
    class RateLimitedGitHubClient:
        def __init__(self, token):
            self.token = token
            self.calls = []
            self.lock = Lock()
-   
-       def _check_rate_limit(self):
-           now = datetime.now()
-           hour_ago = now - timedelta(hours=1)
-           with self.lock:
-               self.calls = [t for t in self.calls if t > hour_ago]
-               if len(self.calls) >= 1000:  # GitHub API limit
-                   sleep_time = (self.calls[0] - hour_ago).total_seconds()
-                   time.sleep(sleep_time)
-               self.calls.append(now)
-   
-       def api_call(self, func, *args):
-           self._check_rate_limit()
-           return func(*args)
+           
+       async def __aenter__(self):
+           return self
+           
+       async def __aexit__(self, exc_type, exc, tb):
+           await self.cleanup()
    ```
 
-### Phase 3: Batch Processing & Error Recovery
-1. Implement batch tracking in memory
-   ```python
-   # In processing/pipeline_state.py
-   from threading import Lock
-   
-   class PipelineState:
-       def __init__(self):
-           self.batches = {}
-           self.lock = Lock()
-   
-       def start_batch(self, batch_id, stage):
-           with self.lock:
-               self.batches[batch_id] = {
-                   'stage': stage,
-                   'status': 'running',
-                   'started_at': datetime.now(),
-                   'errors': []
-               }
-   
-       def complete_batch(self, batch_id):
-           with self.lock:
-               if batch_id in self.batches:
-                   self.batches[batch_id]['status'] = 'completed'
-   
-       def fail_batch(self, batch_id, error):
-           with self.lock:
-               if batch_id in self.batches:
-                   self.batches[batch_id]['status'] = 'failed'
-                   self.batches[batch_id]['errors'].append(str(error))
-   ```
-
-2. Update task retry logic
+3. Implement Batch Processing:
    ```python
    # In processing/tasks.py
-   pipeline_state = PipelineState()
-   
-   @dramatiq.actor(max_retries=3)
-   def process_newsletter_batch(batch_id, newsletters):
-       try:
-           pipeline_state.start_batch(batch_id, 'newsletter_processing')
-           # Process batch
-           pipeline_state.complete_batch(batch_id)
-       except Exception as e:
-           pipeline_state.fail_batch(batch_id, e)
-           raise
+   @dramatiq.actor
+   async def extract_content_batch(batch_id, vector_ids):
+       async with RateLimitedGitHubClient() as client:
+           pipeline_state.start_batch(batch_id, 'content_extraction')
+           try:
+               # Process repositories in parallel
+               # Handle rate limits
+               pipeline_state.complete_batch(batch_id)
+           except Exception as e:
+               pipeline_state.fail_batch(batch_id, e)
+               raise
    ```
 
-### Implementation Order
-1. Queue-based Database Access
-   - Implement DatabaseQueue
-   - Update tasks to use queue
-   - Test concurrent operations
+### Phase 2: Essential Error Handling
+1. GitHub API Rate Limiting:
+   - Implement token bucket algorithm
+   - Add backoff strategy
+   - Handle rate limit errors
 
-2. Resource Management
-   - Add rate-limited GitHub client
-   - Test API call distribution
-   - Monitor memory usage
+2. Database Operations:
+   - Add queue backpressure mechanism
+   - Implement transaction retry logic
+   - Handle concurrent write conflicts
 
-3. State Tracking
-   - Implement in-memory state tracking
-   - Add batch processing logic
-   - Test failure recovery
+3. State Management:
+   - Track extraction progress
+   - Handle partial batch failures
+   - Implement basic recovery mechanisms
 
-This plan focuses on solutions that can run entirely within GitHub Actions without requiring external services. It uses in-memory queues and state tracking to manage concurrency, while still maintaining data consistency through SQLite. The implementation can be easily deployed in CI environments and doesn't require maintaining additional infrastructure.
+### Implementation Priority
+1. Core Async Setup
+   - Get async context manager working
+   - Implement basic concurrent processing
+   - Test resource cleanup
+
+2. GitHub Integration
+   - Rate limit handling
+   - Parallel API requests
+   - Error recovery
+
+3. Database Operations
+   - Queue management
+   - Transaction handling
+   - Error states
+
+The focus is on getting the content extraction stage working reliably in the GitHub Actions CI environment, building on the foundations established in the newsletter stage. This implementation maintains SQLite compatibility while adding the necessary concurrent processing capabilities for the extraction stage.

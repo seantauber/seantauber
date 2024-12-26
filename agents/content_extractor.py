@@ -3,6 +3,7 @@
 import re
 import logging
 import aiohttp
+import asyncio
 import base64
 import json
 import yaml
@@ -13,7 +14,10 @@ from pathlib import Path
 from pydantic import BaseModel
 from pydantic_ai import Agent, RunContext, ModelRetry
 from db.connection import Database
+from db.queue import DatabaseQueue
 from processing.core.newsletter_url_processor import NewsletterUrlProcessor
+from processing.github_client import RateLimitedGitHubClient
+from processing.pipeline_state import PipelineState
 
 logger = logging.getLogger(__name__)
 
@@ -53,21 +57,44 @@ class RepositorySummary(BaseModel):
 class ContentExtractorAgent:
     """Agent responsible for extracting and summarizing GitHub repositories from newsletter content."""
     
-    def __init__(self, github_token: str, db: Optional[Database] = None, max_age_hours: float = 0):
+    async def __aenter__(self):
+        """Async context manager entry."""
+        return self
+    
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        """Async context manager exit."""
+        await self.cleanup()
+    
+    async def cleanup(self):
+        """Cleanup resources."""
+        self.db_queue.shutdown()
+        await self.github_client.close()
+    
+    def __init__(
+        self,
+        github_token: str,
+        db: Optional[Database] = None,
+        max_age_hours: float = 0,
+        batch_size: int = 3
+    ):
         """Initialize the Content Extractor agent.
         
         Args:
             github_token: GitHub API token for repository access
             db: Optional database connection. If None, creates new connection.
             max_age_hours: Maximum age in hours before repository data is refreshed (0 means always refresh)
+            batch_size: Size of batches for parallel processing
         """
-        self.github_token = github_token
         self.db = db or Database()
         self.max_age_hours = max_age_hours
+        self.batch_size = batch_size
         self.processed_repos = set()
         
-        # Add URL processor
+        # Initialize components
+        self.db_queue = DatabaseQueue(self.db)
+        self.github_client = RateLimitedGitHubClient(github_token)
         self.url_processor = NewsletterUrlProcessor(db=self.db)
+        self.pipeline_state = PipelineState()
         
         # Load taxonomy
         taxonomy_path = Path(__file__).parent.parent / "config" / "taxonomy.yaml"
@@ -213,53 +240,7 @@ class ContentExtractorAgent:
             ContentExtractionError: If API request fails
         """
         try:
-            # Extract owner and repo from URL
-            _, _, _, owner, repo = repo_url.rstrip('/').split('/')
-            
-            headers = {
-                'Authorization': f'token {self.github_token}',
-                'Accept': 'application/vnd.github.v3+json'
-            }
-            
-            async with aiohttp.ClientSession() as session:
-                # Fetch repository metadata
-                async with session.get(
-                    f'https://api.github.com/repos/{owner}/{repo}',
-                    headers=headers
-                ) as response:
-                    if response.status != 200:
-                        raise ContentExtractionError(
-                            f"GitHub API error: {response.status}"
-                        )
-                    repo_data = await response.json()
-                
-                # Fetch README content
-                async with session.get(
-                    f'https://api.github.com/repos/{owner}/{repo}/readme',
-                    headers=headers
-                ) as response:
-                    if response.status == 200:
-                        readme_data = await response.json()
-                        readme_content = base64.b64decode(
-                            readme_data['content']
-                        ).decode('utf-8')
-                    else:
-                        readme_content = ""
-                        logger.warning(f"README not found for {repo_url}")
-            
-            return {
-                "name": repo_data['name'],
-                "full_name": repo_data['full_name'],
-                "description": repo_data['description'] or "",
-                "stars": repo_data['stargazers_count'],
-                "forks": repo_data['forks_count'],
-                "language": repo_data['language'],
-                "topics": repo_data['topics'],
-                "readme_content": readme_content,
-                "created_at": repo_data['created_at'],
-                "updated_at": repo_data['updated_at']
-            }
-            
+            return await self.github_client.get_repository_data(repo_url)
         except Exception as e:
             logger.error(f"Failed to fetch repository metadata: {str(e)}")
             raise ContentExtractionError(f"Metadata fetch failed: {str(e)}")
@@ -376,7 +357,8 @@ class ContentExtractorAgent:
         repo_url: str,
         metadata: Dict[str, Any],
         summary: RepositorySummary,
-        source_id: str
+        source_id: str,
+        batch_id: str
     ) -> int:
         """Store repository data and categories in database.
         
@@ -385,6 +367,7 @@ class ContentExtractorAgent:
             metadata: Repository metadata
             summary: Generated summary with categories
             source_id: Source identifier (e.g. newsletter-{email_id})
+            batch_id: Batch identifier for queued operations
             
         Returns:
             Repository ID from database
@@ -400,101 +383,87 @@ class ContentExtractorAgent:
                 logger.info(f"Skipping non-GenAI repository: {repo_url}")
                 return 0
             
-            # Insert repository
-            with self.db.transaction() as conn:
-                cursor = conn.execute(
-                    """
-                    INSERT INTO repositories (
-                        github_url, first_seen_date, last_mentioned_date,
-                        mention_count, metadata
-                    ) VALUES (?, ?, ?, 1, ?)
-                    ON CONFLICT(github_url) DO UPDATE SET
-                        last_mentioned_date = ?,
-                        mention_count = mention_count + 1,
-                        metadata = ?
-                    RETURNING id
-                    """,
-                    (
-                        repo_url,
-                        now.isoformat(),
-                        now.isoformat(),
-                        json.dumps({
-                            **metadata,
-                            "summary": summary.model_dump(),
-                            "source_id": source_id
-                        }),
-                        now.isoformat(),
-                        json.dumps({
-                            **metadata,
-                            "summary": summary.model_dump(),
-                            "source_id": source_id
-                        })
+            # Queue repository insert
+            self.db_queue.enqueue(
+                batch_id,
+                """
+                INSERT INTO repositories (
+                    github_url, first_seen_date, last_mentioned_date,
+                    mention_count, metadata
+                ) VALUES (?, ?, ?, 1, ?)
+                ON CONFLICT(github_url) DO UPDATE SET
+                    last_mentioned_date = ?,
+                    mention_count = mention_count + 1,
+                    metadata = ?
+                RETURNING id
+                """,
+                (
+                    repo_url,
+                    now.isoformat(),
+                    now.isoformat(),
+                    json.dumps({
+                        **metadata,
+                        "summary": summary.model_dump(),
+                        "source_id": source_id
+                    }),
+                    now.isoformat(),
+                    json.dumps({
+                        **metadata,
+                        "summary": summary.model_dump(),
+                        "source_id": source_id
+                    })
+                ),
+                f"repo_id_{batch_id}"
+            )
+            
+            # Get repository ID from queue result
+            repo_id = self.db_queue.get_result(f"repo_id_{batch_id}")
+            
+            # Store categories
+            if summary.ranked_categories:
+                for category in summary.ranked_categories:
+                    # Queue topic insert
+                    self.db_queue.enqueue(
+                        batch_id,
+                        """
+                        INSERT INTO topics (
+                            name, first_seen_date, last_seen_date,
+                            mention_count
+                        ) VALUES (?, ?, ?, 1)
+                        ON CONFLICT(name) DO UPDATE SET
+                            last_seen_date = ?,
+                            mention_count = mention_count + 1
+                        RETURNING id
+                        """,
+                        (
+                            category.category,
+                            now.isoformat(),
+                            now.isoformat(),
+                            now.isoformat()
+                        ),
+                        f"topic_id_{batch_id}_{category.category}"
                     )
-                )
-                repo_id = cursor.fetchone()[0]
-                
-                # Store categories
-                if summary.ranked_categories:
-                    for category in summary.ranked_categories:
-                        # First insert/get topic
-                        cursor = conn.execute(
-                            """
-                            INSERT INTO topics (
-                                name, first_seen_date, last_seen_date,
-                                mention_count
-                            ) VALUES (?, ?, ?, 1)
-                            ON CONFLICT(name) DO UPDATE SET
-                                last_seen_date = ?,
-                                mention_count = mention_count + 1
-                            RETURNING id
-                            """,
-                            (
-                                category.category,
-                                now.isoformat(),
-                                now.isoformat(),
-                                now.isoformat()
-                            )
+                    
+                    # Get topic ID from queue result
+                    topic_id = self.db_queue.get_result(f"topic_id_{batch_id}_{category.category}")
+                    
+                    # Queue category relationship
+                    self.db_queue.enqueue(
+                        batch_id,
+                        """
+                        INSERT INTO repository_categories (
+                            repository_id, topic_id, confidence_score
+                        ) VALUES (?, ?, ?)
+                        ON CONFLICT(repository_id, topic_id) DO UPDATE SET
+                            confidence_score = ?
+                        """,
+                        (
+                            repo_id,
+                            topic_id,
+                            1.0 / category.rank,  # Convert rank to confidence score
+                            1.0 / category.rank
                         )
-                        topic_id = cursor.fetchone()[0]
-                        
-                        # Check if relationship exists
-                        cursor = conn.execute(
-                            """
-                            SELECT id FROM repository_categories 
-                            WHERE repository_id = ? AND topic_id = ?
-                            """,
-                            (repo_id, topic_id)
-                        )
-                        existing = cursor.fetchone()
-                        
-                        if existing:
-                            # Update existing relationship
-                            conn.execute(
-                                """
-                                UPDATE repository_categories 
-                                SET confidence_score = ?
-                                WHERE repository_id = ? AND topic_id = ?
-                                """,
-                                (
-                                    1.0 / category.rank,  # Convert rank to confidence score
-                                    repo_id,
-                                    topic_id
-                                )
-                            )
-                        else:
-                            # Insert new relationship
-                            conn.execute(
-                                """
-                                INSERT INTO repository_categories (
-                                    repository_id, topic_id, confidence_score
-                                ) VALUES (?, ?, ?)
-                                """,
-                                (
-                                    repo_id,
-                                    topic_id,
-                                    1.0 / category.rank  # Convert rank to confidence score
-                                )
-                            )
+                    )
             
             return repo_id
             
@@ -573,6 +542,10 @@ class ContentExtractorAgent:
                         )
                         repo_urls.update(content_repo_urls)
             
+            # Create batch for this newsletter
+            batch_id = f"extract_{email_id}"
+            self.pipeline_state.start_batch(batch_id, "content_extraction")
+            
             # Process repositories in parallel
             repo_tasks = []
             for url in repo_urls:
@@ -586,10 +559,14 @@ class ContentExtractorAgent:
                     logger.info(f"Skipping up-to-date repository: {url}")
                     continue
                 
-                repo_tasks.append(self._process_single_repository(url, email_id))
+                repo_batch_id = f"{batch_id}_repo_{len(repo_tasks)}"
+                repo_tasks.append(
+                    self._process_single_repository(url, email_id, repo_batch_id)
+                )
             
             # Wait for all repository processing tasks to complete
             repo_results = []
+            failed_urls = []
             results = await asyncio.gather(*repo_tasks, return_exceptions=True)
             for url, result in zip(
                 [task._args[0] for task in repo_tasks],  # Get URLs from task args
@@ -597,10 +574,24 @@ class ContentExtractorAgent:
             ):
                 if isinstance(result, Exception):
                     logger.error(f"Failed to process repository {url}: {str(result)}")
+                    failed_urls.append(url)
                     continue
                 if result:
                     repo_results.append(result)
                     self.processed_repos.add(url)
+            
+            # Update batch status
+            if failed_urls:
+                self.pipeline_state.fail_batch(
+                    batch_id,
+                    Exception(f"{len(failed_urls)} repositories failed"),
+                    failed_urls
+                )
+            else:
+                self.pipeline_state.complete_batch(
+                    batch_id,
+                    len(repo_results)
+                )
             
             logger.info(
                 f"Successfully processed {len(repo_results)} repositories "
@@ -615,18 +606,26 @@ class ContentExtractorAgent:
             
         except Exception as e:
             logger.error(f"Failed to process newsletter content: {str(e)}")
+            # Update batch status on failure
+            self.pipeline_state.fail_batch(
+                f"extract_{email_id}",
+                e,
+                []  # No URLs processed due to early failure
+            )
             raise ContentExtractionError(f"Newsletter processing failed: {str(e)}")
     
     async def _process_single_repository(
         self,
         url: str,
-        email_id: str
+        email_id: str,
+        batch_id: str = None
     ) -> Optional[Dict]:
         """Process a single repository URL.
         
         Args:
             url: Repository URL to process
             email_id: Newsletter email ID for source tracking
+            batch_id: Optional batch identifier for queued operations
             
         Returns:
             Dictionary containing repository information or None if processing fails
@@ -638,6 +637,9 @@ class ContentExtractorAgent:
             # Generate structured summary with categories
             summary = await self.generate_repository_summary(metadata)
             
+            # Use URL as batch ID if none provided
+            batch_id = batch_id or url.replace('/', '_')
+            
             # Store in database if GenAI-related
             repo_id = 0
             if summary.is_genai:
@@ -645,7 +647,8 @@ class ContentExtractorAgent:
                     url,
                     metadata,
                     summary,
-                    f"newsletter-{email_id}"
+                    f"newsletter-{email_id}",
+                    batch_id
                 )
             
             return {
