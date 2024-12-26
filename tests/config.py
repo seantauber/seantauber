@@ -38,6 +38,7 @@ class TestSettings(BaseSettings):
     # Test Control
     ENABLE_LIVE_TESTS: bool = True
     API_RETRY_ATTEMPTS: int = 3
+    MAX_TEST_REPOSITORIES: int = 5
     
     class Config:
         """Pydantic configuration."""

@@ -70,7 +70,7 @@ def print_extraction_results(title: str, results: list):
 def vector_store() -> EmbedchainStore:
     """Initialize vector store for testing."""
     settings = get_test_settings()
-    store = EmbedchainStore(token_path=settings.GMAIL_TOKEN_PATH)
+    store = EmbedchainStore(vector_store_path=str(settings.VECTOR_STORAGE_PATH))
     yield store
 
 def ensure_content_cache_table(db_path: str) -> None:

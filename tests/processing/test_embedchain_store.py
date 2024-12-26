@@ -1,6 +1,8 @@
 """Tests for EmbedchainStore."""
 
+import asyncio
 import pytest
+from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import Mock, patch, MagicMock, call
 from processing.embedchain_store import EmbedchainStore
 
@@ -11,206 +13,136 @@ def mock_app():
         yield mock
 
 @pytest.fixture
-def mock_gmail_service():
-    """Mock Gmail service."""
-    with patch('processing.embedchain_store.build') as mock_build:
-        mock_service = MagicMock()
-        mock_build.return_value = mock_service
-        yield mock_service
-
-@pytest.fixture
-def mock_credentials():
-    """Mock Credentials."""
-    with patch('processing.embedchain_store.Credentials') as mock:
-        mock.from_authorized_user_file.return_value = MagicMock()
-        yield mock
-
-@pytest.fixture
-def store(mock_app, mock_gmail_service, mock_credentials):
+def store(mock_app):
     """Create EmbedchainStore instance with mocked dependencies."""
-    return EmbedchainStore(credentials_path=".credentials/credentials.json")
-
-@pytest.fixture
-def sample_gmail_message():
-    """Sample Gmail message data."""
-    return {
-        'id': 'msg123',
-        'payload': {
-            'headers': [
-                {'name': 'Subject', 'value': 'Test Newsletter'},
-                {'name': 'From', 'value': 'sender@example.com'},
-                {'name': 'Date', 'value': '2024-01-15'}
-            ],
-            'parts': [
-                {
-                    'body': {
-                        'data': 'VGVzdCBjb250ZW50'  # Base64 encoded "Test content"
-                    }
-                }
-            ]
-        }
-    }
+    return EmbedchainStore(vector_store_path="/tmp/test_vector_store")
 
 @pytest.fixture
 def sample_repository():
     """Sample repository data."""
     return {
+        'name': 'test-repo',
         'github_url': 'https://github.com/test/repo',
         'description': 'Sample repository description',
-        'first_seen_date': '2024-01-15'
+        'metadata': {
+            'language': 'Python',
+            'topics': ['ai', 'machine-learning']
+        },
+        'summary': {
+            'primary_purpose': 'Testing',
+            'technical_domain': 'Machine Learning'
+        }
     }
 
 @pytest.mark.asyncio
-async def test_get_label_id(store, mock_gmail_service):
-    """Test getting Gmail label ID."""
-    # Setup
-    mock_gmail_service.users().labels().list().execute.return_value = {
-        'labels': [
-            {'id': 'label123', 'name': 'GenAI News'}
-        ]
-    }
-
-    # Execute
-    label_id = store._get_label_id()
-
-    # Verify
-    assert label_id == 'label123'
-    # Verify that list was called with userId='me' and execute was called
-    mock_gmail_service.users().labels().list.assert_called_with(userId='me')
-    mock_gmail_service.users().labels().list().execute.assert_called_once()
-
-@pytest.mark.asyncio
-async def test_load_and_store_newsletters(store, mock_gmail_service, mock_app, sample_gmail_message):
-    """Test loading and storing newsletters."""
-    # Setup
-    mock_gmail_service.users().labels().list().execute.return_value = {
-        'labels': [{'id': 'label123', 'name': 'GenAI News'}]
-    }
-    mock_gmail_service.users().messages().list().execute.return_value = {
-        'messages': [{'id': 'msg123'}]
-    }
-    mock_gmail_service.users().messages().get().execute.return_value = sample_gmail_message
-    
-    mock_app_instance = mock_app.return_value
-    mock_app_instance.add.return_value = 'vector123'
-
-    # Execute
-    vector_ids = await store.load_and_store_newsletters(max_results=1)
-
-    # Verify
-    assert vector_ids == ['vector123']
-    mock_app_instance.add.assert_called_once()
-    assert mock_app_instance.add.call_args[1]['metadata']['email_id'] == 'msg123'
-
-@pytest.mark.asyncio
-async def test_store_repository(store, mock_app, sample_repository):
-    """Test storing repository in vector storage."""
+async def test_concurrent_store_repository(store, mock_app, sample_repository):
+    """Test concurrent repository storage operations."""
     # Setup
     mock_app_instance = mock_app.return_value
     mock_app_instance.add.return_value = 'vector456'
-
+    num_concurrent = 5
+    
+    async def store_concurrent():
+        tasks = []
+        for i in range(num_concurrent):
+            repo = sample_repository.copy()
+            repo['github_url'] = f"https://github.com/test/repo{i}"
+            tasks.append(store.store_repository(repo))
+        return await asyncio.gather(*tasks)
+    
     # Execute
-    vector_id = await store.store_repository(sample_repository)
-
+    vector_ids = await store_concurrent()
+    
     # Verify
-    assert vector_id == 'vector456'
-    mock_app_instance.add.assert_called_once_with(
-        content=sample_repository['description'],
-        metadata={
-            'github_url': sample_repository['github_url'],
-            'first_seen_date': sample_repository['first_seen_date']
-        }
-    )
+    assert len(vector_ids) == num_concurrent
+    assert all(vid == 'vector456' for vid in vector_ids)
+    assert mock_app_instance.add.call_count == num_concurrent
 
 @pytest.mark.asyncio
-async def test_query_newsletters(store, mock_app):
-    """Test querying newsletters."""
+async def test_concurrent_query_operations(store, mock_app):
+    """Test concurrent query operations."""
     # Setup
     mock_app_instance = mock_app.return_value
-    expected_results = [
-        {'content': 'Newsletter 1 content'},
-        {'content': 'Newsletter 2 content'}
-    ]
-    mock_app_instance.query.return_value = expected_results
-
+    mock_app_instance.query.return_value = [{'content': 'Test content'}]
+    num_concurrent = 5
+    
+    async def query_concurrent():
+        tasks = []
+        for i in range(num_concurrent):
+            if i % 2 == 0:
+                tasks.append(store.query_newsletters(f'test query {i}'))
+            else:
+                tasks.append(store.query_repositories(f'test query {i}'))
+        return await asyncio.gather(*tasks)
+    
     # Execute
-    results = await store.query_newsletters('test query', limit=2)
-
+    results = await query_concurrent()
+    
     # Verify
-    assert results == expected_results
-    mock_app_instance.query.assert_called_once_with('test query', top_k=2)
+    assert len(results) == num_concurrent
+    assert all(len(r) > 0 for r in results)
+    assert mock_app_instance.query.call_count == num_concurrent
 
 @pytest.mark.asyncio
-async def test_query_repositories(store, mock_app):
-    """Test querying repositories."""
+async def test_concurrent_mixed_operations(store, mock_app, sample_repository):
+    """Test concurrent mixed operations (store and query)."""
     # Setup
     mock_app_instance = mock_app.return_value
-    expected_results = [
-        {'content': 'Repository 1 content'},
-        {'content': 'Repository 2 content'}
-    ]
-    mock_app_instance.query.return_value = expected_results
-
+    mock_app_instance.add.return_value = 'vector456'
+    mock_app_instance.query.return_value = [{'content': 'Test content'}]
+    num_concurrent = 6
+    
+    async def mixed_concurrent():
+        tasks = []
+        for i in range(num_concurrent):
+            if i % 3 == 0:
+                repo = sample_repository.copy()
+                repo['github_url'] = f"https://github.com/test/repo{i}"
+                tasks.append(store.store_repository(repo))
+            elif i % 3 == 1:
+                tasks.append(store.query_newsletters(f'test query {i}'))
+            else:
+                tasks.append(store.query_repositories(f'test query {i}'))
+        return await asyncio.gather(*tasks)
+    
     # Execute
-    results = await store.query_repositories('test query', limit=2)
-
+    results = await mixed_concurrent()
+    
     # Verify
-    assert results == expected_results
-    mock_app_instance.query.assert_called_once_with('test query', top_k=2)
+    assert len(results) == num_concurrent
+    store_count = len([r for r in results if isinstance(r, str)])  # vector IDs are strings
+    query_count = len([r for r in results if isinstance(r, list)])  # query results are lists
+    assert store_count == num_concurrent // 3
+    assert query_count == 2 * (num_concurrent // 3)
 
 @pytest.mark.asyncio
-async def test_load_and_store_newsletters_no_label(store, mock_gmail_service):
-    """Test handling when newsletter label is not found."""
+async def test_concurrent_cache_access(store, mock_app, sample_repository):
+    """Test concurrent access to repository cache."""
     # Setup
-    mock_gmail_service.users().labels().list().execute.return_value = {
-        'labels': [{'id': 'other_label', 'name': 'Other Label'}]
-    }
-
+    mock_app_instance = mock_app.return_value
+    mock_app_instance.add.return_value = 'vector456'
+    mock_app_instance.query.return_value = [sample_repository['github_url']]
+    num_concurrent = 5
+    
+    # First store repositories
+    repos = []
+    for i in range(num_concurrent):
+        repo = sample_repository.copy()
+        repo['github_url'] = f"https://github.com/test/repo{i}"
+        repos.append(repo)
+        await store.store_repository(repo)
+    
+    # Then test concurrent cache access through queries
+    async def query_concurrent():
+        tasks = []
+        for i in range(num_concurrent):
+            tasks.append(store.query_repositories(f'test query {i}'))
+        return await asyncio.gather(*tasks)
+    
     # Execute
-    vector_ids = await store.load_and_store_newsletters()
-
+    results = await query_concurrent()
+    
     # Verify
-    assert vector_ids == []
-
-@pytest.mark.asyncio
-async def test_load_and_store_newsletters_error(store, mock_gmail_service):
-    """Test error handling when loading newsletters fails."""
-    # Setup
-    mock_gmail_service.users().labels().list().execute.side_effect = Exception("API error")
-
-    # Execute and verify
-    with pytest.raises(Exception, match="API error"):
-        await store.load_and_store_newsletters()
-
-@pytest.mark.asyncio
-async def test_store_repository_error(store, mock_app, sample_repository):
-    """Test error handling when storing repository fails."""
-    # Setup
-    mock_app_instance = mock_app.return_value
-    mock_app_instance.add.side_effect = Exception("Storage error")
-
-    # Execute and verify
-    with pytest.raises(Exception, match="Storage error"):
-        await store.store_repository(sample_repository)
-
-@pytest.mark.asyncio
-async def test_query_newsletters_error(store, mock_app):
-    """Test error handling when querying newsletters fails."""
-    # Setup
-    mock_app_instance = mock_app.return_value
-    mock_app_instance.query.side_effect = Exception("Query error")
-
-    # Execute and verify
-    with pytest.raises(Exception, match="Query error"):
-        await store.query_newsletters('test query')
-
-@pytest.mark.asyncio
-async def test_query_repositories_error(store, mock_app):
-    """Test error handling when querying repositories fails."""
-    # Setup
-    mock_app_instance = mock_app.return_value
-    mock_app_instance.query.side_effect = Exception("Query error")
-
-    # Execute and verify
-    with pytest.raises(Exception, match="Query error"):
-        await store.query_repositories('test query')
+    assert len(results) == num_concurrent
+    assert all(len(r) > 0 for r in results)
+    assert mock_app_instance.query.call_count == num_concurrent

@@ -1,7 +1,8 @@
 """Newsletter Monitor for processing and storing newsletters."""
 
 import logging
-from typing import List, Dict, Optional, Deque
+import asyncio
+from typing import List, Dict, Optional, Deque, Tuple
 from datetime import datetime, UTC
 from collections import deque
 
@@ -34,6 +35,15 @@ class NewsletterMonitorResult(BaseModel):
     processing_date: str
     queued_count: int
     start_date: Optional[str] = None  # Added to track fetch period
+    batch_results: Optional[List[Dict]] = None  # Added to track batch processing results
+
+class BatchResult(BaseModel):
+    """Result from processing a batch of newsletters."""
+    batch_id: str
+    successful: List[str]  # List of successful email IDs
+    failed: List[str]  # List of failed email IDs
+    errors: Dict[str, str]  # Map of email ID to error message
+    processing_time: float
 
 class NewsletterMonitor:
     """Component responsible for monitoring and processing newsletters."""
@@ -57,6 +67,9 @@ class NewsletterMonitor:
         # Initialize stats
         self.processed_count = 0
         self.error_count = 0
+        
+        # Batch tracking
+        self._active_batches: Dict[str, BatchResult] = {}
 
     async def fetch_newsletters(self, max_results: int = 10) -> List[Newsletter]:
         """
@@ -72,7 +85,7 @@ class NewsletterMonitor:
             FetchError: If fetching newsletters fails
         """
         try:
-            # Get date of most recent processed newsletter
+            # Get date of most recent processed newsletter (read operation - direct)
             last_processed = self.db.fetch_one("""
                 SELECT received_date 
                 FROM newsletters 
@@ -160,83 +173,150 @@ class NewsletterMonitor:
             logger.error(f"Failed to process newsletter {email_id}: {str(e)}")
             raise
 
-    async def process_newsletters(self, batch_size: int = 5) -> List[Newsletter]:
+    async def process_newsletter_batch(
+        self,
+        batch: List[Newsletter],
+        batch_id: str
+    ) -> BatchResult:
         """
-        Process queued newsletters in batches.
+        Process a batch of newsletters in parallel.
+        
+        Args:
+            batch: List of newsletters to process
+            batch_id: Unique identifier for this batch
+            
+        Returns:
+            BatchResult containing processing results
+        """
+        start_time = datetime.now(UTC)
+        result = BatchResult(
+            batch_id=batch_id,
+            successful=[],
+            failed=[],
+            errors={},
+            processing_time=0
+        )
+        
+        try:
+            # Process newsletters in parallel
+            async def process_single(newsletter: Newsletter) -> Tuple[bool, Optional[str]]:
+                try:
+                    # Process content and create vector embedding
+                    vector_id = await self.process_newsletter_content(
+                        newsletter.email_id,
+                        newsletter.content
+                    )
+                    
+                    if vector_id:
+                        newsletter.vector_id = vector_id
+                        newsletter.processed_date = datetime.now(UTC).isoformat()
+                        newsletter.processing_status = "completed"
+                        
+                        # Store in database (write operation - queued)
+                        db_result = self.db.execute(
+                            """
+                            INSERT INTO newsletters (
+                                email_id, received_date, processed_date, 
+                                storage_status, vector_id, metadata
+                            ) VALUES (?, ?, ?, ?, ?, ?)
+                            """,
+                            (
+                                newsletter.email_id,
+                                newsletter.received_date,
+                                newsletter.processed_date,
+                                'active',
+                                newsletter.vector_id,
+                                str(newsletter.metadata)
+                            )
+                        )
+                        
+                        return True, None
+                    return False, "Failed to generate vector ID"
+                    
+                except Exception as e:
+                    return False, str(e)
+            
+            # Process all newsletters in batch concurrently
+            tasks = [process_single(n) for n in batch]
+            results = await asyncio.gather(*tasks)
+            
+            # Collect results
+            for newsletter, (success, error) in zip(batch, results):
+                if success:
+                    result.successful.append(newsletter.email_id)
+                    self.processed_count += 1
+                else:
+                    result.failed.append(newsletter.email_id)
+                    result.errors[newsletter.email_id] = error or "Unknown error"
+                    self.error_count += 1
+            
+        except Exception as e:
+            logger.error(f"Batch {batch_id} failed: {str(e)}")
+            # Mark all remaining as failed
+            for newsletter in batch:
+                if newsletter.email_id not in result.successful:
+                    result.failed.append(newsletter.email_id)
+                    result.errors[newsletter.email_id] = str(e)
+        
+        result.processing_time = (datetime.now(UTC) - start_time).total_seconds()
+        return result
+
+    async def process_newsletters(self, batch_size: int = 5) -> List[BatchResult]:
+        """
+        Process queued newsletters in parallel batches.
 
         Args:
             batch_size: Number of newsletters to process in each batch
 
         Returns:
-            List of processed newsletters
+            List of batch results
         """
         try:
             if not self._processing_queue:
                 logger.info("No newsletters in queue")
                 return []
 
-            # Get batch of newsletters to process
-            to_process = []
-            while len(to_process) < batch_size and self._processing_queue:
-                newsletter = self._processing_queue.popleft()
-                newsletter.processing_status = "processing"
-                to_process.append(newsletter)
+            # Split queue into batches
+            batches = []
+            current_batch = []
+            
+            while self._processing_queue and len(batches) * batch_size < len(self._processing_queue):
+                if len(current_batch) < batch_size:
+                    newsletter = self._processing_queue.popleft()
+                    newsletter.processing_status = "processing"
+                    current_batch.append(newsletter)
+                else:
+                    batches.append(current_batch)
+                    current_batch = []
+            
+            if current_batch:
+                batches.append(current_batch)
 
-            if not to_process:
+            if not batches:
                 return []
 
-            logger.info(f"Processing batch of {len(to_process)} newsletters")
-            processed_newsletters = []
-            processed_date = datetime.now(UTC).isoformat()
+            logger.info(f"Processing {len(batches)} batches of newsletters")
             
-            # Process each newsletter individually
-            for i, newsletter in enumerate(to_process, 1):
-                try:
-                    logger.info(f"Processing newsletter {i}/{len(to_process)}: {newsletter.subject}")
-                    vector_id = await self.process_newsletter_content(
-                        newsletter.email_id,
-                        newsletter.content
-                    )
-                    newsletter.vector_id = vector_id
-                    newsletter.processed_date = processed_date
-                    newsletter.processing_status = "completed"
-                    
-                    # Store in database
-                    self.db.execute("""
-                        INSERT INTO newsletters (
-                            email_id, received_date, processed_date, 
-                            storage_status, vector_id, metadata
-                        ) VALUES (?, ?, ?, ?, ?, ?)
-                    """, (
-                        newsletter.email_id,
-                        newsletter.received_date,
-                        newsletter.processed_date,
-                        'active',
-                        newsletter.vector_id,
-                        str(newsletter.metadata)
-                    ))
-                    
-                    processed_newsletters.append(newsletter)
-                    self.processed_count += 1
-                    logger.info(f"Successfully processed newsletter: {newsletter.subject}")
-                    
-                except Exception as e:
-                    logger.error(f"Failed to process newsletter {newsletter.email_id}: {str(e)}")
-                    newsletter.processing_status = "failed"
-                    self._processing_queue.appendleft(newsletter)
+            # Process batches in parallel
+            batch_results = []
+            for i, batch in enumerate(batches):
+                batch_id = f"batch_{datetime.now(UTC).timestamp()}_{i}"
+                result = await self.process_newsletter_batch(batch, batch_id)
+                batch_results.append(result)
+                
+                # Log batch results
+                logger.info(
+                    f"Batch {batch_id} completed: "
+                    f"{len(result.successful)} successful, "
+                    f"{len(result.failed)} failed, "
+                    f"took {result.processing_time:.2f}s"
+                )
             
-            logger.info(f"Completed processing {len(processed_newsletters)} newsletters")
-            return processed_newsletters
+            return batch_results
             
         except Exception as e:
             self.error_count += 1
-            # Return newsletters to queue on failure
-            for newsletter in to_process:
-                if newsletter.processing_status != "completed":
-                    newsletter.processing_status = "failed"
-                    self._processing_queue.appendleft(newsletter)
-            
-            logger.error(f"Failed to process newsletters: {str(e)}")
+            logger.error(f"Failed to process newsletter batches: {str(e)}")
             raise
 
     async def run(self, max_results: int = 10, batch_size: int = 5) -> NewsletterMonitorResult:
@@ -267,17 +347,18 @@ class NewsletterMonitor:
                     newsletters=[],
                     total_processed=0,
                     processing_date=start_time.isoformat(),
-                    queued_count=0
+                    queued_count=0,
+                    batch_results=[]
                 )
             
             # Process newsletters in batches
+            batch_results = await self.process_newsletters(batch_size)
+            
+            # Collect processed newsletters
             processed_newsletters = []
-            batch_num = 1
-            while self._processing_queue:
-                logger.info(f"Processing batch {batch_num}")
-                batch = await self.process_newsletters(batch_size)
-                processed_newsletters.extend(batch)
-                batch_num += 1
+            for newsletter in newsletters:
+                if any(newsletter.email_id in result.successful for result in batch_results):
+                    processed_newsletters.append(newsletter)
             
             end_time = datetime.now(UTC)
             processing_duration = (end_time - start_time).total_seconds()
@@ -292,7 +373,8 @@ class NewsletterMonitor:
                 total_processed=self.processed_count,
                 processing_date=end_time.isoformat(),
                 queued_count=len(self._processing_queue),
-                start_date=start_time.isoformat()
+                start_date=start_time.isoformat(),
+                batch_results=[result.dict() for result in batch_results]
             )
             
         except Exception as e:

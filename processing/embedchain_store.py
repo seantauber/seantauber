@@ -2,6 +2,7 @@
 
 import logging
 import re
+import threading
 from typing import Dict, Optional, List, Any
 from embedchain import App
 from embedchain.config import AppConfig
@@ -18,6 +19,10 @@ class EmbedchainStore:
         Args:
             vector_store_path: Path to vector storage directory
         """
+        # Thread safety locks
+        self._cache_lock = threading.RLock()  # Reentrant lock for cache operations
+        self._newsletter_lock = threading.Lock()  # Lock for newsletter store operations
+        self._repository_lock = threading.Lock()  # Lock for repository store operations
         # Configure Embedchain apps with vector store path
         newsletter_config = AppConfig()
         newsletter_config.name = "newsletters"
@@ -65,17 +70,19 @@ class EmbedchainStore:
                 f"Technical Domain: {repository['summary']['technical_domain']}"
             )
             
-            # Store with minimal metadata for search
-            vector_id = self.repository_store.add(
-                search_text,
-                metadata={
-                    'github_url': repository['github_url'],
-                    'name': repository['name']
-                }
-            )
+            # Acquire repository store lock for vector storage operation
+            with self._repository_lock:
+                vector_id = self.repository_store.add(
+                    search_text,
+                    metadata={
+                        'github_url': repository['github_url'],
+                        'name': repository['name']
+                    }
+                )
             
-            # Cache complete repository data
-            self._repository_cache[repository['github_url']] = repository
+            # Acquire cache lock for updating repository cache
+            with self._cache_lock:
+                self._repository_cache[repository['github_url']] = repository
             
             logger.info(f"Stored repository {repository['github_url']} in vector storage")
             return vector_id
@@ -99,10 +106,11 @@ class EmbedchainStore:
             List of relevant newsletter content
         """
         try:
-            results = self.newsletter_store.query(
-                query,
-                top_k=limit
-            )
+            with self._newsletter_lock:
+                results = self.newsletter_store.query(
+                    query,
+                    top_k=limit
+                )
             return results
         except Exception as e:
             logger.error(f"Failed to query newsletters: {str(e)}")
@@ -124,13 +132,14 @@ class EmbedchainStore:
             List of relevant repository content
         """
         try:
-            # Get search results
-            results = self.repository_store.query(
-                query,
-                top_k=limit
-            )
+            # Get search results with repository store lock
+            with self._repository_lock:
+                results = self.repository_store.query(
+                    query,
+                    top_k=limit
+                )
             
-            # Extract stored data from cache
+            # Process results with cache lock
             processed_results = []
             for result in results:
                 try:
@@ -141,10 +150,12 @@ class EmbedchainStore:
                         url_match = re.search(r'https://github\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-_.]+', result)
                         if url_match:
                             github_url = url_match.group(0)
-                            if github_url in self._repository_cache:
-                                processed_results.append(self._repository_cache[github_url])
-                            else:
-                                logger.warning(f"Repository not found in cache: {github_url}")
+                            # Access cache with lock
+                            with self._cache_lock:
+                                if github_url in self._repository_cache:
+                                    processed_results.append(self._repository_cache[github_url])
+                                else:
+                                    logger.warning(f"Repository not found in cache: {github_url}")
                         else:
                             logger.warning(f"Could not extract GitHub URL from result: {result}")
                     else:
@@ -170,13 +181,21 @@ class EmbedchainStore:
             Embedding vector if found, None otherwise
         """
         try:
-            # Try both stores since we don't know which one contains the ID
-            try:
-                embedding = self.newsletter_store.get(vector_id)
-                return embedding
-            except:
-                embedding = self.repository_store.get(vector_id)
-                return embedding
+            # Try newsletter store first with lock
+            with self._newsletter_lock:
+                try:
+                    embedding = self.newsletter_store.get(vector_id)
+                    return embedding
+                except:
+                    pass
+            
+            # Try repository store if not found in newsletter store
+            with self._repository_lock:
+                try:
+                    embedding = self.repository_store.get(vector_id)
+                    return embedding
+                except:
+                    return None
         except Exception as e:
             logger.error(f"Failed to get embedding for vector ID {vector_id}: {str(e)}")
             return None

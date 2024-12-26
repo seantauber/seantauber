@@ -97,7 +97,10 @@ For developers building additional modules:
 """
 
 import pytest
-from agents.newsletter_monitor import NewsletterMonitor
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from typing import List, Dict, Any
+from agents.newsletter_monitor import NewsletterMonitor, Newsletter
 from db.connection import Database
 from db.migrations import MigrationManager
 from processing.embedchain_store import EmbedchainStore
@@ -107,6 +110,8 @@ from tests.components.conftest import print_newsletter_summary
 from datetime import datetime, UTC
 
 pytestmark = pytest.mark.asyncio
+
+BATCH_SIZE = 5  # Process newsletters in batches of 5
 
 class TestGmailNewsletterComponent:
     """Tests for Gmail newsletter ingestion with live dependencies."""
@@ -122,7 +127,7 @@ class TestGmailNewsletterComponent:
         migration_manager = MigrationManager(db)
         migration_manager.apply_migrations()
         
-        # Clear existing data for clean test state
+        # Clear existing data for clean test state (write operation - queued)
         db.execute("DELETE FROM newsletters")
         
         yield db
@@ -141,32 +146,51 @@ class TestGmailNewsletterComponent:
         yield client
         
     @pytest.fixture
-    def newsletter_monitor(self, gmail_client: GmailClient, vector_store: EmbedchainStore) -> NewsletterMonitor:
+    def newsletter_monitor(
+        self,
+        gmail_client: GmailClient,
+        vector_store: EmbedchainStore,
+        setup_database: Database
+    ) -> NewsletterMonitor:
         """Initialize newsletter monitor."""
-        monitor = NewsletterMonitor(gmail_client, vector_store)
+        monitor = NewsletterMonitor(gmail_client, vector_store, setup_database)
         yield monitor
 
-    async def test_newsletter_ingestion(self, newsletter_monitor: NewsletterMonitor, setup_database):
-        """Test ingesting newsletters from live Gmail account."""
-        print("\n=== Testing Newsletter Ingestion ===")
+    async def process_newsletter_batch(
+        self,
+        newsletters: List[Newsletter],
+        db: Database,
+        batch_id: int
+    ) -> Dict[str, Any]:
+        """Process a batch of newsletters in parallel.
         
-        db = setup_database
-        try:
-            # Fetch new newsletters (limited to 10)
-            print("\nFetching newsletters from Gmail...")
-            newsletters = await newsletter_monitor.fetch_newsletters(max_results=10)
+        Args:
+            newsletters: List of newsletters to process
+            db: Database connection
+            batch_id: Unique identifier for this batch
             
-            # Save newsletters to database
-            for newsletter in newsletters:
-                # Check if newsletter already exists
+        Returns:
+            Dict containing processing results
+        """
+        results = {
+            "successful": [],
+            "failed": [],
+            "errors": {}
+        }
+        
+        print(f"\nProcessing batch {batch_id} with {len(newsletters)} newsletters")
+        
+        for newsletter in newsletters:
+            try:
+                # Check if newsletter exists (read operation - direct)
                 existing = db.fetch_one(
                     "SELECT * FROM newsletters WHERE email_id = ?",
                     (newsletter.email_id,)
                 )
                 
                 if existing:
-                    # Update existing newsletter
-                    db.execute(
+                    # Update existing newsletter (write operation - queued)
+                    result = db.execute(
                         """
                         UPDATE newsletters 
                         SET received_date = ?,
@@ -186,8 +210,8 @@ class TestGmailNewsletterComponent:
                         )
                     )
                 else:
-                    # Insert new newsletter
-                    db.execute(
+                    # Insert new newsletter (write operation - queued)
+                    result = db.execute(
                         """
                         INSERT INTO newsletters (
                             email_id, subject, received_date, content,
@@ -205,15 +229,70 @@ class TestGmailNewsletterComponent:
                             datetime.now(UTC).isoformat()
                         )
                     )
+                
+                results["successful"].append(newsletter.email_id)
+                print(f"Successfully processed newsletter {newsletter.email_id} in batch {batch_id}")
+                
+            except Exception as e:
+                error_msg = f"Failed to process newsletter: {str(e)}"
+                print(f"Error in batch {batch_id}: {error_msg}")
+                results["failed"].append(newsletter.email_id)
+                results["errors"][newsletter.email_id] = error_msg
+        
+        return results
+
+    async def test_newsletter_ingestion(self, newsletter_monitor: NewsletterMonitor, setup_database):
+        """Test ingesting newsletters from live Gmail account with parallel processing."""
+        print("\n=== Testing Parallel Newsletter Ingestion ===")
+        
+        db = setup_database
+        try:
+            # Fetch new newsletters
+            print("\nFetching newsletters from Gmail...")
+            newsletters = await newsletter_monitor.fetch_newsletters(max_results=20)  # Increased for parallel testing
             
-            # Verify results
+            if not newsletters:
+                pytest.skip("No newsletters available for testing")
+            
+            # Split newsletters into batches
+            batches = [
+                newsletters[i:i + BATCH_SIZE] 
+                for i in range(0, len(newsletters), BATCH_SIZE)
+            ]
+            print(f"\nSplit {len(newsletters)} newsletters into {len(batches)} batches")
+            
+            # Process batches concurrently
+            batch_results = await asyncio.gather(*[
+                self.process_newsletter_batch(batch, db, i)
+                for i, batch in enumerate(batches)
+            ])
+            
+            # Aggregate results
+            total_results = {
+                "successful": [],
+                "failed": [],
+                "errors": {}
+            }
+            
+            for result in batch_results:
+                total_results["successful"].extend(result["successful"])
+                total_results["failed"].extend(result["failed"])
+                total_results["errors"].update(result["errors"])
+            
+            # Verify results (read operation - direct)
             stored_newsletters = [dict(row) for row in db.fetch_all(
                 "SELECT * FROM newsletters ORDER BY received_date DESC"
             )]
             
-            print("\nIngestion Results:")
-            print(f"- Fetched {len(newsletters)} newsletters from Gmail")
-            print(f"- Successfully stored {len(stored_newsletters)} newsletters in database")
+            print("\nParallel Ingestion Results:")
+            print(f"- Total newsletters processed: {len(newsletters)}")
+            print(f"- Successfully stored: {len(total_results['successful'])}")
+            print(f"- Failed: {len(total_results['failed'])}")
+            
+            if total_results["errors"]:
+                print("\nErrors encountered:")
+                for email_id, error in total_results["errors"].items():
+                    print(f"- {email_id}: {error}")
             
             # Show sample of ingested content
             if stored_newsletters:
@@ -225,6 +304,7 @@ class TestGmailNewsletterComponent:
             
             # Basic assertions
             assert len(stored_newsletters) > 0, "No newsletters were ingested"
+            assert len(total_results["successful"]) > 0, "No newsletters were successfully processed"
             assert all(n['email_id'] for n in stored_newsletters), "Some newsletters missing email ID"
             
         finally:
@@ -236,7 +316,7 @@ class TestGmailNewsletterComponent:
         
         db = setup_database
         try:
-            # Get or fetch newsletters to process
+            # Get or fetch newsletters to process (read operation - direct)
             unprocessed = [dict(row) for row in db.fetch_all(
                 """
                 SELECT * FROM newsletters 
@@ -247,28 +327,21 @@ class TestGmailNewsletterComponent:
             
             if not unprocessed:
                 print("\nFetching new newsletters for processing...")
-                newsletters = await newsletter_monitor.fetch_newsletters(max_results=10)  # Updated to 10
+                newsletters = await newsletter_monitor.fetch_newsletters(max_results=10)
                 
-                # Save new newsletters
-                for newsletter in newsletters:
-                    db.execute(
-                        """
-                        INSERT INTO newsletters (
-                            email_id, subject, received_date, content,
-                            metadata, processing_status, created_at
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
-                        """,
-                        (
-                            newsletter.email_id,
-                            newsletter.subject,
-                            newsletter.received_date,
-                            newsletter.content,
-                            str(newsletter.metadata or {}),
-                            'pending',
-                            datetime.now(UTC).isoformat()
-                        )
-                    )
+                # Split into batches for parallel processing
+                batches = [
+                    newsletters[i:i + BATCH_SIZE]
+                    for i in range(0, len(newsletters), BATCH_SIZE)
+                ]
                 
+                # Process batches concurrently
+                batch_results = await asyncio.gather(*[
+                    self.process_newsletter_batch(batch, db, i)
+                    for i, batch in enumerate(batches)
+                ])
+                
+                # Refresh unprocessed list (read operation - direct)
                 unprocessed = [dict(row) for row in db.fetch_all(
                     """
                     SELECT * FROM newsletters 
@@ -281,33 +354,52 @@ class TestGmailNewsletterComponent:
                 print(f"\nProcessing {len(unprocessed)} newsletters...")
                 processed_count = 0
                 
-                for newsletter in unprocessed:
-                    try:
-                        # Process content and create vector embedding
-                        vector_id = await newsletter_monitor.process_newsletter_content(
-                            newsletter['email_id'],
-                            newsletter['content']
-                        )
-                        
-                        if vector_id:
-                            # Update database status
-                            db.execute(
-                                """
-                                UPDATE newsletters 
-                                SET vector_id = ?, 
-                                    processing_status = 'completed',
-                                    processed_date = ?
-                                WHERE email_id = ?
-                                """,
-                                (vector_id, datetime.now(UTC).isoformat(), newsletter['email_id'])
-                            )
-                            processed_count += 1
-                        
-                    except Exception as e:
-                        print(f"Error processing newsletter {newsletter['email_id']}: {str(e)}")
-                        continue
+                # Split unprocessed newsletters into batches
+                batches = [
+                    unprocessed[i:i + BATCH_SIZE]
+                    for i in range(0, len(unprocessed), BATCH_SIZE)
+                ]
                 
-                # Verify results
+                async def process_batch(batch: List[Dict], batch_id: int) -> int:
+                    """Process a batch of newsletters and return count of successful operations."""
+                    batch_count = 0
+                    for newsletter in batch:
+                        try:
+                            # Process content and create vector embedding
+                            vector_id = await newsletter_monitor.process_newsletter_content(
+                                newsletter['email_id'],
+                                newsletter['content']
+                            )
+                            
+                            if vector_id:
+                                # Update database status (write operation - queued)
+                                result = db.execute(
+                                    """
+                                    UPDATE newsletters 
+                                    SET vector_id = ?, 
+                                        processing_status = 'completed',
+                                        processed_date = ?
+                                    WHERE email_id = ?
+                                    """,
+                                    (vector_id, datetime.now(UTC).isoformat(), newsletter['email_id'])
+                                )
+                                batch_count += 1
+                            
+                        except Exception as e:
+                            print(f"Error processing newsletter {newsletter['email_id']} in batch {batch_id}: {str(e)}")
+                            continue
+                    
+                    return batch_count
+                
+                # Process batches concurrently
+                batch_counts = await asyncio.gather(*[
+                    process_batch(batch, i)
+                    for i, batch in enumerate(batches)
+                ])
+                
+                processed_count = sum(batch_counts)
+                
+                # Verify results (read operation - direct)
                 processed = [dict(row) for row in db.fetch_all(
                     "SELECT * FROM newsletters WHERE vector_id IS NOT NULL ORDER BY received_date DESC"
                 )]
@@ -343,7 +435,7 @@ class TestGmailNewsletterComponent:
             # Ensure we have processed newsletters
             await self.test_content_processing(newsletter_monitor, setup_database)
             
-            # Get all newsletters
+            # Get all newsletters (read operation - direct)
             newsletters = [dict(row) for row in db.fetch_all(
                 "SELECT * FROM newsletters ORDER BY received_date DESC"
             )]

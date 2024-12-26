@@ -205,7 +205,7 @@ def process_newsletter_batch(
                         )
                         log_memory_usage()
                         
-                        # Check if newsletter already exists
+                        # Check if newsletter already exists (read operation - direct)
                         db_start = time.time()
                         n.vector_id = vector_id
                         n.processed_date = datetime.now(UTC).isoformat()
@@ -215,8 +215,9 @@ def process_newsletter_batch(
                             (n.email_id,)
                         )
                         
+                        # Prepare database operation
                         if existing:
-                            # Update existing record
+                            # Update existing record (write operation - queued)
                             sql = """
                                 UPDATE newsletters 
                                 SET processed_date = ?,
@@ -231,7 +232,7 @@ def process_newsletter_batch(
                                 n.email_id
                             )
                         else:
-                            # Insert new record
+                            # Insert new record (write operation - queued)
                             sql = """
                                 INSERT INTO newsletters (
                                     email_id, received_date, processed_date, 
@@ -247,7 +248,10 @@ def process_newsletter_batch(
                                 str(n.metadata)
                             )
                         
-                        db.execute(sql, params)
+                        # Execute database operation through queue system
+                        result = db.execute(sql, params)
+                        if isinstance(result, int):
+                            logger.info(f"[BATCH {batch_id}] Database operation successful with ID {result}")
                         
                         db_time = time.time() - db_start
                         logger.info(
