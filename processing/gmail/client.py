@@ -55,9 +55,26 @@ class GmailClient:
                 if creds and creds.expired and creds.refresh_token:
                     creds.refresh(Request())
                 else:
-                    flow = InstalledAppFlow.from_client_secrets_file(
-                        self.credentials_path, self.SCOPES)
-                    creds = flow.run_local_server(port=0)
+                    # Try each port from the list of valid redirect URIs
+                    ports = [8029, 8030, 8031, 8032, 8033, 8034, 8035, 8036, 8037, 8038]
+                    auth_success = False
+                    last_error = None
+
+                    for port in ports:
+                        try:
+                            flow = InstalledAppFlow.from_client_secrets_file(
+                                self.credentials_path, self.SCOPES)
+                            creds = flow.run_local_server(port=port)
+                            auth_success = True
+                            logger.info(f"Successfully authenticated using port {port}")
+                            break
+                        except Exception as e:
+                            last_error = e
+                            logger.warning(f"Authentication failed on port {port}: {str(e)}")
+                            continue
+
+                    if not auth_success:
+                        raise AuthenticationError(f"Failed to authenticate on all ports. Last error: {str(last_error)}")
 
                 with open(self.token_path, 'w') as token:
                     token.write(creds.to_json())
