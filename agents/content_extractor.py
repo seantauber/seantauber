@@ -543,75 +543,64 @@ class ContentExtractorAgent:
             all_urls = self.url_processor.url_fetcher.extract_urls(content)
             other_urls = [url for url in all_urls if url not in repo_urls]
             
-            # Process other URLs and extract GitHub links from their content
-            url_results = []
+            # Process other URLs in parallel and extract GitHub links from their content
+            url_tasks = []
             for url in other_urls:
-                try:
-                    url_content = await self.url_processor.fetch_and_cache_url_content(
-                        url,
-                        newsletter_id
-                    )
-                    if url_content:
-                        # Store URL content result
-                        url_results.append({
-                            "url": url,
-                            "content": url_content
-                        })
-                        
-                        # Extract GitHub links from URL content
-                        content_repo_urls = set(self.extract_repository_links(url_content))
-                        if content_repo_urls:
-                            logger.info(
-                                f"Found {len(content_repo_urls)} GitHub repositories in content from {url}"
-                            )
-                            repo_urls.update(content_repo_urls)
-                except Exception as e:
-                    logger.error(f"Failed to process URL {url}: {str(e)}")
-                    continue
+                url_tasks.append(
+                    self.url_processor.fetch_and_cache_url_content(url, newsletter_id)
+                )
             
-            # Process all found repository URLs
-            repo_results = []
-            for url in repo_urls:
-                try:
-                    # Skip if already processed
-                    if url in self.processed_repos:
-                        logger.info(f"Skipping already processed repository: {url}")
-                        continue
+            # Wait for all URL processing tasks to complete
+            url_results = []
+            url_contents = await asyncio.gather(*url_tasks, return_exceptions=True)
+            for url, result in zip(other_urls, url_contents):
+                if isinstance(result, Exception):
+                    logger.error(f"Failed to process URL {url}: {str(result)}")
+                    continue
                     
-                    # Check if repository needs updating
-                    if not await self._should_update_repository(url):
-                        logger.info(f"Skipping up-to-date repository: {url}")
-                        continue
-                    
-                    # Fetch metadata and README
-                    metadata = await self.fetch_repository_metadata(url)
-                    
-                    # Generate structured summary with categories
-                    summary = await self.generate_repository_summary(metadata)
-                    
-                    # Store in database if GenAI-related
-                    repo_id = 0
-                    if summary.is_genai:
-                        repo_id = await self.store_repository_data(
-                            url,
-                            metadata,
-                            summary,
-                            f"newsletter-{email_id}"
-                        )
-                    
-                    # Mark as processed
-                    self.processed_repos.add(url)
-                    
-                    repo_results.append({
+                if result:
+                    # Store URL content result
+                    url_results.append({
                         "url": url,
-                        "repository_id": repo_id,
-                        "summary": summary.model_dump(),
-                        "metadata": metadata
+                        "content": result
                     })
                     
-                except Exception as e:
-                    logger.error(f"Failed to process repository {url}: {str(e)}")
+                    # Extract GitHub links from URL content
+                    content_repo_urls = set(self.extract_repository_links(result))
+                    if content_repo_urls:
+                        logger.info(
+                            f"Found {len(content_repo_urls)} GitHub repositories in content from {url}"
+                        )
+                        repo_urls.update(content_repo_urls)
+            
+            # Process repositories in parallel
+            repo_tasks = []
+            for url in repo_urls:
+                # Skip if already processed
+                if url in self.processed_repos:
+                    logger.info(f"Skipping already processed repository: {url}")
                     continue
+                
+                # Check if repository needs updating
+                if not await self._should_update_repository(url):
+                    logger.info(f"Skipping up-to-date repository: {url}")
+                    continue
+                
+                repo_tasks.append(self._process_single_repository(url, email_id))
+            
+            # Wait for all repository processing tasks to complete
+            repo_results = []
+            results = await asyncio.gather(*repo_tasks, return_exceptions=True)
+            for url, result in zip(
+                [task._args[0] for task in repo_tasks],  # Get URLs from task args
+                results
+            ):
+                if isinstance(result, Exception):
+                    logger.error(f"Failed to process repository {url}: {str(result)}")
+                    continue
+                if result:
+                    repo_results.append(result)
+                    self.processed_repos.add(url)
             
             logger.info(
                 f"Successfully processed {len(repo_results)} repositories "
@@ -627,3 +616,45 @@ class ContentExtractorAgent:
         except Exception as e:
             logger.error(f"Failed to process newsletter content: {str(e)}")
             raise ContentExtractionError(f"Newsletter processing failed: {str(e)}")
+    
+    async def _process_single_repository(
+        self,
+        url: str,
+        email_id: str
+    ) -> Optional[Dict]:
+        """Process a single repository URL.
+        
+        Args:
+            url: Repository URL to process
+            email_id: Newsletter email ID for source tracking
+            
+        Returns:
+            Dictionary containing repository information or None if processing fails
+        """
+        try:
+            # Fetch metadata and README
+            metadata = await self.fetch_repository_metadata(url)
+            
+            # Generate structured summary with categories
+            summary = await self.generate_repository_summary(metadata)
+            
+            # Store in database if GenAI-related
+            repo_id = 0
+            if summary.is_genai:
+                repo_id = await self.store_repository_data(
+                    url,
+                    metadata,
+                    summary,
+                    f"newsletter-{email_id}"
+                )
+            
+            return {
+                "url": url,
+                "repository_id": repo_id,
+                "summary": summary.model_dump(),
+                "metadata": metadata
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to process repository {url}: {str(e)}")
+            raise

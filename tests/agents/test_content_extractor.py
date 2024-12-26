@@ -260,13 +260,137 @@ async def test_category_validation_retry(
     )
 
 @pytest.mark.asyncio
+async def test_parallel_processing(
+    content_extractor,
+    mock_github_response,
+    mock_readme_response,
+    mock_genai_summary_response,
+    mock_non_genai_summary_response
+):
+    """Test parallel processing of multiple repositories."""
+    print("\nTesting Parallel Repository Processing")
+    print("="*50)
+    
+    # Create test content with multiple repos
+    content = """
+    Check out these repos:
+    https://github.com/user1/repo1 - GenAI project
+    https://github.com/user2/repo2 - Web framework
+    https://example.com/article - Contains: https://github.com/user3/repo3
+    """
+    
+    # Mock URL processor to return content with embedded repo
+    with patch.object(
+        content_extractor.url_processor,
+        'fetch_and_cache_url_content',
+        return_value=AsyncMock(return_value="Found another repo: https://github.com/user3/repo3")()
+    ):
+        # Mock GitHub API calls
+        with patch('aiohttp.ClientSession.get') as mock_get:
+            # Set up mock responses for 3 repos (6 calls total - metadata + readme each)
+            mock_get.side_effect = [
+                # Repo 1 (GenAI)
+                AsyncMock(status=200, json=AsyncMock(return_value=mock_github_response))(),
+                AsyncMock(status=200, json=AsyncMock(return_value=mock_readme_response))(),
+                # Repo 2 (Non-GenAI)
+                AsyncMock(status=200, json=AsyncMock(return_value=mock_github_response))(),
+                AsyncMock(status=200, json=AsyncMock(return_value=mock_readme_response))(),
+                # Repo 3 (GenAI)
+                AsyncMock(status=200, json=AsyncMock(return_value=mock_github_response))(),
+                AsyncMock(status=200, json=AsyncMock(return_value=mock_readme_response))()
+            ]
+            
+            # Mock LLM responses alternating between GenAI and non-GenAI
+            with patch.object(
+                content_extractor.summarization_agent,
+                'complete'
+            ) as mock_complete:
+                mock_complete.side_effect = [
+                    AsyncMock(content=json.dumps(mock_genai_summary_response))(),
+                    AsyncMock(content=json.dumps(mock_non_genai_summary_response))(),
+                    AsyncMock(content=json.dumps(mock_genai_summary_response))()
+                ]
+                
+                result = await content_extractor.process_newsletter_content(
+                    email_id="test123",
+                    content=content
+                )
+    
+    assert len(result) == 1
+    assert len(result[0]["repositories"]) == 3
+    assert len(result[0]["urls"]) == 1
+    
+    # Verify GenAI repos were stored
+    genai_repos = [r for r in result[0]["repositories"] if r["summary"]["is_genai"]]
+    assert len(genai_repos) == 2
+    for repo in genai_repos:
+        assert repo["repository_id"] > 0
+        assert len(repo["summary"]["ranked_categories"]) > 0
+    
+    # Verify non-GenAI repo was processed but not stored
+    non_genai_repos = [r for r in result[0]["repositories"] if not r["summary"]["is_genai"]]
+    assert len(non_genai_repos) == 1
+    assert non_genai_repos[0]["repository_id"] == 0
+    assert "other_category_description" in non_genai_repos[0]["summary"]
+
+@pytest.mark.asyncio
+async def test_parallel_error_handling(
+    content_extractor,
+    mock_github_response,
+    mock_readme_response,
+    mock_genai_summary_response
+):
+    """Test error handling in parallel processing."""
+    print("\nTesting Parallel Processing Error Handling")
+    print("="*50)
+    
+    content = """
+    Check out these repos:
+    https://github.com/user1/repo1
+    https://github.com/user2/error-repo
+    https://github.com/user3/repo3
+    """
+    
+    with patch('aiohttp.ClientSession.get') as mock_get:
+        # Set up mixed success/failure responses
+        mock_get.side_effect = [
+            # Repo 1 (success)
+            AsyncMock(status=200, json=AsyncMock(return_value=mock_github_response))(),
+            AsyncMock(status=200, json=AsyncMock(return_value=mock_readme_response))(),
+            # Repo 2 (API error)
+            AsyncMock(status=404)(),
+            # Repo 3 (success)
+            AsyncMock(status=200, json=AsyncMock(return_value=mock_github_response))(),
+            AsyncMock(status=200, json=AsyncMock(return_value=mock_readme_response))()
+        ]
+        
+        with patch.object(
+            content_extractor.summarization_agent,
+            'complete',
+            return_value=AsyncMock(content=json.dumps(mock_genai_summary_response))()
+        ):
+            result = await content_extractor.process_newsletter_content(
+                email_id="test123",
+                content=content
+            )
+    
+    assert len(result) == 1
+    assert len(result[0]["repositories"]) == 2  # Should have 2 successful repos
+    
+    # Verify successful repos were processed
+    for repo in result[0]["repositories"]:
+        assert repo["repository_id"] > 0
+        assert repo["summary"]["is_genai"]
+        assert len(repo["summary"]["ranked_categories"]) > 0
+
+@pytest.mark.asyncio
 async def test_process_genai_repository(
     content_extractor,
     mock_github_response,
     mock_readme_response,
     mock_genai_summary_response
 ):
-    """Test processing a GenAI repository."""
+    """Test processing a single GenAI repository."""
     print("\nTesting GenAI Repository Processing")
     print("="*50)
     
@@ -279,7 +403,7 @@ async def test_process_genai_repository(
         with patch.object(
             content_extractor.summarization_agent,
             'complete',
-            return_value=AsyncMock(content=json.dumps(mock_genai_summary_response))
+            return_value=AsyncMock(content=json.dumps(mock_genai_summary_response))()
         ):
             result = await content_extractor.process_newsletter_content(
                 email_id="test123",
