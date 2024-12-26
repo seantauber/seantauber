@@ -5,11 +5,14 @@ import os
 import uuid
 import logging
 import click
+import time
+import dramatiq
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 from processing.tasks import extract_content_batch
 from db.connection import Database
+from scripts.utils import ensure_redis_running
 
 # Configure logging
 logging.basicConfig(
@@ -35,6 +38,11 @@ def main(batch_size, days_back, reprocess):
     try:
         # Load environment
         load_dotenv()
+        
+        # Ensure Redis is running
+        if not ensure_redis_running():
+            logger.error("Failed to start Redis server")
+            return
         
         # Initialize database
         db = Database(os.getenv('DATABASE_PATH'))
@@ -82,11 +90,36 @@ def main(batch_size, days_back, reprocess):
             
             logger.info(f"Enqueued {len(extraction_tasks)} extraction tasks")
             
-            # Wait for completion
-            for task in extraction_tasks:
-                task.get_result(block=True, timeout=None)
+            # Wait for completion with timeout
+            logger.info("Waiting for extraction tasks to complete...")
+            start_time = time.time()
+            completed = 0
+            failed = 0
             
-            logger.info("Content extraction completed successfully")
+            for i, task in enumerate(extraction_tasks, 1):
+                try:
+                    batch_start = time.time()
+                    logger.info(f"Waiting for batch {i}/{len(extraction_tasks)}")
+                    
+                    # 6 minute timeout (slightly longer than the task's 5 minute timeout)
+                    result = task.get_result(block=True, timeout=360000)
+                    
+                    batch_time = time.time() - batch_start
+                    logger.info(f"Batch {i} completed in {batch_time:.2f}s")
+                    completed += 1
+                        
+                except dramatiq.results.ResultTimeout:
+                    logger.error(f"Batch {i} timed out after 6 minutes")
+                    failed += 1
+                except Exception as e:
+                    logger.error(f"Batch {i} failed: {str(e)}")
+                    failed += 1
+            
+            total_time = time.time() - start_time
+            logger.info(
+                f"Content extraction completed in {total_time:.2f}s - "
+                f"Successful: {completed}, Failed: {failed}"
+            )
             
         finally:
             db.disconnect()

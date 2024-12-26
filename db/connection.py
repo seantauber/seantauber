@@ -29,20 +29,13 @@ class Database:
             db_dir = Path(db_path).parent
             db_dir.mkdir(parents=True, exist_ok=True)
             
-            # Validate database file if it exists
-            if Path(db_path).exists():
-                # Check SQLite header magic string
-                with open(db_path, "rb") as f:
-                    header = f.read(16)
-                    if not header.startswith(b"SQLite format 3"):
-                        raise DatabaseError("File exists but is not a valid database")
-                
-                # If header looks valid, try connecting
+            # Only validate if file exists
+            if Path(db_path).exists() and Path(db_path).stat().st_size > 0:
                 try:
                     with sqlite3.connect(db_path) as test_conn:
                         test_conn.execute("SELECT 1")
                 except sqlite3.Error as e:
-                    raise DatabaseError("File exists but is not a valid database")
+                    raise DatabaseError(f"File exists but is not a valid database: {str(e)}")
     
     def connect(self) -> None:
         """Establish database connection.
@@ -111,6 +104,24 @@ class Database:
                 conn.execute(query, params)
         except DatabaseError as e:
             raise DatabaseError(f"Query execution failed: {str(e)}")
+    
+    def executescript(self, script: str) -> None:
+        """Execute a SQL script containing multiple statements.
+        
+        Args:
+            script: SQL script string containing one or more statements.
+            
+        Raises:
+            DatabaseError: If script execution fails.
+        """
+        if not self._conn:
+            self.connect()
+            
+        try:
+            with self.transaction() as conn:
+                conn.executescript(script)
+        except DatabaseError as e:
+            raise DatabaseError(f"Script execution failed: {str(e)}")
     
     def fetch_one(self, query: str, params: tuple = ()) -> Optional[sqlite3.Row]:
         """Fetch a single row from the database.

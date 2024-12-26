@@ -1,235 +1,45 @@
 """Embedchain integration for vector storage."""
 
-import os
-import json
 import logging
-import socket
-from typing import Dict, Optional, List, Tuple, Any
+import re
+from typing import Dict, Optional, List, Any
 from embedchain import App
 from embedchain.config import AppConfig
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-import googleapiclient
-from googleapiclient.discovery import build
-import base64
 
 logger = logging.getLogger(__name__)
 
 class EmbedchainStore:
     """Vector storage implementation using Embedchain."""
 
-    SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
-    NEWSLETTER_LABEL = 'GenAI News'
-    BASE_PORT = 8029  # Base port to start trying from
-    MAX_PORT_ATTEMPTS = 10  # Maximum number of ports to try
-
-    def __init__(self, token_path: str):
+    def __init__(self, vector_store_path: str):
         """
         Initialize Embedchain store.
 
         Args:
-            token_path: Path to Gmail API token
+            vector_store_path: Path to vector storage directory
         """
-        # Initialize Gmail API with proper credential handling
-        self.token_path = token_path
-        self.creds = self._get_credentials()
-        self.gmail_service = build('gmail', 'v1', credentials=self.creds)
+        # Configure Embedchain apps with vector store path
+        newsletter_config = AppConfig()
+        newsletter_config.name = "newsletters"
+        newsletter_config.collection_name = "newsletters"
+        newsletter_config.chromadb_settings = {
+            "directory": vector_store_path
+        }
+        
+        repository_config = AppConfig()
+        repository_config.name = "repositories"
+        repository_config.collection_name = "repositories"
+        repository_config.chromadb_settings = {
+            "directory": vector_store_path
+        }
         
         # Initialize Embedchain apps for different collections
-        self.newsletter_store = App()
-        self.repository_store = App()
+        self.newsletter_store = App(config=newsletter_config)
+        self.repository_store = App(config=repository_config)
         
         # Cache for repository data
         self._repository_cache: Dict[str, Dict[str, Any]] = {}
 
-    def _find_available_port(self) -> Tuple[int, bool]:
-        """Find an available port starting from BASE_PORT."""
-        for port_offset in range(self.MAX_PORT_ATTEMPTS):
-            port = self.BASE_PORT + port_offset
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            try:
-                sock.bind(('localhost', port))
-                sock.close()
-                is_base_port = port == self.BASE_PORT
-                return port, is_base_port
-            except OSError:
-                continue
-            finally:
-                sock.close()
-        raise OSError(f"Could not find an available port after {self.MAX_PORT_ATTEMPTS} attempts")
-
-    def _validate_token_data(self, token_data: dict) -> bool:
-        """Validate token data has all required fields."""
-        required_fields = ['refresh_token', 'token', 'token_uri', 'client_id', 'client_secret']
-        return all(field in token_data for field in required_fields)
-
-    def _get_credentials(self) -> Credentials:
-        """Get or refresh Google API credentials."""
-        creds = None
-        
-        # Check if token file exists and contains valid data
-        if os.path.exists(self.token_path):
-            try:
-                with open(self.token_path) as f:
-                    token_data = json.load(f)
-                if not self._validate_token_data(token_data):
-                    logger.warning("Token file exists but missing required fields")
-                    os.remove(self.token_path)  # Remove invalid token file
-                else:
-                    creds = Credentials.from_authorized_user_file(self.token_path, self.SCOPES)
-            except (ValueError, KeyError, json.JSONDecodeError) as e:
-                logger.warning(f"Error reading token file: {e}")
-                os.remove(self.token_path)  # Remove invalid token file
-
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                try:
-                    creds.refresh(Request())
-                except Exception as e:
-                    logger.warning(f"Failed to refresh token: {e}")
-                    os.remove(self.token_path)  # Remove invalid token file
-                    creds = None
-            
-            if not creds:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    ".credentials/google-credentials.json", self.SCOPES)
-                
-                # Find an available port
-                try:
-                    port, is_base_port = self._find_available_port()
-                    if not is_base_port:
-                        logger.warning(
-                            f"Base port {self.BASE_PORT} is in use, using alternative port {port}"
-                        )
-                    
-                    # Use found port and request offline access for refresh token
-                    # Note: Adding trailing slash to match the redirect URI exactly
-                    redirect_uri = f"http://localhost:{port}/"
-                    flow.redirect_uri = redirect_uri
-                    
-                    creds = flow.run_local_server(
-                        port=port,
-                        access_type='offline',  # Enable offline access
-                        prompt='consent',  # Force consent screen to get refresh token
-                        authorization_prompt_message=(
-                            f"Please visit this URL to authorize this application "
-                            f"(using port {port} for callback)"
-                        )
-                    )
-                except OSError as e:
-                    logger.error("Failed to start local server for OAuth flow")
-                    raise RuntimeError(
-                        f"OAuth flow failed: Could not start local server. "
-                        f"Please ensure no other OAuth flows are running and try again. "
-                        f"Error: {str(e)}"
-                    )
-
-            # Validate we got a refresh token
-            if not creds.refresh_token:
-                raise RuntimeError(
-                    "Failed to obtain refresh token. Please ensure you're logged out of "
-                    "all Google accounts and try again to see the consent screen."
-                )
-
-            # Save the credentials for the next run
-            with open(self.token_path, 'w') as token:
-                token.write(creds.to_json())
-
-        return creds
-
-    def _get_label_id(self) -> Optional[str]:
-        """Get Gmail label ID for newsletter label."""
-        try:
-            results = self.gmail_service.users().labels().list(userId='me').execute()
-            labels = results.get('labels', [])
-            label_id = next(
-                (label['id'] for label in labels if label['name'] == self.NEWSLETTER_LABEL),
-                None
-            )
-            return label_id
-        except Exception as e:
-            logger.error(f"Failed to get label ID: {str(e)}")
-            raise
-
-    async def load_and_store_newsletters(self, max_results: int = 10) -> List[str]:
-        """
-        Load newsletters from Gmail and store in vector storage.
-
-        Args:
-            max_results: Maximum number of newsletters to fetch
-
-        Returns:
-            List of vector IDs for stored newsletters
-
-        Raises:
-            Exception: If loading or storing fails
-        """
-        try:
-            label_id = self._get_label_id()
-            if not label_id:
-                logger.warning(f"Label '{self.NEWSLETTER_LABEL}' not found")
-                return []
-
-            # Fetch emails with newsletter label
-            results = self.gmail_service.users().messages().list(
-                userId='me',
-                labelIds=[label_id],
-                maxResults=max_results
-            ).execute()
-
-            messages = results.get('messages', [])
-            vector_ids = []
-
-            for message in messages:
-                msg = self.gmail_service.users().messages().get(
-                    userId='me',
-                    id=message['id'],
-                    format='full'
-                ).execute()
-
-                # Extract headers
-                headers = msg['payload']['headers']
-                subject = next(
-                    (header['value'] for header in headers if header['name'].lower() == 'subject'),
-                    'No Subject'
-                )
-                sender = next(
-                    (header['value'] for header in headers if header['name'].lower() == 'from'),
-                    'Unknown Sender'
-                )
-                date = next(
-                    (header['value'] for header in headers if header['name'].lower() == 'date'),
-                    None
-                )
-
-                # Extract body
-                if 'parts' in msg['payload']:
-                    parts = msg['payload']['parts']
-                    data = parts[0]['body'].get('data', '')
-                else:
-                    data = msg['payload']['body'].get('data', '')
-
-                body = base64.urlsafe_b64decode(data).decode('utf-8') if data else ''
-
-                # Store in vector storage using message ID as source
-                vector_id = self.newsletter_store.add(
-                    body,  # Store the actual content
-                    metadata={
-                        'email_id': message['id'],
-                        'subject': subject,
-                        'sender': sender,
-                        'received_date': date
-                    }
-                )
-                vector_ids.append(vector_id)
-                logger.info(f"Stored newsletter {message['id']} in vector storage")
-
-            return vector_ids
-
-        except Exception as e:
-            logger.error(f"Failed to load and store newsletters: {str(e)}")
-            raise
 
     async def store_repository(self, repository: Dict[str, Any]) -> str:
         """

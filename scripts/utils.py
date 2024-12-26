@@ -1,87 +1,90 @@
-"""Common utilities for pipeline scripts."""
+"""Utility functions for pipeline scripts."""
 
-import os
+import subprocess
+import atexit
+import signal
 import logging
-from typing import List, Optional
-from datetime import datetime
+import time
+import os
+from typing import Optional
 
-def setup_logging(stage_name: str) -> logging.Logger:
-    """
-    Set up logging configuration for a pipeline stage.
+logger = logging.getLogger(__name__)
+
+class RedisServerManager:
+    """Manages Redis server lifecycle."""
     
-    Args:
-        stage_name: Name of the pipeline stage for log formatting
+    def __init__(self):
+        """Initialize Redis server manager."""
+        self.redis_process: Optional[subprocess.Popen] = None
+        # Register cleanup on script exit
+        atexit.register(self.stop_server)
+    
+    def start_server(self) -> bool:
+        """
+        Start Redis server in the background.
         
+        Returns:
+            bool: True if server started successfully, False otherwise
+        """
+        if self.redis_process:
+            logger.info("Redis server already running")
+            return True
+            
+        try:
+            # Start Redis server in the background
+            self.redis_process = subprocess.Popen(
+                ["redis-server", "--daemonize", "no"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                preexec_fn=os.setsid  # Create new process group
+            )
+            
+            # Wait a moment for server to start
+            time.sleep(2)
+            
+            # Check if process is still running
+            if self.redis_process.poll() is None:
+                logger.info("Redis server started successfully")
+                return True
+            else:
+                stdout, stderr = self.redis_process.communicate()
+                logger.error(
+                    f"Redis server failed to start: "
+                    f"stdout={stdout.decode()}, stderr={stderr.decode()}"
+                )
+                self.redis_process = None
+                return False
+                
+        except Exception as e:
+            logger.error(f"Failed to start Redis server: {str(e)}")
+            self.redis_process = None
+            return False
+    
+    def stop_server(self) -> None:
+        """Stop Redis server if running."""
+        if self.redis_process:
+            try:
+                # Kill the entire process group
+                os.killpg(os.getpgid(self.redis_process.pid), signal.SIGTERM)
+                self.redis_process.wait(timeout=5)  # Wait up to 5 seconds
+                logger.info("Redis server stopped")
+            except subprocess.TimeoutExpired:
+                # Force kill if graceful shutdown fails
+                os.killpg(os.getpgid(self.redis_process.pid), signal.SIGKILL)
+                logger.warning("Redis server force stopped")
+            except Exception as e:
+                logger.error(f"Error stopping Redis server: {str(e)}")
+            finally:
+                self.redis_process = None
+
+# Global Redis server manager instance
+redis_manager = RedisServerManager()
+
+def ensure_redis_running() -> bool:
+    """
+    Ensure Redis server is running, starting it if needed.
+    
     Returns:
-        Configured logger instance
+        bool: True if Redis is running, False if it failed to start
     """
-    logging.basicConfig(
-        level=logging.INFO,
-        format=f'%(asctime)s - {stage_name} - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler('pipeline.log'),
-            logging.StreamHandler()
-        ]
-    )
-    return logging.getLogger(__name__)
-
-def validate_environment(required_vars: Optional[List[str]] = None) -> None:
-    """
-    Validate required environment variables.
-    
-    Args:
-        required_vars: List of required variable names. If None, checks default set.
-        
-    Raises:
-        ValueError: If any required variables are missing
-    """
-    if required_vars is None:
-        required_vars = [
-            "OPENAI_API_KEY",
-            "GMAIL_CREDENTIALS_PATH",
-            "GMAIL_TOKEN_PATH",
-            "GMAIL_LABEL",
-            "GITHUB_TOKEN",
-            "DATABASE_PATH",
-            "VECTOR_STORE_PATH",
-            "REDIS_URL"
-        ]
-    
-    missing = [var for var in required_vars if not os.getenv(var)]
-    if missing:
-        raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
-
-def chunk_list(lst: List, chunk_size: int) -> List[List]:
-    """
-    Split a list into chunks of specified size.
-    
-    Args:
-        lst: List to split
-        chunk_size: Size of each chunk
-        
-    Returns:
-        List of chunks
-    """
-    return [lst[i:i + chunk_size] for i in range(0, len(lst), chunk_size)]
-
-def format_duration(start_time: datetime) -> str:
-    """
-    Format duration since start time.
-    
-    Args:
-        start_time: Starting datetime
-        
-    Returns:
-        Formatted duration string
-    """
-    duration = datetime.now() - start_time
-    seconds = duration.total_seconds()
-    
-    if seconds < 60:
-        return f"{seconds:.1f} seconds"
-    elif seconds < 3600:
-        minutes = seconds / 60
-        return f"{minutes:.1f} minutes"
-    else:
-        hours = seconds / 3600
-        return f"{hours:.1f} hours"
+    return redis_manager.start_server()

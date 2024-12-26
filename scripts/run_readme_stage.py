@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from processing.tasks import update_readme
 from db.connection import Database
+from scripts.utils import ensure_redis_running
 
 # Configure logging
 logging.basicConfig(
@@ -27,6 +28,11 @@ def main(force):
     try:
         # Load environment
         load_dotenv()
+        
+        # Ensure Redis is running
+        if not ensure_redis_running():
+            logger.error("Failed to start Redis server")
+            return
         
         # Initialize database
         db = Database(os.getenv('DATABASE_PATH'))

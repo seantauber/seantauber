@@ -1,5 +1,6 @@
 """Script to run database migrations."""
 
+import os
 from db.connection import Database
 from db.migrations import MigrationManager
 
@@ -7,8 +8,12 @@ def main():
     """Run database migrations."""
     print("Running database migrations...")
     
+    # Get database path from environment or use default
+    db_path = os.getenv("DATABASE_URL", "db/github_repos.db")
+    print(f"Using database at: {db_path}")
+    
     # Connect to main database
-    db = Database("db/chroma.sqlite3")
+    db = Database(db_path)
     db.connect()
     
     try:
