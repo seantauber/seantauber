@@ -154,6 +154,12 @@ Temporary Items
 **/*.sqlite3
 **/*.sqlite3-journal
 
+# Specific database files
+tests/test.db
+db/test_github_repos.db
+db/github_repos.db
+db/chroma.sqlite3
+
 # Chroma database files - cover all possible locations
 **/chroma.sqlite3
 **/db/*/data_level0.bin
@@ -163,6 +169,10 @@ Temporary Items
 
 # Test files
 readme.test*
+
+# Redis files
+dump.rdb
+*.rdb
 
 # Vector store and database files
 db/vector_store/
