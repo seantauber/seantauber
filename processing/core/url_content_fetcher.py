@@ -2,7 +2,7 @@
 
 import logging
 import re
-from typing import Optional, List
+from typing import Optional, List, Set
 from datetime import datetime, UTC
 
 import requests
@@ -22,6 +22,20 @@ class UrlContent(BaseModel):
 class UrlContentFetcher:
     """Component for fetching content from URLs."""
     
+    # Patterns for URLs that should be skipped
+    SKIP_PATTERNS = {
+        '/subscribe',
+        '/unsubscribe',
+        '/preferences',
+        '/manage',
+        '/settings',
+        '/subscription',
+        '/opt-out',
+        '/opt-in',
+        '/email-settings',
+        '/newsletter'
+    }
+    
     def __init__(self, timeout: int = 10):
         """Initialize URL content fetcher.
         
@@ -29,6 +43,18 @@ class UrlContentFetcher:
             timeout: Request timeout in seconds
         """
         self.timeout = timeout
+        
+    def should_skip_url(self, url: str) -> bool:
+        """Check if URL should be skipped based on patterns.
+        
+        Args:
+            url: URL to check
+            
+        Returns:
+            True if URL should be skipped, False otherwise
+        """
+        url_lower = url.lower()
+        return any(pattern in url_lower for pattern in self.SKIP_PATTERNS)
     
     async def fetch_url_content(self, url: str) -> UrlContent:
         """Fetch content from a URL.
@@ -39,6 +65,15 @@ class UrlContentFetcher:
         Returns:
             UrlContent object containing the fetched content
         """
+        # Check if URL should be skipped
+        if self.should_skip_url(url):
+            logger.info(f"Skipping subscription-related URL: {url}")
+            return UrlContent(
+                url=url,
+                content="",
+                error="Skipped subscription-related URL"
+            )
+            
         try:
             # Fetch the URL content
             response = requests.get(url, timeout=self.timeout)

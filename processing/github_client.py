@@ -15,6 +15,11 @@ class RateLimitedGitHubClient:
     
     async def __aenter__(self):
         """Async context manager entry."""
+        # Create session in async context
+        self.session = aiohttp.ClientSession(headers={
+            'Authorization': f'token {self.token}',
+            'Accept': 'application/vnd.github.v3+json'
+        })
         return self
     
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -32,12 +37,7 @@ class RateLimitedGitHubClient:
         self.calls_per_hour = calls_per_hour
         self.calls = []
         self.lock = asyncio.Lock()
-        
-        # Session for API calls
-        self.session = aiohttp.ClientSession(headers={
-            'Authorization': f'token {token}',
-            'Accept': 'application/vnd.github.v3+json'
-        })
+        self.session = None  # Will be initialized in __aenter__
     
     async def _check_rate_limit(self):
         """Check and enforce rate limits."""
@@ -142,4 +142,5 @@ class RateLimitedGitHubClient:
     
     async def close(self):
         """Close the client session."""
-        await self.session.close()
+        if self.session:
+            await self.session.close()

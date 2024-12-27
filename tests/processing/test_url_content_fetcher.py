@@ -102,6 +102,48 @@ def test_extract_urls_error(fetcher):
         urls = fetcher.extract_urls("some text")
         assert len(urls) == 0
 
+def test_should_skip_url(fetcher):
+    """Test URL filtering for subscription-related patterns."""
+    # URLs that should be skipped
+    skip_urls = [
+        "https://example.com/subscribe",
+        "https://example.com/unsubscribe",
+        "https://example.com/preferences",
+        "https://example.com/manage",
+        "https://example.com/settings",
+        "https://example.com/subscription",
+        "https://example.com/opt-out",
+        "https://example.com/opt-in",
+        "https://example.com/email-settings",
+        "https://example.com/newsletter"
+    ]
+    
+    # URLs that should not be skipped
+    allow_urls = [
+        "https://example.com/article",
+        "https://example.com/blog",
+        "https://example.com/repository",
+        "https://example.com/docs/subscription-model" # Technical content with subscription in name
+    ]
+    
+    for url in skip_urls:
+        assert fetcher.should_skip_url(url), f"Should skip {url}"
+        
+    for url in allow_urls:
+        assert not fetcher.should_skip_url(url), f"Should not skip {url}"
+
+@pytest.mark.asyncio
+async def test_fetch_subscription_url(fetcher):
+    """Test fetching content from subscription-related URLs."""
+    url = "https://example.com/subscribe"
+    
+    result = await fetcher.fetch_url_content(url)
+    
+    assert isinstance(result, UrlContent)
+    assert result.url == url
+    assert result.content == ""
+    assert result.error == "Skipped subscription-related URL"
+
 def test_url_content_model_validation():
     """Test UrlContent model validation."""
     # Valid data
