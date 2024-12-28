@@ -47,7 +47,7 @@ Here's how it works:
 - [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI.
 - [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
 - [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
-- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
+- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol).
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 
 ## MLOps & AI Infrastructure
@@ -132,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2024-12-27*
+📊 *Last edited: 2024-12-28*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
