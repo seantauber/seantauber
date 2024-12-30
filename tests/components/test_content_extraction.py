@@ -1,4 +1,148 @@
-"""Tests for content extraction with live dependencies."""
+"""Stage 2: Content Extraction and Repository Analysis Pipeline
+
+This module implements the second stage of a three-stage pipeline for dynamically generating 
+and updating a curated list of GenAI-related GitHub repositories. While structured as a test file, 
+it contains the core production functionality for content extraction and analysis.
+
+System Architecture:
+------------------
+The content extraction stage is responsible for:
+1. Processing newsletter content to identify GitHub repositories
+2. Analyzing repositories to determine GenAI relevance
+3. Categorizing repositories using a defined taxonomy
+4. Maintaining a structured database of relevant repositories
+
+Key Components:
+-------------
+1. ContentExtractorAgent:
+   - Orchestrates repository discovery and analysis
+   - Manages GitHub API interactions
+   - Implements repository categorization logic
+   
+2. RateLimitedGitHubClient:
+   - Handles GitHub API authentication
+   - Manages API rate limits
+   - Fetches repository metadata and content
+   
+3. NewsletterUrlProcessor:
+   - Extracts and validates URLs from newsletter content
+   - Handles URL content fetching and caching
+   - Discovers embedded repository references
+   
+4. Database:
+   - Stores repository metadata and categories
+   - Manages relationship between newsletters and repositories
+   - Tracks processing state and history
+
+Data Flow:
+---------
+1. Repository Extraction:
+   Input: Processed newsletter content
+   Process:
+   - Extracts GitHub repository URLs
+   - Validates and normalizes URLs
+   - Handles nested content discovery
+   Output: List of unique repository URLs
+   
+2. Repository Analysis:
+   Input: GitHub repository URLs
+   Process:
+   - Fetches repository metadata
+   - Analyzes GenAI relevance
+   - Categorizes using taxonomy
+   Output: Structured repository data
+   
+3. Data Persistence:
+   Input: Repository analysis results
+   Process:
+   - Stores repository metadata
+   - Manages categories and topics
+   - Updates processing state
+   Output: Queryable repository database
+
+Database Schema:
+--------------
+1. repositories table:
+   - id: INTEGER PRIMARY KEY
+   - github_url: TEXT UNIQUE
+   - first_seen_date: TIMESTAMP
+   - last_mentioned_date: TIMESTAMP
+   - metadata: JSON (includes summary)
+
+2. topics table:
+   - id: INTEGER PRIMARY KEY
+   - name: TEXT UNIQUE
+   - first_seen_date: TIMESTAMP
+   - last_seen_date: TIMESTAMP
+   - mention_count: INTEGER
+
+3. repository_categories table:
+   - repository_id: INTEGER
+   - topic_id: INTEGER
+   - confidence_score: FLOAT
+
+4. content_cache table:
+   - url: TEXT UNIQUE
+   - content: TEXT
+   - fetch_date: TIMESTAMP
+   - expiry_date: TIMESTAMP
+
+Implementation Details:
+---------------------
+1. Parallel Processing:
+   - Implements batched processing (BATCH_SIZE)
+   - Handles concurrent repository analysis
+   - Manages API rate limits
+   
+2. Error Handling:
+   - Graceful API failure recovery
+   - Partial batch processing
+   - Detailed error tracking
+   
+3. State Management:
+   - Tracks processing progress
+   - Handles interrupted operations
+   - Enables process resumption
+
+Integration Points:
+-----------------
+1. Input:
+   - Processed newsletters from Stage 1
+   - GitHub API credentials
+   - Taxonomy configuration
+   
+2. Output:
+   - Analyzed repository records
+   - Category relationships
+   - Processing statistics
+
+Dependencies:
+------------
+- GitHub API token
+- SQLite database
+- Taxonomy configuration
+- URL processing system
+
+For Developers:
+-------------
+1. Configuration:
+   - Set GitHub API credentials
+   - Configure batch processing size
+   - Update taxonomy definitions
+
+2. Extension:
+   - Add new repository analysis metrics
+   - Extend categorization logic
+   - Modify URL processing rules
+
+3. Integration:
+   - Query repositories via get_repositories()
+   - Access categories through get_topics()
+   - Monitor pipeline_state for status
+
+Note: This module is designed to run continuously in production,
+with the test framework providing structure and validation.
+"""
 import json
 import asyncio
 from datetime import datetime, UTC
