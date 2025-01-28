@@ -68,6 +68,7 @@ Here's how it works:
 - [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds third-party integrations through reverse engineering platforms' internal APIs.
 - [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
+- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
 
 ## Other
 
@@ -76,7 +77,6 @@ Here's how it works:
 - [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
 - [Ironclad/rivet](https://github.com/Ironclad/rivet) - The open-source visual AI programming environment and TypeScript library.
 - [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
-- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-01-27*
+📊 *Last edited: 2025-01-28*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
