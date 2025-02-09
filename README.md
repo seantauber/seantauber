@@ -83,7 +83,7 @@ Here's how it works:
 This project automatically updates the README with your GitHub starred repositories using a Python script and GitHub Actions.
 
 # 1. Clone the repository:
-git clone https://github.com/your-username/github-genai-list.git
+git clone https://github.com/your-username/github-genai-list.git  
 cd github-genai-list
 
 # 2. Set up your environment:
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-02-08*
+📊 *Last edited: 2025-02-09*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
