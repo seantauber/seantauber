@@ -42,8 +42,8 @@ Here's how it works:
 
 - [vercel/ai](https://github.com/vercel/ai) - Build AI-powered applications with React, Svelte, Vue, and Solid.
 - [huggingface/smol-course](https://github.com/huggingface/smol-course) - A course on aligning smol models.
-- [run-llama/chat-ui](https://github.com/run-llama/chat-ui) - Chat UI components for LLM apps.
 - [ItzCrazyKns/Perplexica](https://github.com/ItzCrazyKns/Perplexica) - Perplexica is an AI-powered search engine. It is an Open source alternative to Perplexity AI.
+- [run-llama/chat-ui](https://github.com/run-llama/chat-ui) - Chat UI components for LLM apps.
 - [kennethreitz/simplemind](https://github.com/kennethreitz/simplemind) - Python API client for AI providers that intends to replace LangChain and LangGraph for most common use cases.
 - [prompt-security/ps-fuzz](https://github.com/prompt-security/ps-fuzz) - Make your GenAI Apps Safe & Secure 🚀 Test & harden your system prompt.
 - [yangchris11/samurai](https://github.com/yangchris11/samurai) - Official repository of "SAMURAI: Adapting Segment Anything Model for Zero-Shot Visual Tracking with Motion-Aware Memory."
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-02-21*
+📊 *Last edited: 2025-02-22*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
