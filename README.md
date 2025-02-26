@@ -36,7 +36,6 @@ Here's how it works:
 - [andrewyng/aisuite](https://github.com/andrewyng/aisuite) - Simple, unified interface to multiple Generative AI providers.
 - [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
 - [microsoft/lida](https://github.com/microsoft/lida) - Automatic Generation of Visualizations and Infographics using Large Language Models.
-- [microsoft/TinyTroupe](https://github.com/microsoft/TinyTroupe) - LLM-powered multiagent persona simulation for imagination enhancement and business insights.
 
 ## Artificial Intelligence
 
@@ -69,6 +68,7 @@ Here's how it works:
 - [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 - [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
+- [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
 
 ## Other
 
@@ -76,7 +76,7 @@ Here's how it works:
 - [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
 - [Tameyer41/liftoff](https://github.com/Tameyer41/liftoff) - Mock Interview Simulator with AI-Powered Feedback.
 - [caspianmoon/memoripy](https://github.com/caspianmoon/memoripy) - An AI memory layer with short- and long-term storage, semantic clustering, and optional memory decay for context-aware applications.
-- [PatrickJS/awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) - 📄 A curated list of awesome .cursorrules files.
+- [anthropics/claude-code](https://github.com/anthropics/claude-code) - Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-02-25*
+📊 *Last edited: 2025-02-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
