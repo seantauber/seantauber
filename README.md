@@ -67,7 +67,7 @@ Here's how it works:
 - [Integuru-AI/Integuru](https://github.com/Integuru-AI/Integuru) - The first AI agent that builds permissionless integrations through reverse engineering platforms' internal APIs.
 - [AgentOps-AI/AgentStack](https://github.com/AgentOps-AI/AgentStack) - The fastest way to build robust AI agents.
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
-- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - None.
+- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol).
 - [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
 
 ## Other
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-03-01*
+📊 *Last edited: 2025-03-02*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
