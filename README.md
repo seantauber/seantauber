@@ -64,7 +64,7 @@ Here's how it works:
 
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 - [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
-- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol)
+- [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - Agent Protocol repository.
 - [TransformerOptimus/SuperAGI](https://github.com/TransformerOptimus/SuperAGI) - <⚡️> SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
 - [ComposioHQ/composio](https://github.com/ComposioHQ/composio) - Composio equip's your AI agents & LLMs with 100+ high-quality integrations via function calling.
 - [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-03-21*
+📊 *Last edited: 2025-03-22*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
