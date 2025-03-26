@@ -57,7 +57,6 @@ Here's how it works:
 
 - [Kozea/Radicale](https://github.com/Kozea/Radicale) - A simple CalDAV (calendar) and CardDAV (contact) server.
 - [collective/icalendar](https://github.com/collective/icalendar) - icalendar parser library for Python.
-- [kanboard/kanboard](https://github.com/kanboard/kanboard) - Kanban project management software.
 - [microsoft/markitdown](https://github.com/microsoft/markitdown) - Python tool for converting files and office documents to Markdown.
 
 ## AI Agents
@@ -71,6 +70,7 @@ Here's how it works:
 
 ## Other
 
+- [langchain-ai/local-deep-researcher](https://github.com/langchain-ai/local-deep-researcher) - Fully local web research and report writing assistant.
 - [cherysun/chatgpt-siri-shortcut](https://github.com/cherysun/chatgpt-siri-shortcut) - Talk to ChatGPT with Siri shortcuts on iOS, macOS, and watchOS devices. This open-source project is lightweight and highly customizable.
 - [Ironclad/rivet](https://github.com/Ironclad/rivet) - The open-source visual AI programming environment and TypeScript library.
 - [caspianmoon/memoripy](https://github.com/caspianmoon/memoripy) - An AI memory layer with short- and long-term storage, semantic clustering, and optional memory decay for context-aware applications.
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-03-25*
+📊 *Last edited: 2025-03-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
