@@ -56,16 +56,15 @@ Here's how it works:
 ## Productivity Tools
 
 - [Kozea/Radicale](https://github.com/Kozea/Radicale) - A simple CalDAV (calendar) and CardDAV (contact) server.
-- [collective/icalendar](https://github.com/collective/icalendar) - icalendar parser library for Python.
 - [microsoft/markitdown](https://github.com/microsoft/markitdown) - Python tool for converting files and office documents to Markdown.
 
 ## AI Agents
 
+- [TransformerOptimus/SuperAGI](https://github.com/TransformerOptimus/SuperAGI) - <⚡️> SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
+- [ComposioHQ/composio](https://github.com/ComposioHQ/composio) - Composio equip's your AI agents & LLMs with 100+ high-quality integrations via function calling.
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 - [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
 - [langchain-ai/agent-protocol](https://github.com/langchain-ai/agent-protocol) - Agent Protocol repository.
-- [TransformerOptimus/SuperAGI](https://github.com/TransformerOptimus/SuperAGI) - <⚡️> SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
-- [ComposioHQ/composio](https://github.com/ComposioHQ/composio) - Composio equip's your AI agents & LLMs with 100+ high-quality integrations via function calling.
 - [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
 
 ## Other
@@ -77,6 +76,7 @@ Here's how it works:
 - [anthropics/claude-code](https://github.com/anthropics/claude-code) - Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.
 - [lumina-ai-inc/chunkr](https://github.com/lumina-ai-inc/chunkr) - Vision infrastructure to turn complex documents into RAG/LLM-ready data.
 - [Tameyer41/liftoff](https://github.com/Tameyer41/liftoff) - Mock Interview Simulator with AI-Powered Feedback.
+- [RooVetGit/Roo-Code](https://github.com/RooVetGit/Roo-Code) - Roo Code (prev. Roo Cline) gives you a whole dev team of AI agents in your code editor.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -136,6 +136,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-03-26*
+📊 *Last edited: 2025-03-27*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
