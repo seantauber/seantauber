@@ -39,7 +39,7 @@ Here's how it works:
 ## Artificial Intelligence
 
 - [huggingface/smol-course](https://github.com/huggingface/smol-course) - A course on aligning smol models.
-  
+
 ## MLOps & AI Infrastructure
 
 - [Portkey-AI/gateway](https://github.com/Portkey-AI/gateway) - A blazing fast AI Gateway with integrated guardrails. Route to 200+ LLMs, 50+ AI Guardrails with 1 fast & friendly API.
@@ -132,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-07*
+📊 *Last edited: 2025-04-08*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
