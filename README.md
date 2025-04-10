@@ -40,6 +40,7 @@ Here's how it works:
 
 - [Portkey-AI/gateway](https://github.com/Portkey-AI/gateway) - A blazing fast AI Gateway with integrated guardrails. Route to 200+ LLMs, 50+ AI Guardrails with 1 fast & friendly API.
 - [github/github-mcp-server](https://github.com/github/github-mcp-server) - GitHub's official MCP Server.
+- [exo-explore/exo](https://github.com/exo-explore/exo) - Run your own AI cluster at home with everyday devices 📱💻 🖥️⌚.
 
 ## AI Agents
 
@@ -52,6 +53,10 @@ Here's how it works:
 - [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 - [TransformerOptimus/SuperAGI](https://github.com/TransformerOptimus/SuperAGI) - <⚡️> SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
 - [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
+- [Michaelzag/RooCode-Tips-Tricks](https://github.com/Michaelzag/RooCode-Tips-Tricks) - Tips and Tricks for using RooCode.
+- [jezweb/roo-commander](https://github.com/jezweb/roo-commander) - Think of it like having a virtual, specialized software development team right inside your editor, orchestrated by the 👑 Roo Commander, powered by Roo Code on VS Code.
+- [GreatScottyMac/RooFlow](https://github.com/GreatScottyMac/RooFlow) - RooFlow - Enhanced Memory Bank System with ☢️Footgun Power☢️ Next-gen Memory Bank system with five integrated modes and system-level customization. Uses Roo Code's experimental "Footgun" feature for deep AI assistant customization while maintaining efficient token usage!
+- [wjayesh/mahilo](https://github.com/wjayesh/mahilo) - mahilo: Multi-Agent Human-in-the-Loop Framework is a flexible framework for creating multi-agent systems that can each interact with humans while sharing relevant context internally.
 
 ## Other
 
@@ -62,14 +67,9 @@ Here's how it works:
 - [Ironclad/rivet](https://github.com/Ironclad/rivet) - The open-source visual AI programming environment and TypeScript library.
 - [lumina-ai-inc/chunkr](https://github.com/lumina-ai-inc/chunkr) - Vision infrastructure to turn complex documents into RAG/LLM-ready data.
 - [anthropics/claude-code](https://github.com/anthropics/claude-code) - Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.
-- [exo-explore/exo](https://github.com/exo-explore/exo) - Run your own AI cluster at home with everyday devices 📱💻 🖥️⌚.
 - [zilliztech/deep-searcher](https://github.com/zilliztech/deep-searcher) - Open Source Deep Research Alternative to Reason and Search on Private Data. Written in Python.
 - [nickscamara/open-deep-research](https://github.com/nickscamara/open-deep-research) - An open source deep research clone. AI Agent that reasons large amounts of web data extracted with Firecrawl.
 - [microsoft/markitdown](https://github.com/microsoft/markitdown) - Python tool for converting files and office documents to Markdown.
-- [jezweb/roo-commander](https://github.com/jezweb/roo-commander) - Think of it like having a virtual, specialized software development team right inside your editor, orchestrated by the 👑 Roo Commander, powered by Roo Code on VS Code.
-- [GreatScottyMac/RooFlow](https://github.com/GreatScottyMac/RooFlow) - RooFlow - Enhanced Memory Bank System with ☢️Footgun Power☢️ Next-gen Memory Bank system with five integrated modes and system-level customization. Uses Roo Code's experimental "Footgun" feature for deep AI assistant customization while maintaining efficient token usage!
-- [Michaelzag/RooCode-Tips-Tricks](https://github.com/Michaelzag/RooCode-Tips-Tricks) - Tips and Tricks for using RooCode.
-- [wjayesh/mahilo](https://github.com/wjayesh/mahilo) - mahilo: Multi-Agent Human-in-the-Loop Framework is a flexible framework for creating multi-agent systems that can each interact with humans while sharing relevant context internally.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-09*
+📊 *Last edited: 2025-04-10*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
