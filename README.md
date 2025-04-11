@@ -29,11 +29,10 @@ Here's how it works:
 ## Generative AI
 
 - [SesameAILabs/csm](https://github.com/SesameAILabs/csm) - A Conversational Speech Generation Model.
-- [adobe-research/dynasaur](https://github.com/adobe-research/dynasaur) - Official repository for "DynaSaur: Large Language Agents Beyond Predefined Actions".
+- [HKUDS/LightRAG](https://github.com/HKUDS/LightRAG) - "LightRAG: Simple and Fast Retrieval-Augmented Generation".
 
 ## Artificial Intelligence
 
-- [huggingface/smol-course](https://github.com/huggingface/smol-course) - A course on aligning smol models.
 - [ComposioHQ/composio](https://github.com/ComposioHQ/composio) - Composio equip's your AI agents & LLMs with 100+ high-quality integrations via function calling.
 
 ## MLOps & AI Infrastructure
@@ -49,14 +48,13 @@ Here's how it works:
 - [pydantic/pydantic-ai](https://github.com/pydantic/pydantic-ai) - Agent Framework / shim to use Pydantic with LLMs.
 - [RooVetGit/Roo-Code](https://github.com/RooVetGit/Roo-Code) - Roo Code (prev. Roo Cline) gives you a whole dev team of AI agents in your code editor.
 - [lastmile-ai/mcp-agent](https://github.com/lastmile-ai/mcp-agent) - Build effective agents using Model Context Protocol and simple workflow patterns.
-- [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
-- [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
-- [TransformerOptimus/SuperAGI](https://github.com/TransformerOptimus/SuperAGI) - <⚡️> SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
-- [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
-- [Michaelzag/RooCode-Tips-Tricks](https://github.com/Michaelzag/RooCode-Tips-Tricks) - Tips and Tricks for using RooCode.
 - [jezweb/roo-commander](https://github.com/jezweb/roo-commander) - Think of it like having a virtual, specialized software development team right inside your editor, orchestrated by the 👑 Roo Commander, powered by Roo Code on VS Code.
 - [GreatScottyMac/RooFlow](https://github.com/GreatScottyMac/RooFlow) - RooFlow - Enhanced Memory Bank System with ☢️Footgun Power☢️ Next-gen Memory Bank system with five integrated modes and system-level customization. Uses Roo Code's experimental "Footgun" feature for deep AI assistant customization while maintaining efficient token usage!
 - [wjayesh/mahilo](https://github.com/wjayesh/mahilo) - mahilo: Multi-Agent Human-in-the-Loop Framework is a flexible framework for creating multi-agent systems that can each interact with humans while sharing relevant context internally.
+- [TransformerOptimus/SuperAGI](https://github.com/TransformerOptimus/SuperAGI) - <⚡️> SuperAGI - A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
+- [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) - 10 Lessons to Get Started Building AI Agents.
+- [browser-use/browser-use](https://github.com/browser-use/browser-use) - Make websites accessible for AI agents.
+- [MineDojo/Voyager](https://github.com/MineDojo/Voyager) - An Open-Ended Embodied Agent with Large Language Models.
 
 ## Other
 
@@ -69,7 +67,8 @@ Here's how it works:
 - [anthropics/claude-code](https://github.com/anthropics/claude-code) - Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.
 - [zilliztech/deep-searcher](https://github.com/zilliztech/deep-searcher) - Open Source Deep Research Alternative to Reason and Search on Private Data. Written in Python.
 - [nickscamara/open-deep-research](https://github.com/nickscamara/open-deep-research) - An open source deep research clone. AI Agent that reasons large amounts of web data extracted with Firecrawl.
-- [microsoft/markitdown](https://github.com/microsoft/markitdown) - Python tool for converting files and office documents to Markdown.
+- [google/A2A](https://github.com/google/A2A) - None
+- [browser-use/web-ui](https://github.com/browser-use/web-ui) - Run AI Agent in your browser.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +128,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-10*
+📊 *Last edited: 2025-04-11*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
