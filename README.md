@@ -34,6 +34,7 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [makeplane/plane](https://github.com/makeplane/plane) - Open Source JIRA, Linear, Monday, and Asana Alternative.
+- [tegonhq/tegon](https://github.com/tegonhq/tegon) - Tegon is an open-source, dev-first alternative to Jira, Linear.
 
 ## Model Context Protocol (MCP)
 
@@ -46,6 +47,17 @@ Here's how it works:
 - [ferrislucas/iterm-mcp](https://github.com/ferrislucas/iterm-mcp) - A Model Context Protocol server that executes commands in the current iTerm session - useful for REPL and CLI assistance.
 - [evalstate/mcp-hfspace](https://github.com/evalstate/mcp-hfspace) - MCP Server to Use HuggingFace spaces, easy configuration and Claude Desktop mode.
 - [sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian) - MCP server for Atlassian tools (Confluence, Jira).
+- [burningion/video-editing-mcp](https://github.com/burningion/video-editing-mcp) - MCP Interface for Video Jungle.
+- [Laksh-star/mcp-server-tmdb](https://github.com/Laksh-star/mcp-server-tmdb) - MCP Server with TMDB.
+- [atharvagupta2003/mcp-stripe](https://github.com/atharvagupta2003/mcp-stripe) - None.
+- [zcaceres/markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) - A Model Context Protocol server for converting almost anything to Markdown.
+- [mem0ai/mem0-mcp](https://github.com/mem0ai/mem0-mcp) - None.
+- [carterlasalle/mac_messages_mcp](https://github.com/carterlasalle/mac_messages_mcp) - An MCP server that securely interfaces with your iMessage database via the Model Context Protocol (MCP).
+- [InditexTech/mcp-server-simulator-ios-idb](https://github.com/InditexTech/mcp-server-simulator-ios-idb) - MCP server that enables LLMs to interact with iOS simulators through natural language commands.
+- [tevonsb/homeassistant-mcp](https://github.com/tevonsb/homeassistant-mcp) - A MCP server for Home Assistant.
+- [voska/hass-mcp](https://github.com/voska/hass-mcp) - Home Assistant MCP Server.
+- [GLips/Figma-Context-MCP](https://github.com/GLips/Figma-Context-MCP) - MCP server to provide Figma layout information to AI coding agents like Cursor.
+- [its-dart/dart-mcp-server](https://github.com/its-dart/dart-mcp-server) - Dart AI Model Context Protocol (MCP) server.
 
 ## Project Templates & Management
 
@@ -58,18 +70,6 @@ Here's how it works:
 ## Other
 
 - [starship/starship](https://github.com/starship/starship) - ☄🌌️  The minimal, blazing-fast, and infinitely customizable prompt for any shell!
-- [burningion/video-editing-mcp](https://github.com/burningion/video-editing-mcp) - MCP Interface for Video Jungle.
-- [Laksh-star/mcp-server-tmdb](https://github.com/Laksh-star/mcp-server-tmdb) - MCP Server with TMDB.
-- [atharvagupta2003/mcp-stripe](https://github.com/atharvagupta2003/mcp-stripe) - None.
-- [zcaceres/markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) - A Model Context Protocol server for converting almost anything to Markdown.
-- [mem0ai/mem0-mcp](https://github.com/mem0ai/mem0-mcp) - None.
-- [carterlasalle/mac_messages_mcp](https://github.com/carterlasalle/mac_messages_mcp) - An MCP server that securely interfaces with your iMessage database via the Model Context Protocol (MCP).
-- [InditexTech/mcp-server-simulator-ios-idb](https://github.com/InditexTech/mcp-server-simulator-ios-idb) - MCP server that enables LLMs to interact with iOS simulators through natural language commands.
-- [tevonsb/homeassistant-mcp](https://github.com/tevonsb/homeassistant-mcp) - A MCP server for Home Assistant.
-- [voska/hass-mcp](https://github.com/voska/hass-mcp) - Home Assistant MCP Server.
-- [GLips/Figma-Context-MCP](https://github.com/GLips/Figma-Context-MCP) - MCP server to provide Figma layout information to AI coding agents like Cursor.
-- [its-dart/dart-mcp-server](https://github.com/its-dart/dart-mcp-server) - Dart AI Model Context Protocol (MCP) server.
-- [tegonhq/tegon](https://github.com/tegonhq/tegon) - Tegon is an open-source, dev-first alternative to Jira, Linear.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-16*
+📊 *Last edited: 2025-04-17*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
