@@ -29,12 +29,12 @@ Here's how it works:
 ## Artificial Intelligence
 
 - [google/adk-python](https://github.com/google/adk-python) - An open-source, code-first Python toolkit for building, evaluating, and deploying sophisticated AI agents with flexibility and control.
-- [elevenlabs/elevenlabs-examples](https://github.com/elevenlabs/elevenlabs-examples) - Various use cases and examples for ElevenLabs' tools and APIs.
+- [openai/openai-voice-agent-sdk-sample](https://github.com/openai/openai-voice-agent-sdk-sample) - Sample application to add voice capabilities to the Agents SDK.
+- [openai/openai-fm](https://github.com/openai/openai-fm) - Code for openai.fm, a demo for the OpenAI Speech API.
 
 ## MLOps & AI Infrastructure
 
-- [makeplane/plane](https://github.com/makeplane/plane) - Open Source JIRA, Linear, Monday, and Asana Alternative.
-- [tegonhq/tegon](https://github.com/tegonhq/tegon) - Tegon is an open-source, dev-first alternative to Jira, Linear.
+- [fastmcp](https://github.com/jlowin/fastmcp) - 🚀 The fast, Pythonic way to build MCP servers and clients.
 
 ## Model Context Protocol (MCP)
 
@@ -57,7 +57,6 @@ Here's how it works:
 - [tevonsb/homeassistant-mcp](https://github.com/tevonsb/homeassistant-mcp) - A MCP server for Home Assistant.
 - [voska/hass-mcp](https://github.com/voska/hass-mcp) - Home Assistant MCP Server.
 - [GLips/Figma-Context-MCP](https://github.com/GLips/Figma-Context-MCP) - MCP server to provide Figma layout information to AI coding agents like Cursor.
-- [its-dart/dart-mcp-server](https://github.com/its-dart/dart-mcp-server) - Dart AI Model Context Protocol (MCP) server.
 
 ## Project Templates & Management
 
@@ -66,6 +65,7 @@ Here's how it works:
 - [cookiecutter/cookiecutter](https://github.com/cookiecutter/cookiecutter) - A cross-platform command-line utility that creates projects from cookiecutters (project templates).
 - [pypa/hatch](https://github.com/pypa/hatch) - Modern, extensible Python project management.
 - [tedivm/robs_awesome_python_template](https://github.com/tedivm/robs_awesome_python_template) - A Highly Configurable Python Template.
+- [Bhartendu-Kumar/rules_template](https://github.com/Bhartendu-Kumar/rules_template) - Usable for newbies riding AI wave and experienced folks both, combines Memory, Reasoning into subtasks, Prompts for best practices.
 
 ## Other
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-17*
+📊 *Last edited: 2025-04-18*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
