@@ -31,10 +31,11 @@ Here's how it works:
 - [google/adk-python](https://github.com/google/adk-python) - An open-source, code-first Python toolkit for building, evaluating, and deploying sophisticated AI agents with flexibility and control.
 - [openai/openai-voice-agent-sdk-sample](https://github.com/openai/openai-voice-agent-sdk-sample) - Sample application to add voice capabilities to the Agents SDK.
 - [openai/openai-fm](https://github.com/openai/openai-fm) - Code for openai.fm, a demo for the OpenAI Speech API.
+- [openai/codex](https://github.com/openai/codex) - Lightweight coding agent that runs in your terminal.
 
 ## MLOps & AI Infrastructure
 
-- [fastmcp](https://github.com/jlowin/fastmcp) - 🚀 The fast, Pythonic way to build MCP servers and clients.
+- [jlowin/fastmcp](https://github.com/jlowin/fastmcp) - 🚀 The fast, Pythonic way to build MCP servers and clients.
 
 ## Model Context Protocol (MCP)
 
@@ -46,7 +47,6 @@ Here's how it works:
 - [jerhadf/linear-mcp-server](https://github.com/jerhadf/linear-mcp-server) - A server that integrates Linear's project management system with the Model Context Protocol (MCP) to allow LLMs to interact with Linear.
 - [ferrislucas/iterm-mcp](https://github.com/ferrislucas/iterm-mcp) - A Model Context Protocol server that executes commands in the current iTerm session - useful for REPL and CLI assistance.
 - [evalstate/mcp-hfspace](https://github.com/evalstate/mcp-hfspace) - MCP Server to Use HuggingFace spaces, easy configuration and Claude Desktop mode.
-- [sooperset/mcp-atlassian](https://github.com/sooperset/mcp-atlassian) - MCP server for Atlassian tools (Confluence, Jira).
 - [burningion/video-editing-mcp](https://github.com/burningion/video-editing-mcp) - MCP Interface for Video Jungle.
 - [Laksh-star/mcp-server-tmdb](https://github.com/Laksh-star/mcp-server-tmdb) - MCP Server with TMDB.
 - [atharvagupta2003/mcp-stripe](https://github.com/atharvagupta2003/mcp-stripe) - None.
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-18*
+📊 *Last edited: 2025-04-19*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
