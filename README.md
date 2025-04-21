@@ -56,7 +56,6 @@ Here's how it works:
 - [InditexTech/mcp-server-simulator-ios-idb](https://github.com/InditexTech/mcp-server-simulator-ios-idb) - MCP server that enables LLMs to interact with iOS simulators through natural language commands.
 - [tevonsb/homeassistant-mcp](https://github.com/tevonsb/homeassistant-mcp) - A MCP server for Home Assistant.
 - [voska/hass-mcp](https://github.com/voska/hass-mcp) - Home Assistant MCP Server.
-- [GLips/Figma-Context-MCP](https://github.com/GLips/Figma-Context-MCP) - MCP server to provide Figma layout information to AI coding agents like Cursor.
 
 ## Project Templates & Management
 
@@ -70,6 +69,7 @@ Here's how it works:
 ## Other
 
 - [starship/starship](https://github.com/starship/starship) - ☄🌌️  The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+- [yamadashy/repomix](https://github.com/yamadashy/repomix) - 📦 Repomix is a tool that packs your entire repository into a single, AI-friendly file.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-20*
+📊 *Last edited: 2025-04-21*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
