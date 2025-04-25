@@ -33,6 +33,7 @@ Here's how it works:
 - [openai/openai-voice-agent-sdk-sample](https://github.com/openai/openai-voice-agent-sdk-sample) - Sample application to add voice capabilities to the Agents SDK.
 - [openai/openai-fm](https://github.com/openai/openai-fm) - Code for openai.fm, a demo for the OpenAI Speech API.
 - [openai/codex](https://github.com/openai/codex) - Lightweight coding agent that runs in your terminal.
+- [nari-labs/dia](https://github.com/nari-labs/dia) - A TTS model capable of generating ultra-realistic dialogue in one pass.
 
 ## MLOps & AI Infrastructure
 
@@ -50,7 +51,6 @@ Here's how it works:
 - [zcaceres/markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) - A Model Context Protocol server for converting almost anything to Markdown.
 - [mem0ai/mem0-mcp](https://github.com/mem0ai/mem0-mcp) - None.
 - [carterlasalle/mac_messages_mcp](https://github.com/carterlasalle/mac_messages_mcp) - An MCP server that securely interfaces with your iMessage database via the Model Context Protocol (MCP).
-- [InditexTech/mcp-server-simulator-ios-idb](https://github.com/InditexTech/mcp-server-simulator-ios-idb) - MCP server that enables LLMs to interact with iOS simulators through natural language commands.
 - [burningion/video-editing-mcp](https://github.com/burningion/video-editing-mcp) - MCP Interface for Video Jungle.
 - [Laksh-star/mcp-server-tmdb](https://github.com/Laksh-star/mcp-server-tmdb) - MCP Server with TMDB.
 - [atharvagupta2003/mcp-stripe](https://github.com/atharvagupta2003/mcp-stripe) - None.
@@ -71,6 +71,7 @@ Here's how it works:
 
 ## Other
 
+- [sincover/Symphony](https://github.com/sincover/Symphony) - None.
 - [ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
 - [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
 - [kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides and other educational content to help developers grow in their careers.
@@ -133,6 +134,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-24*
+📊 *Last edited: 2025-04-25*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
