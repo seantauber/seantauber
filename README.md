@@ -46,14 +46,13 @@ Here's how it works:
 - [varunneal/spotify-mcp](https://github.com/varunneal/spotify-mcp) - MCP to connect your LLM with Spotify.
 - [GeLi2001/shopify-mcp](https://github.com/GeLi2001/shopify-mcp) - MCP server for Shopify api, usable on mcp clients such as Anthropic's Claude and Cursor IDE.
 - [dvcrn/mcp-server-siri-shortcuts](https://github.com/dvcrn/mcp-server-siri-shortcuts) - MCP for calling Siri Shorcuts from LLMs.
-- [jerhadf/linear-mcp-server](https://github.com/jerhadf/linear-mcp-server) - A server that integrates Linear's project management system with the Model Context Protocol (MCP) to allow LLMs to interact with Linear.
-- [ferrislucas/iterm-mcp](https://github.com/ferrislucas/iterm-mcp) - A Model Context Protocol server that executes commands in the current iTerm session - useful for REPL and CLI assistance.
-- [zcaceres/markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) - A Model Context Protocol server for converting almost anything to Markdown.
-- [mem0ai/mem0-mcp](https://github.com/mem0ai/mem0-mcp) - None.
-- [carterlasalle/mac_messages_mcp](https://github.com/carterlasalle/mac_messages_mcp) - An MCP server that securely interfaces with your iMessage database via the Model Context Protocol (MCP).
 - [burningion/video-editing-mcp](https://github.com/burningion/video-editing-mcp) - MCP Interface for Video Jungle.
 - [Laksh-star/mcp-server-tmdb](https://github.com/Laksh-star/mcp-server-tmdb) - MCP Server with TMDB.
 - [atharvagupta2003/mcp-stripe](https://github.com/atharvagupta2003/mcp-stripe) - None.
+- [zcaceres/markdownify-mcp](https://github.com/zcaceres/markdownify-mcp) - A Model Context Protocol server for converting almost anything to Markdown.
+- [mem0ai/mem0-mcp](https://github.com/mem0ai/mem0-mcp) - None.
+- [carterlasalle/mac_messages_mcp](https://github.com/carterlasalle/mac_messages_mcp) - An MCP server that securely interfaces with your iMessage database via the Model Context Protocol (MCP).
+- [lmnr-ai/index](https://github.com/lmnr-ai/index) - The SOTA Open-Source Browser Agent for autonomously performing complex tasks on the web.
 
 ## Project Templates & Management
 
@@ -134,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-04-25*
+📊 *Last edited: 2025-04-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
