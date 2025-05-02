@@ -36,6 +36,8 @@ Here's how it works:
 - [nari-labs/dia](https://github.com/nari-labs/dia) - A TTS model capable of generating ultra-realistic dialogue in one pass.
 - [lmnr-ai/index](https://github.com/lmnr-ai/index) - The SOTA Open-Source Browser Agent for autonomously performing complex tasks on the web.
 - [marv1nnnnn/rooroo](https://github.com/marv1nnnnn/rooroo) - 🚀 rooroo (如如): Minimalist AI Orchestration with Swiss Army Knife Agents 🚀
+- [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
+- [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab Repositories.
 
 ## MLOps & AI Infrastructure
 
@@ -45,13 +47,10 @@ Here's how it works:
 
 - [ibraheem4/linear-mcp](https://github.com/ibraheem4/linear-mcp) - Enables AI agents to manage issues, projects, and teams on the Linear platform programmatically.
 - [ZubeidHendricks/youtube-mcp-server](https://github.com/ZubeidHendricks/youtube-mcp-server) - MCP Server for YouTube API, enabling video management, Shorts creation, and advanced analytics.
-- [varunneal/spotify-mcp](https://github.com/varunneal/spotify-mcp) - MCP to connect your LLM with Spotify.
-- [GeLi2001/shopify-mcp](https://github.com/GeLi2001/shopify-mcp) - MCP server for Shopify API, usable on MCP clients such as Anthropic's Claude and Cursor IDE.
 - [burningion/video-editing-mcp](https://github.com/burningion/video-editing-mcp) - MCP Interface for Video Jungle.
-- [Laksh-star/mcp-server-tmdb](https://github.com/Laksh-star/mcp-server-tmdb) - MCP Server with TMDB.
-- [atharvagupta2003/mcp-stripe](https://github.com/atharvagupta2003/mcp-stripe) - None.
 - [wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search and diff file editing capabilities.
-- [snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
+- [snagasuri/deebo-prototype](https://github.com/snagasureal/deebo-prototype) - Autonomous debugging agent MCP server.
+- [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
 
 ## Project Templates & Management
 
@@ -133,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-05-01*
+📊 *Last edited: 2025-05-02*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
