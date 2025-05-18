@@ -38,6 +38,7 @@ Here's how it works:
 - [marv1nnnnn/rooroo](https://github.com/marv1nnnnn/rooroo) - 🚀 rooroo (如如): Minimalist AI Orchestration with Swiss Army Knife Agents 🚀
 - [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
 - [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab/Bitbucket Repositories.
+- [langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
 
 ## MLOps & AI Infrastructure
 
@@ -48,13 +49,13 @@ Here's how it works:
 - [ibraheem4/linear-mcp](https://github.com/ibraheem4/linear-mcp) - Enables AI agents to manage issues, projects, and teams on the Linear platform programmatically.
 - [ZubeidHendricks/youtube-mcp-server](https://github.com/ZubeidHendricks/youtube-mcp-server) - MCP Server for YouTube API, enabling video management, Shorts creation, and advanced analytics.
 - [wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search, and diff file editing capabilities.
-- [snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
+- [snagasuri/deebo-prototype](https://github.com/snagasure/deebo-prototype) - Autonomous debugging agent MCP server.
 - [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
 
 ## Project Templates & Management
 
 - [superlinear-ai/substrate](https://github.com/superlinear-ai/substrate) - 🌱 Substrate is a modern Copier template for scaffolding Python packages and apps.
-- [copier-org/copier](https://github.com/copier-org/copier) - Library and command-line utility for rendering projects templates.
+- [copier-org/copier](https://github.com/copier-org/copier) - Library and command-line utility for rendering project templates.
 - [cookiecutter/cookiecutter](https://github.com/cookiecutter/cookiecutter) - A cross-platform command-line utility that creates projects from cookiecutters (project templates).
 - [pypa/hatch](https://github.com/pypa/hatch) - Modern, extensible Python project management.
 - [tedivm/robs_awesome_python_template](https://github.com/tedivm/robs_awesome_python_template) - A Highly Configurable Python Template.
@@ -73,7 +74,6 @@ Here's how it works:
 - [kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides and other educational content to help developers grow in their careers.
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor.
 - [Mnehmos/Building-a-Structured-Transparent-and-Well-Documented-AI-Team](https://github.com/Mnehmos/Building-a-Structured-Transparent-and-Well-Documented-AI-Team) - None.
-- [langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-05-17*
+📊 *Last edited: 2025-05-18*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
