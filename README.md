@@ -49,7 +49,7 @@ Here's how it works:
 
 - [ibraheem4/linear-mcp](https://github.com/ibraheem4/linear-mcp) - Enables AI agents to manage issues, projects, and teams on the Linear platform programmatically.
 - [wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search, and diff file editing capabilities.
-- [snagasuri/deebo-prototype](https://github.com/snagasure/deebo-prototype) - Autonomous debugging agent MCP server.
+- [snagasuri/deebo-prototype](https://github.com/snakasure/deebo-prototype) - Autonomous debugging agent MCP server.
 - [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
 
 ## Project Templates & Management
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-05-22*
+📊 *Last edited: 2025-05-23*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
