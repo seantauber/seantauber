@@ -65,8 +65,6 @@ Here's how it works:
 
 ## Other
 
-- [sincover/Symphony](https://github.com/sincover/Symphony) - None.
-- [ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
 - [google-ai-edge/gallery](https://github.com/google-ai-edge/gallery) - A gallery that showcases on-device ML/GenAI use cases and allows people to try and use models locally.
 - [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
 - [kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides and other educational content to help developers grow in their careers.
@@ -74,6 +72,8 @@ Here's how it works:
 - [Mnehmos/Building-a-Structured-Transparent-and-Well-Documented-AI-Team](https://github.com/Mnehmos/Building-a-Structured-Transparent-and-Well-Documented-AI-Team) - None.
 - [astral-sh/ty](https://github.com/astral-sh/ty) - An extremely fast Python type checker and language server, written in Rust.
 - [ngxson/smolvlm-realtime-webcam](https://github.com/ngxson/smolvlm-realtime-webcam) - Real-time webcam demo with SmolVLM and llama.cpp server.
+- [sincover/Symphony](https://github.com/sincover/Symphony) - None.
+- [ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-01*
+📊 *Last edited: 2025-06-02*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
