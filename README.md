@@ -48,7 +48,7 @@ Here's how it works:
 ## Model Context Protocol (MCP)
 
 - [wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search, and diff file editing capabilities.
-- [snagasuri/deebo-prototype](https://github.com/snagasure/deebo-prototype) - Autonomous debugging agent MCP server.
+- [snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
 - [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
 - [joshuayoes/ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) - MCP server for interacting with the iOS simulator.
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-05*
+📊 *Last edited: 2025-06-06*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
