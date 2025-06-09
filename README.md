@@ -21,6 +21,7 @@ Here's how it works:
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [Model Context Protocol (MCP)](#model-context-protocol-mcp)
 - [Developer Tools](#developer-tools)
+- [Music and Audio](#music-and-audio)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
 - [🌟 Contributing](#-contributing)
@@ -53,12 +54,18 @@ Here's how it works:
 
 - [yamadashy/repomix](https://github.com/yamadashy/repomix) - 📦 Repomix is a powerful tool that packs your entire repository into a single, AI-friendly file.
 - [kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides, and other educational content to help developers grow in their careers.
+- [astral-sh/ty](https://github.com/astral-sh/ty) - An extremely fast Python type checker and language server, written in Rust.
+
+## Music and Audio
+
+- [moonwave99/fretboard.js](https://github.com/moonwave99/fretboard.js) - Fretboard diagram generator
+- [dmpayton/python-fretboard](https://github.com/dmpayton/python-fretboard) - 🎸🎵🐍💥
+- [hybridpicker/fretboard-position-finder](https://github.com/hybridpicker/fretboard-position-finder) - Position Generator on Guitar-Fretboard for Scales, Arpeggios, Chords in all 12 Keys
 
 ## Other
 
 - [supermemoryai/supermemory](https://github.com/supermemoryai/supermemory) - Build your own second brain with supermemory. Extremely fast, scalable, memory API for the AI era.
 - [google-ai-edge/gallery](https://github.com/google-ai-edge/gallery) - A gallery that showcases on-device ML/GenAI use cases and allows people to try and use models locally.
-- [astral-sh/ty](https://github.com/astral-sh/ty) - An extremely fast Python type checker and language server, written in Rust.
 - [ngxson/smolvlm-realtime-webcam](https://github.com/ngxson/smolvlm-realtime-webcam) - Real-time webcam demo with SmolVLM and llama.cpp server.
 - [Mnehmos/Building-a-Structured-Transparent-and-Well-Documented-AI-Team](https://github.com/Mnehmos/Building-a-Structured-Transparent-and-Well-Documented-AI-Team) - None.
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor.
@@ -123,6 +130,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-08*
+📊 *Last edited: 2025-06-09*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
