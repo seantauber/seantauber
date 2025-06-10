@@ -38,15 +38,14 @@ Here's how it works:
 - [langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
 - [parsaghaffari/browserbee](https://github.com/parsaghaffari/browserbee) - 🐝 AI-powered browser assistant ("Cline for web browsing").
 - [ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
+- [Bhartendu-Kumar/rules_template](https://github.com/Bhartendu-Kumar/rules_template) - Combines: (1) Memory, (2) Reasoning into subtasks (3) Prompts for best practices.
 
 ## MLOps & AI Infrastructure
-
-- [jlowin/fastmcp](https://github.com/jlowin/fastmcp) - 🚀 The fast, Pythonic way to build MCP servers and clients.
 
 ## Model Context Protocol (MCP)
 
 - [wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search, and diff file editing capabilities.
-- [snagasuri/deebo-prototype](https://github.com/snakgasuri/deebo-prototype) - Autonomous debugging agent MCP server.
+- [snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
 - [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
 - [joshuayoes/ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) - MCP server for interacting with the iOS simulator.
 
@@ -71,6 +70,7 @@ Here's how it works:
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor.
 - [sincover/Symphony](https://github.com/sincover/Symphony) - None.
 - [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
+- [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -130,6 +130,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-09*
+📊 *Last edited: 2025-06-10*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
