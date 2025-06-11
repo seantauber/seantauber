@@ -38,7 +38,6 @@ Here's how it works:
 - [langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
 - [parsaghaffari/browserbee](https://github.com/parsaghaffari/browserbee) - 🐝 AI-powered browser assistant ("Cline for web browsing").
 - [ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
-- [Bhartendu-Kumar/rules_template](https://github.com/Bhartendu-Kumar/rules_template) - Combines: (1) Memory, (2) Reasoning into subtasks (3) Prompts for best practices.
 
 ## MLOps & AI Infrastructure
 
@@ -48,7 +47,8 @@ Here's how it works:
 - [snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
 - [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
 - [joshuayoes/ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) - MCP server for interacting with the iOS simulator.
-
+- [PhillipRt/think-mcp-server](https://github.com/PhillipRt/think-mcp-server) - None.
+  
 ## Developer Tools
 
 - [yamadashy/repomix](https://github.com/yamadashy/repomix) - 📦 Repomix is a powerful tool that packs your entire repository into a single, AI-friendly file.
@@ -71,6 +71,8 @@ Here's how it works:
 - [sincover/Symphony](https://github.com/sincover/Symphony) - None.
 - [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
 - [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
+- [google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) - Get started with building Fullstack Agents using Gemini 2.5 and LangGraph.
+- [openai/openai-voice-agent-sdk-sample](https://github.com/openai/openai-voice-agent-sdk-sample) - Sample application to add voice capabilities to the Agents SDK.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -130,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-10*
+📊 *Last edited: 2025-06-11*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
