@@ -43,7 +43,7 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
+- [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open-Source realtime backend in 1 file.
 
 ## Model Context Protocol (MCP)
 
@@ -61,9 +61,9 @@ Here's how it works:
 
 ## Music and Audio
 
-- [moonwave99/fretboard.js](https://github.com/moonwave99/fretboard.js) - Fretboard diagram generator
+- [moonwave99/fretboard.js](https://github.com/moonwave99/fretboard.js) - Fretboard diagram generator.
 - [dmpayton/python-fretboard](https://github.com/dmpayton/python-fretboard) - 🎸🎵🐍💥
-- [hybridpicker/fretboard-position-finder](https://github.com/hybridpicker/fretboard-position-finder) - Position Generator on Guitar-Fretboard for Scales, Arpeggios, Chords in all 12 Keys
+- [hybridpicker/fretboard-position-finder](https://github.com/hybridpicker/fretboard-position-finder) - Position Generator on Guitar-Fretboard for Scales, Arpeggios, Chords in all 12 Keys.
 
 ## Other
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-17*
+📊 *Last edited: 2025-06-18*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
