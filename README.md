@@ -43,7 +43,7 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open-Source realtime backend in 1 file.
+- [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
 
 ## Model Context Protocol (MCP)
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-19*
+📊 *Last edited: 2025-06-20*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
