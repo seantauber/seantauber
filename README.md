@@ -29,51 +29,51 @@ Here's how it works:
 
 ## Artificial Intelligence
 
-- [marv1nnnnn/rooroo](https://github.com/marv1nnnnn/rooroo) - 🚀 rooroo (如如): Minimalist AI Orchestration with Swiss Army Knife Agents 🚀
-- [nari-labs/dia](https://github.com/nari-labs/dia) - A TTS model capable of generating ultra-realistic dialogue in one pass.
-- [lmnr-ai/index](https://github.com/lmnr-ai/index) - The SOTA Open-Source Browser Agent for autonomously performing complex tasks on the web.
+- [Aaditri-Informatics/AI-Framework](https://github.com/Aaditri-Informatics/AI-Framework) - AI (Aaditri Informatics) is a system prompt named after my cherished daughter, Aaditri Anand. Its behavior is modeled on the collaborative learning approach I share with her, reflecting our bond and shared curiosity.
+- [Supermemoryai/supermemory](https://github.com/supermemoryai/supermemory) - Build your own second brain with supermemory. Extremely fast, scalable, memory API for the AI era.
+- [Parsaghaffari/browserbee](https://github.com/parsaghaffari/browserbee) - 🐝 AI-powered browser assistant ("Cline for web browsing").
+- [Langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
+- [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab/Bitbucket Repositories. Join the discord: https://discord.gg/gMwThUMeme
+- [Marv1nnnnn/rooroo](https://github.com/marv1nnnnn/rooroo) - 🚀 rooroo (如如): Minimalist AI Orchestration with Swiss Army Knife Agents 🚀
+- [Lmnr-ai/index](https://github.com/lmnr-ai/index) - The SOTA Open-Source Browser Agent for autonomously performing complex tasks on the web.
+- [Nari-labs/dia](https://github.com/nari-labs/dia) - A TTS model capable of generating ultra-realistic dialogue in one pass.
 - [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
-- [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab/Bitbucket Repositories.
-- [langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
-- [parsaghaffari/browserbee](https://github.com/parsaghaffari/browserbee) - 🐝 AI-powered browser assistant ("Cline for web browsing").
-- [ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
-- [google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) - Get started with building Fullstack Agents using Gemini 2.5 and LangGraph.
-- [supermemoryai/supermemory](https://github.com/supermemoryai/supermemory) - Build your own second brain with supermemory. Extremely fast, scalable, memory API for the AI era.
-- [eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) - An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.
-- [Aaditri-Informatics/AI-Framework](https://github.com/Aaditri-Informatics/AI-Framework) - AI (Aaditri Informatics) is a system prompt named after my cherished daughter, Aaditri Anand. Its behavior is modeled on our collaborative learning approach.
+- [Eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) - An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.
+- [Ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
+- [Google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) - Get started with building Fullstack Agents using Gemini 2.5 and LangGraph.
 
 ## MLOps & AI Infrastructure
 
-- [pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
+- [Pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
 
 ## Model Context Protocol (MCP)
 
-- [wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search, and diff file editing capabilities.
-- [snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
-- [upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
-- [joshuayoes/ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) - MCP server for interacting with the iOS simulator.
+- [Wonderwhy-er/DesktopCommanderMCP](https://github.com/wonderwhy-er/DesktopCommanderMCP) - This is MCP server for Claude that gives it terminal control, file system search, and diff file editing capabilities.
+- [Snagasuri/deebo-prototype](https://github.com/snagasuri/deebo-prototype) - Autonomous debugging agent MCP server.
+- [Upstash/context7](https://github.com/upstash/context7) - Context7 MCP Server -- Up-to-date code documentation for LLMs and AI code editors.
+- [Joshuayoes/ios-simulator-mcp](https://github.com/joshuayoes/ios-simulator-mcp) - MCP server for interacting with the iOS simulator.
 - [PhillipRt/think-mcp-server](https://github.com/PhillipRt/think-mcp-server) - None.
 
 ## Developer Tools
 
-- [kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides, and other educational content to help developers grow in their careers.
-- [astral-sh/ty](https://github.com/astral-sh/ty) - An extremely fast Python type checker and language server, written in Rust.
+- [Kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides, and other educational content to help developers grow in their careers.
+- [Astral-sh/ty](https://github.com/astral-sh/ty) - An extremely fast Python type checker and language server, written in Rust.
 
 ## Music and Audio
 
-- [moonwave99/fretboard.js](https://github.com/moonwave99/fretboard.js) - Fretboard diagram generator.
-- [dmpayton/python-fretboard](https://github.com/dmpayton/python-fretboard) - 🎸🎵🐍💥
-- [hybridpicker/fretboard-position-finder](https://github.com/hybridpicker/fretboard-position-finder) - Position Generator on Guitar-Fretboard for Scales, Arpeggios, Chords in all 12 Keys.
+- [Moonwave99/fretboard.js](https://github.com/moonwave99/fretboard.js) - Fretboard diagram generator.
+- [Dmpayton/python-fretboard](https://github.com/dmpayton/python-fretboard) - 🎸🎵🐍💥
+- [Hybridpicker/fretboard-position-finder](https://github.com/hybridpicker/fretboard-position-finder) - Position Generator on Guitar-Fretboard for Scales, Arpeggios, Chords in all 12 Keys.
 
 ## Other
 
-- [google-ai-edge/gallery](https://github.com/google-ai-edge/gallery) - A gallery that showcases on-device ML/GenAI use cases and allows people to try and use models locally.
-- [ngxson/smolvlm-realtime-webcam](https://github.com/ngxson/smolvlm-realtime-webcam) - Real-time webcam demo with SmolVLM and llama.cpp server.
+- [Google-ai-edge/gallery](https://github.com/google-ai-edge/gallery) - A gallery that showcases on-device ML/GenAI use cases and allows people to try and use models locally.
+- [Ngxson/smolvlm-realtime-webcam](https://github.com/ngxson/smolvlm-realtime-webcam) - Real-time webcam demo with SmolVLM and llama.cpp server.
 - [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
 - [Mnehmos/Advanced-Multi-Agent-AI-Framework](https://github.com/Mnehmos/Advanced-Multi-Agent-AI-Framework) - None.
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor.
-- [sincover/Symphony](https://github.com/sincover/Symphony) - None.
-- [bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
+- [Sincover/Symphony](https://github.com/sincover/Symphony) - None.
+- [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-22*
+📊 *Last edited: 2025-06-23*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
