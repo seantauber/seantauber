@@ -56,7 +56,6 @@ Here's how it works:
 
 ## Developer Tools
 
-- [Kamranahmedse/developer-roadmap](https://github.com/kamranahmedse/developer-roadmap) - Interactive roadmaps, guides, and other educational content to help developers grow in their careers.
 - [Astral-sh/ty](https://github.com/astral-sh/ty) - An extremely fast Python type checker and language server, written in Rust.
 
 ## Music and Audio
@@ -74,6 +73,7 @@ Here's how it works:
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor.
 - [Sincover/Symphony](https://github.com/sincover/Symphony) - None.
 - [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
+- [NomenAK/SuperClaude](https://github.com/NomenAK/SuperClaude) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-23*
+📊 *Last edited: 2025-06-24*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
