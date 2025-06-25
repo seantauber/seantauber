@@ -44,7 +44,7 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [Pocketbase/pocketbase](https://github.com/pocketbase/pocketbase) - Open Source realtime backend in 1 file.
+- [dagger/container-use](https://github.com/dagger/container-use) - Development environments for coding agents. Enable multiple agents to work safely and independently with your preferred stack.
 
 ## Model Context Protocol (MCP)
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-24*
+📊 *Last edited: 2025-06-25*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
