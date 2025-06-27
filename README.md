@@ -44,7 +44,7 @@ Here's how it works:
 
 ## MLOps & AI Infrastructure
 
-- [dagger/container-use](https://github.com/dagger/container-use) - Development environments for coding agents. Enable multiple agents to work safely and independently with your preferred stack.
+- [Dagger/container-use](https://github.com/dagger/container-use) - Development environments for coding agents. Enable multiple agents to work safely and independently with your preferred stack.
 
 ## Model Context Protocol (MCP)
 
@@ -70,10 +70,10 @@ Here's how it works:
 - [Ngxson/smolvlm-realtime-webcam](https://github.com/ngxson/smolvlm-realtime-webcam) - Real-time webcam demo with SmolVLM and llama.cpp server.
 - [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
 - [Mnehmos/Advanced-Multi-Agent-AI-Framework](https://github.com/Mnehmos/Advanced-Multi-Agent-AI-Framework) - None.
-- [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor.
+- [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor. Creates responsive lighting that reacts to proximity and movement. Features customizable colors, brightness, and range settings via web interface. Ideal for smart homes, hallways, and interactive installations. No cameras, just intelligent ambient lighting.
 - [Sincover/Symphony](https://github.com/sincover/Symphony) - None.
 - [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
-- [NomenAK/SuperClaude](https://github.com/NomenAK/SuperClaude) - None.
+- [NomenAK/SuperClaude](https://github.com/NomenAK/SuperClaude) - A configuration framework that enhances Claude Code with specialized commands, cognitive personas, and development methodologies.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-26*
+📊 *Last edited: 2025-06-27*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
