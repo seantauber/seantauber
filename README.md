@@ -39,8 +39,7 @@ Here's how it works:
 - [Nari-labs/dia](https://github.com/nari-labs/dia) - A TTS model capable of generating ultra-realistic dialogue in one pass.
 - [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
 - [Eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) - An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.
-- [Ymichael/open-codex](https://github.com/ymichael/open-codex) - Lightweight coding agent that runs in your terminal.
-- [Google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) - Get started with building Fullstack Agents using Gemini 2.5 and LangGraph.
+- [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
 
 ## MLOps & AI Infrastructure
 
@@ -72,8 +71,8 @@ Here's how it works:
 - [Mnehmos/Advanced-Multi-Agent-AI-Framework](https://github.com/Mnehmos/Advanced-Multi-Agent-AI-Framework) - None.
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor. Creates responsive lighting that reacts to proximity and movement. Features customizable colors, brightness, and range settings via web interface. Ideal for smart homes, hallways, and interactive installations. No cameras, just intelligent ambient lighting.
 - [Sincover/Symphony](https://github.com/sincover/Symphony) - None.
-- [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
 - [NomenAK/SuperClaude](https://github.com/NomenAK/SuperClaude) - A configuration framework that enhances Claude Code with specialized commands, cognitive personas, and development methodologies.
+- [Rizethereum/claude-code-requirements-builder](https://github.com/rizethereum/claude-code-requirements-builder) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-06-28*
+📊 *Last edited: 2025-06-29*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
