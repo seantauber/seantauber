@@ -36,11 +36,11 @@ Here's how it works:
 - [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab/Bitbucket Repositories. 
 - [Marv1nnnnn/rooroo](https://github.com/marv1nnnnn/rooroo) - 🚀 rooroo (如如): Minimalist AI Orchestration with Swiss Army Knife Agents 🚀
 - [Lmnr-ai/index](https://github.com/lmnr-ai/index) - The SOTA Open-Source Browser Agent for autonomously performing complex tasks on the web.
-- [Nari-labs/dia](https://github.com/nari-labs/dia) - A TTS model capable of generating ultra-realistic dialogue in one pass.
 - [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
 - [Eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) - An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.
 - [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
 - [Mnehmos/Advanced-Multi-Agent-AI-Framework](https://github.com/Mnehmos/Advanced-Multi-Agent-AI-Framework) - None.
+- [Meta-llama/llama-prompt-ops](https://github.com/meta-llama/llama-prompt-ops) - An open-source tool for seamless migration from other LLMs to Llama, and for general prompt optimization.
 
 ## MLOps & AI Infrastructure
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-07-02*
+📊 *Last edited: 2025-07-03*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
