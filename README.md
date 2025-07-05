@@ -33,7 +33,7 @@ Here's how it works:
 - [Supermemoryai/supermemory](https://github.com/supermemoryai/supermemory) - Build your own second brain with supermemory. Extremely fast, scalable, memory API for the AI era.
 - [Parsaghaffari/browserbee](https://github.com/parsaghaffari/browserbee) - 🐝 AI-powered browser assistant ("Cline for web browsing").
 - [Langchain-ai/open-agent-platform](https://github.com/langchain-ai/open-agent-platform) - An open-source, no-code agent building platform.
-- [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab/Bitbucket Repositories. 
+- [AsyncFuncAI/deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) - Open Source DeepWiki: AI-Powered Wiki Generator for GitHub/Gitlab/Bitbucket Repositories.
 - [Marv1nnnnn/rooroo](https://github.com/marv1nnnnn/rooroo) - 🚀 rooroo (如如): Minimalist AI Orchestration with Swiss Army Knife Agents 🚀
 - [Lmnr-ai/index](https://github.com/lmnr-ai/index) - The SOTA Open-Source Browser Agent for autonomously performing complex tasks on the web.
 - [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
@@ -70,10 +70,10 @@ Here's how it works:
 - [Ngxson/smolvlm-realtime-webcam](https://github.com/ngxson/smolvlm-realtime-webcam) - Real-time webcam demo with SmolVLM and llama.cpp server.
 - [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
 - [Techposts/AmbiSense](https://github.com/Techposts/AmbiSense) - AmbiSense: Radar-controlled LED system using ESP32 and LD2410 sensor. Creates responsive lighting that reacts to proximity and movement. Features customizable colors, brightness, and range settings via web interface. Ideal for smart homes, hallways, and interactive installations. No cameras, just intelligent ambient lighting.
-- [Sincover/Symphony](https://github.com/sincover/Symphony) - None.
 - [NomenAK/SuperClaude](https://github.com/NomenAK/SuperClaude) - A configuration framework that enhances Claude Code with specialized commands, cognitive personas, and development methodologies.
 - [Rizethereum/claude-code-requirements-builder](https://github.com/rizethereum/claude-code-requirements-builder) - None.
 - [Google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) - Get started with building Fullstack Agents using Gemini 2.5 and LangGraph.
+- [Kyutai-labs/unmute](https://github.com/kyutai-labs/unmute) - Make text LLMs listen and speak.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-07-04*
+📊 *Last edited: 2025-07-05*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
