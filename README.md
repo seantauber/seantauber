@@ -38,7 +38,6 @@ Here's how it works:
 - [Eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) - An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.
 - [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
 - [Mnehmos/Advanced-Multi-Agent-AI-Framework](https://github.com/Mnehmos/Advanced-Multi-Agent-AI-Framework) - None.
-- [Meta-llama/llama-prompt-ops](https://github.com/meta-llama/llama-prompt-ops) - An open-source tool for seamless migration from other LLMs to Llama, and for general prompt optimization.
 
 ## MLOps & AI Infrastructure
 
@@ -134,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-07-09*
+📊 *Last edited: 2025-07-10*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
