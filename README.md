@@ -74,6 +74,7 @@ Here's how it works:
 - [Rizethereum/claude-code-requirements-builder](https://github.com/rizethereum/claude-code-requirements-builder) - None.
 - [Google-gemini/gemini-fullstack-langgraph-quickstart](https://github.com/google-gemini/gemini-fullstack-langgraph-quickstart) - Get started with building Fullstack Agents using Gemini 2.5 and LangGraph.
 - [Kyutai-labs/unmute](https://github.com/kyutai-labs/unmute) - Make text LLMs listen and speak.
+- [Meta-llama/llama-prompt-ops](https://github.com/meta-llama/llama-prompt-ops) - An open-source tool for seamless migration from other LLMs to Llama, and for general prompt optimization.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +134,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-07-10*
+📊 *Last edited: 2025-07-11*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
