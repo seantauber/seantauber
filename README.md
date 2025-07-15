@@ -37,7 +37,6 @@ Here's how it works:
 - [Okkay914/SuperArchitect](https://github.com/Okkay914/SuperArchitect) - A command-line tool that combines multiple AI models (Claude, OpenAI, Gemini) to generate comprehensive architectural plans.
 - [Eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) - An AI-powered task-management system you can drop into Cursor, Lovable, Windsurf, Roo, and others.
 - [Bytedance/Dolphin](https://github.com/bytedance/Dolphin) - The official repo for “Dolphin: Document Image Parsing via Heterogeneous Anchor Prompting”, ACL, 2025.
-- [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
 
 ## MLOps & AI Infrastructure
 
@@ -74,6 +73,7 @@ Here's how it works:
 - [Ruvnet/claude-flow](https://github.com/ruvnet/claude-flow) - Claude-Flow v2.0.0 Alpha represents a revolutionary leap in AI-powered development orchestration. Built from the ground up with enterprise-grade architecture, advanced swarm intelligence, and seamless Claude Code integration.
 - [Ryoppippi/ccusage](https://github.com/ryoppippi/ccusage) - A CLI tool for analyzing Claude Code usage from local JSONL files.
 - [Hesreallyhim/awesome-claude-code](https://github.com/hesreallyhim/awesome-claude-code) - A curated list of awesome commands, files, and workflows for Claude Code.
+- [ComposioHQ/agent-flow](https://github.com/ComposioHQ/agent-flow) - None.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -133,6 +133,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-07-14*
+📊 *Last edited: 2025-07-15*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
