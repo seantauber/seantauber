@@ -41,7 +41,6 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) - Kanban board to manage your AI coding agents.
-- [MrLesk/Backlog.md](https://github.com/MrLesk/Backlog.md) - Backlog.md - A tool for managing project collaboration between humans and AI Agents in a git ecosystem.
 
 ## Model Context Protocol (MCP)
 
@@ -133,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-08-12*
+📊 *Last edited: 2025-08-13*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
