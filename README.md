@@ -19,7 +19,6 @@ Here's how it works:
 
 - [Artificial Intelligence](#artificial-intelligence)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [Model Context Protocol (MCP)](#model-context-protocol-mcp)
 - [Developer Tools](#developer-tools)
 - [Video and Audio](#video-and-audio)
 - [Other](#other)
@@ -42,11 +41,6 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) - Kanban board to manage your AI coding agents.
-
-## Model Context Protocol (MCP)
-
-- [BeehiveInnovations/zen-mcp-server](https://github.com/BeehiveInnovations/zen-mcp-server) - The power of Claude Code + [Gemini / OpenAI / Grok / OpenRouter / Ollama / Custom Model / All Of The Above] working as one.
-- [GreatScottyMac/context-portal](https://github.com/GreatScottyMac/context-portal) - Context Portal (ConPort): A memory bank MCP server building a project-specific knowledge graph to supercharge AI assistants. Enables powerful Retrieval Augmented Generation (RAG) for context-aware development in your IDE.
 
 ## Developer Tools
 
@@ -133,6 +127,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-08-17*
+📊 *Last edited: 2025-08-18*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
