@@ -37,6 +37,8 @@ Here's how it works:
 - [zaidmukaddam/scira](https://github.com/zaidmukaddam/scira) - Scira (Formerly MiniPerplx) is a minimalistic AI-powered search engine that helps you find information on the internet and cites it too. Powered by Vercel AI SDK! Search with models like xAI's Grok 3.
 - [ramakay/claude-self-reflect](https://github.com/ramakay/claude-self-reflect) - Enable Claude to self reflect.
 - [QwenLM/Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) - Qwen3-Coder is the code version of Qwen3, the large language model series developed by Qwen team, Alibaba Cloud.
+- [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) - This repository delivers end-to-end, code-first tutorials covering every layer of production-grade GenAI agents.
+- [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent) - None
 
 ## MLOps & AI Infrastructure
 
@@ -67,8 +69,7 @@ Here's how it works:
 - [huggingface/responses.js](https://github.com/huggingface/responses.js) - A lightweight express.js server implementing OpenAI’s Responses API, built on top of Chat Completions, powered by Hugging Face Inference Providers.
 - [memgraph/memgraph](https://github.com/memgraph/memgraph) - Open-source graph database, tuned for dynamic analytics environments. Easy to adopt, scale and own.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
-- [BeehiveInnovations/zen-mcp-server](https://github.com/BeehiveInnovations/zen-mcp-server) - The power of Claude Code + [Gemini / OpenAI / Grok / OpenRouter / Ollama / Custom Model / All Of The Above] working as one.
-- [GreatScottyMac/context-portal](https://github.com/GreatScottyMac/context-portal) - Context Portal (ConPort): A memory bank MCP server building a project-specific knowledge graph to supercharge AI assistants. Enables powerful Retrieval Augmented Generation (RAG) for context-aware development in your IDE.
+- [campfirein/cipher](https://github.com/campfirein/cipher) - Cipher is an opensource memory layer specifically designed for coding agents.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -128,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-08-21*
+📊 *Last edited: 2025-08-22*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
