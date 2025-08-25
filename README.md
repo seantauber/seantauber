@@ -69,6 +69,7 @@ Here's how it works:
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [campfirein/cipher](https://github.com/campfirein/cipher) - Cipher is an opensource memory layer specifically designed for coding agents.
 - [zaidmukaddam/scira](https://github.com/zaidmukaddam/scira) - Scira (Formerly MiniPerplx) is a minimalistic AI-powered search engine.
+- [presenton/presenton](https://github.com/presenton/presenton) - Open-Source AI Presentation Generator and API (Gamma, Beautiful AI, Decktopus Alternative).
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -128,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-08-24*
+📊 *Last edited: 2025-08-25*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
