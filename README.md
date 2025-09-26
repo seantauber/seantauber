@@ -33,7 +33,7 @@ Here's how it works:
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent) - None
 - [daveebbelaar/ai-cookbook](https://github.com/daveebbelaar/ai-cookbook) - Examples and tutorials to help developers build AI systems.
 - [al3rez/ooda-subagents](https://github.com/al3rez/ooda-subagents) - OODA Loop AI Agents - Observe, Orient, Decide, Act framework for systematic problem-solving. Built by AstroMVP to help startups ship AI products fast 🚀.
-- [Alibaba-NLP/DeepResearch](https://github.com/Alibaba-NLP/DeepResearch) - Tongyi DeepResearch, the Leading Open-source DeepResearch Agent.
+- [Alibaba-NLP/DeepResearch](https://github.com/Alibaba-NLP/DeepResearch) - Tongyi Deep Research, the Leading Open-source Deep Research Agent.
 - [567-labs/instructor](https://github.com/567-labs/instructor) - Structured outputs for llms.
 - [ramakay/claude-self-reflect](https://github.com/ramakay/claude-self-reflect) - Enable Claude to self reflect.
 - [QwenLM/Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) - Qwen3-Coder is the code version of Qwen3, the large language model series developed by Qwen team, Alibaba Cloud.
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-09-25*
+📊 *Last edited: 2025-09-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
