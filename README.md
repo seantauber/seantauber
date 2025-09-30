@@ -17,7 +17,7 @@ Here's how it works:
 
 ## 📚 Table of Contents
 
-- [Artificial Intelligence](#artificial-intelligence)
+- [Artificial Intelligence & AI Agents](#artificial-intelligence--ai-agents)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [Developer Tools](#developer-tools)
 - [Video and Audio](#video-and-audio)
@@ -26,7 +26,7 @@ Here's how it works:
 - [🌟 Contributing](#-contributing)
 - [📄 License](#-license)
 
-## Artificial Intelligence
+## Artificial Intelligence & AI Agents
 
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - A collection of production-ready Generative AI Agent templates built for Google Cloud. It accelerates development by providing a holistic, production-ready solution.
 - [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) - This repository delivers end-to-end, code-first tutorials covering every layer of production-grade GenAI agents.
@@ -35,7 +35,7 @@ Here's how it works:
 - [al3rez/ooda-subagents](https://github.com/al3rez/ooda-subagents) - OODA Loop AI Agents - Observe, Orient, Decide, Act framework for systematic problem-solving. Built by AstroMVP to help startups ship AI products fast 🚀.
 - [Alibaba-NLP/DeepResearch](https://github.com/Alibaba-NLP/DeepResearch) - Tongyi Deep Research, the Leading Open-source Deep Research Agent.
 - [567-labs/instructor](https://github.com/567-labs/instructor) - Structured outputs for llms.
-- [ramakay/claude-self-reflect](https://github.com/ramakay/claude-self-reflect) - Enable Claude to self reflect.
+- [ramakay/claude-self-reflect](https://github.com/ramakay/claude-self-reflect) - Enable Claude to self-reflect.
 - [QwenLM/Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) - Qwen3-Coder is the code version of Qwen3, the large language model series developed by Qwen team, Alibaba Cloud.
 
 ## MLOps & AI Infrastructure
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-09-29*
+📊 *Last edited: 2025-09-30*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
