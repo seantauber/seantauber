@@ -60,14 +60,16 @@ Here's how it works:
 
 ## Other
 
-- [run-llama/semtools](https://github.com/run-llama/semtools) - Semantic search and document parsing tools for the command line.
+- [microsoft/amplifier](https://github.com/microsoft/amplifier)
+- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels) - A resource for recursive models in AI.
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
+- [run-llama/semtools](https://github.com/run-llama/semtools) - Semantic search and document parsing tools for the command line.
+- [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid)
 - [huggingface/responses.js](https://github.com/huggingface/responses.js) - A lightweight express.js server implementing OpenAI’s Responses API.
 - [memgraph/memgraph](https://github.com/memgraph/memgraph) - Open-source graph database, tuned for dynamic analytics environments. Easy to adopt, scale and own.
-- [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid)
-- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels) - A resource for recursive models in AI.
 - [zaidmukaddam/scira](https://github.com/zaidmukaddam/scira) - Scira (Formerly MiniPerplx) is a minimalistic AI-powered search engine.
-- [microsoft/amplifier](https://github.com/microsoft/amplifier)
+- [567-labs/instructor](https://github.com/567-labs/instructor)
+- [daveebbelaar/ai-cookbook](https://github.com/daveebbelaar/ai-cookbook)
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -127,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-10-20*
+📊 *Last edited: 2025-10-21*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
