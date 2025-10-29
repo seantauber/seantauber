@@ -68,8 +68,8 @@ Here's how it works:
 - [huggingface/responses.js](https://github.com/huggingface/responses.js) - A lightweight express.js server implementing OpenAI’s Responses API.
 - [memgraph/memgraph](https://github.com/memgraph/memgraph) - Open-source graph database, tuned for dynamic analytics environments. Easy to adopt, scale and own.
 - [zaidmukaddam/scira](https://github.com/zaidmukaddam/scira) - Scira (Formerly MiniPerplx) is a minimalistic AI-powered search engine.
-- [567-labs/instructor](https://github.com/567-labs/instructor)
-- [daveebbelaar/ai-cookbook](https://github.com/daveebbelaar/ai-cookbook)
+- [567-labs/instructor](https://github.com/567-labs/instructor) - Structured outputs for LLMs.
+- [daveebbelaar/ai-cookbook](https://github.com/daveebbelaar/ai-cookbook) - Examples and tutorials to help developers build AI systems.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-10-28*
+📊 *Last edited: 2025-10-29*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
