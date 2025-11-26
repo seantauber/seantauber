@@ -35,7 +35,7 @@ Here's how it works:
 - [langchain-ai/open-swe](https://github.com/langchain-ai/open-swe) - An Open-Source Asynchronous Coding Agent.
 - [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) - This repository delivers end-to-end, code-first tutorials covering every layer of production-grade GenAI agents, guiding you from spark to scale with proven patterns and reusable blueprints for real-world launches.
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - A collection of production-ready Generative AI Agent templates built for Google Cloud.
-- [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
+- [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent) - None
 - [Alibaba-NLP/DeepResearch](https://github.com/Alibaba-NLP/DeepResearch) - Tongyi Deep Research, the Leading Open-source Deep Research Agent.
 
 ## MLOps & AI Infrastructure
@@ -59,16 +59,16 @@ Here's how it works:
 
 ## Other
 
-- [microsoft/amplifier](https://github.com/microsoft/amplifier)
-- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
+- [microsoft/amplifier](https://github.com/microsoft/amplifier) - None
+- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels) - None
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
 - [run-llama/semtools](https://github.com/run-llama/semtools) - Semantic search and document parsing tools for the command line.
-- [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid)
+- [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid) - hello
 - [huggingface/responses.js](https://github.com/huggingface/responses.js) - A lightweight express.js server implementing OpenAI’s Responses API.
 - [memgraph/memgraph](https://github.com/memgraph/memgraph) - Open-source graph database, tuned for dynamic analytics environments. Easy to adopt, scale and own.
 - [567-labs/instructor](https://github.com/567-labs/instructor) - Structured outputs for LLMs.
 - [daveebbelaar/ai-cookbook](https://github.com/daveebbelaar/ai-cookbook) - Examples and tutorials to help developers build AI systems.
-- [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu)
+- [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu) - Official repository for DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research.
 - [scottvr/gtrsnipe](https://github.com/scottvr/gtrsnipe) - Guttersnipe - convert from MIDI to ASCII tab (and abc, vex, or back again).
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-11-25*
+📊 *Last edited: 2025-11-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
