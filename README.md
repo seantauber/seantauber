@@ -41,7 +41,7 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [automazeio/ccpm](https://github.com/automazeio/ccpm) - Project management system for Claude Code using GitHub Issues and Git worktrees for parallel agent execution.
-- [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) - Kanban board to manage your AI coding agents.
+- [BloopAI/vibe-kanban](https://github.com/BloopAI/vibe-kanban) - Get 10X more out of Claude Code, Codex or any coding agent.
 
 ## Developer Tools
 
@@ -129,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2025-12-28*
+📊 *Last edited: 2025-12-29*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
