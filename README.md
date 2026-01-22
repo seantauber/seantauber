@@ -68,7 +68,8 @@ Here's how it works:
 - [daveebbelaar/ai-cookbook](https://github.com/daveebbelaar/ai-cookbook) - Examples and tutorials to help developers build AI systems.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
-- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels) 
+- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
+- [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -128,6 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-01-21*
+📊 *Last edited: 2026-01-22*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
