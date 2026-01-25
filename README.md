@@ -52,6 +52,7 @@ Here's how it works:
 
 ## Video and Audio
 
+- [remotion-dev/remotion](https://github.com/remotion-dev/remotion) - 🎥 Make videos programmatically with React.
 - [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg) - Mirror of https://git.ffmpeg.org/ffmpeg.git.
 - [Zulko/moviepy](https://github.com/Zulko/moviepy) - Video editing with Python.
 - [pytube/pytube](https://github.com/pytube/pytube) - A lightweight, dependency-free Python library (and command-line utility) for downloading YouTube Videos.
@@ -69,51 +70,62 @@ Here's how it works:
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
-- [remotion-dev/remotion](https://github.com/remotion-dev/remotion) - 🎥 Make videos programmatically with React.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
 This project automatically updates the README with your GitHub starred repositories using a Python script and GitHub Actions.
 
-# 1. Clone the repository:
-git clone https://github.com/your-username/github-genai-list.git  
-cd github-genai-list
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/github-genai-list.git  
+   cd github-genai-list
+   ```
 
-# 2. Set up your environment:
-# Ensure you have Python 3.x installed. You can check your version with:
-python --version
+2. Set up your environment:
+   Ensure you have Python 3.x installed. You can check your version with:
+   ```
+   python --version
+   ```
 
-# 3. Install dependencies:
-# First, make sure pip is up-to-date:
-python -m pip install --upgrade pip
-# Then install the required dependencies:
-pip install -r requirements.txt
+3. Install dependencies:
+   First, make sure pip is up-to-date:
+   ```
+   python -m pip install --upgrade pip
+   ```
+   Then install the required dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
-# 4. Set up GitHub secrets:
-# Go to your GitHub repository settings, and under Secrets and variables > Actions, create the following secrets:
-# GITHUB_TOKEN: Your personal access token for GitHub API.
-# OPENAI_API_KEY: Your API key for OpenAI (if applicable for LLM updates).
-# PAT: A GitHub Personal Access Token with appropriate permissions.
+4. Set up GitHub secrets:
+   Go to your GitHub repository settings, and under Secrets and variables > Actions, create the following secrets:
+   - GITHUB_TOKEN: Your personal access token for GitHub API.
+   - OPENAI_API_KEY: Your API key for OpenAI (if applicable for LLM updates).
+   - PAT: A GitHub Personal Access Token with appropriate permissions.
 
-# 5. Update the script:
-# In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username.
+5. Update the script:
+   In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username.
 
-# 6. Configure the GitHub Action:
-# The workflow is already set up in .github/workflows/update-readme.yml.
-# It runs daily at midnight (UTC) or can be triggered manually via the GitHub Actions tab.
+6. Configure the GitHub Action:
+   The workflow is already set up in .github/workflows/update-readme.yml.
+   It runs daily at midnight (UTC) or can be triggered manually via the GitHub Actions tab.
 
-# 7. Running locally (optional):
-# You can also run the script manually to test it locally:
-python scripts/update_readme.py
+7. Running locally (optional):
+   You can also run the script manually to test it locally:
+   ```
+   python scripts/update_readme.py
+   ```
 
-# 8. Commit and push changes:
-git add .
-git commit -m "Updated project structure"
-git push origin main
+8. Commit and push changes:
+   ```
+   git add .
+   git commit -m "Updated project structure"
+   git push origin main
+   ```
 
-# 9. Customize the README:
-# You can modify the README.md template to fit your personal brand and interests.
-# The GitHub Action will automatically update it with your latest starred repositories daily.
+9. Customize the README:
+   You can modify the README.md template to fit your personal brand and interests.
+   The GitHub Action will automatically update it with your latest starred repositories daily.
 
 **Note**: This landing page uses OpenAI's GPT-4o model. Make sure you comply with OpenAI's use-case policies and monitor your API usage to manage costs.
 
@@ -129,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-01-24*
+📊 *Last edited: 2026-01-25*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
