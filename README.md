@@ -18,8 +18,8 @@ Here's how it works:
 ## 📚 Table of Contents
 
 - [Artificial Intelligence & AI Agents](#artificial-intelligence--ai-agents)
-- [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [Developer Tools](#developer-tools)
+- [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
 - [Video and Audio](#video-and-audio)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
@@ -37,10 +37,6 @@ Here's how it works:
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - Ship AI Agents to Google Cloud in minutes, not months. Production-ready templates with built-in CI/CD, evaluation, and observability.
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
 
-## MLOps & AI Infrastructure
-
-- [automazeio/ccpm](https://github.com/automazeio/ccpm) - Project management system for Claude Code using GitHub Issues and Git worktrees for parallel agent execution.
-
 ## Developer Tools
 
 - [coderabbitai/git-worktree-runner](https://github.com/coderabbitai/git-worktree-runner) - Bash-based Git worktree manager with editor and AI tool integration. Automates per-branch worktree creation, configuration copying, dependency installation, and workspace setup for efficient parallel development.
@@ -48,7 +44,12 @@ Here's how it works:
 - [campfirein/cipher](https://github.com/campfirein/cipher) - Byterover Cipher is an opensource memory layer specifically designed for coding agents.
 - [photon-hq/advanced-imessage-kit](https://github.com/photon-hq/advanced-imessage-kit) - The Typescript SDK for Next Level iMessage Automation.
 - [photon-hq/imessage-kit](https://github.com/photon-hq/imessage-kit) - A type-safe, elegant iMessage SDK for macOS with zero dependencies.
+- [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
 - [run-llama/semtools](https://github.com/run-llama/semtools) - Semantic search and document parsing tools for the command line.
+
+## MLOps & AI Infrastructure
+
+- [automazeio/ccpm](https://github.com/automazeio/ccpm) - Project management system for Claude Code using GitHub Issues and Git worktrees for parallel agent execution.
 
 ## Video and Audio
 
@@ -68,7 +69,6 @@ Here's how it works:
 - [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid) - hello.
 - [567-labs/instructor](https://github.com/567-labs/instructor) - structured outputs for llms.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
-- [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-01-25*
+📊 *Last edited: 2026-01-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
