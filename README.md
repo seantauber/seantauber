@@ -36,12 +36,13 @@ Here's how it works:
 - [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) - This repository delivers end-to-end, code-first tutorials covering every layer of production-grade GenAI agents, guiding you from spark to scale with proven patterns and reusable blueprints for real-world launches.
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - Ship AI Agents to Google Cloud in minutes, not months. Production-ready templates with built-in CI/CD, evaluation, and observability.
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
+- [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - Claude Code Skills and 200+ agent skills from official dev teams and the community, compatible with Codex, Antigravity, Gemini CLI, Cursor and others.
 
 ## Developer Tools
 
 - [coderabbitai/git-worktree-runner](https://github.com/coderabbitai/git-worktree-runner) - Bash-based Git worktree manager with editor and AI tool integration. Automates per-branch worktree creation, configuration copying, dependency installation, and workspace setup for efficient parallel development.
 - [ixartz/Next-js-Boilerplate](https://github.com/ixartz/Next-js-Boilerplate) - 🚀🎉📚 Boilerplate and Starter for Next.js 16 with App Router and Page Router support, Tailwind CSS 4 and TypeScript ⚡️ Made with developer experience first: Next.js + TypeScript + ESLint + Prettier + Drizzle ORM + Husky + Lint-Staged + Vitest + Testing Library + Playwright + Storybook + Commitlint + VSCode + Sentry + PostCSS + Tailwind CSS ✨
-- [campfirein/cipher](https://github.com/campfirein/cipher) - Byterover Cipher is an opensource memory layer specifically designed for coding agents.
+- [campfirein/cipher](https://github.com/campfirein/cipher) - Byterover Cipher is an opensource memory layer specifically designed for coding agents. Compatible with various tools and built by Byterover.
 - [photon-hq/advanced-imessage-kit](https://github.com/photon-hq/advanced-imessage-kit) - The Typescript SDK for Next Level iMessage Automation.
 - [photon-hq/imessage-kit](https://github.com/photon-hq/imessage-kit) - A type-safe, elegant iMessage SDK for macOS with zero dependencies.
 - [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
@@ -61,7 +62,6 @@ Here's how it works:
 
 ## Other
 
-- [VoltAgent/awesome-claude-skills](https://github.com/VoltAgent/awesome-claude-skills) - The awesome collection of Claude Skills and resources.
 - [scottvr/gtrsnipe](https://github.com/scottvr/gtrsnipe) - Guttersnipe - convert from MIDI to ASCII tab (and abc, vex, or back again).
 - [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu) - Official repository for DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research.
 - [microsoft/amplifier](https://github.com/microsoft/amplifier)
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-01-29*
+📊 *Last edited: 2026-01-30*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
