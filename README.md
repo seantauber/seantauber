@@ -51,6 +51,7 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [automazeio/ccpm](https://github.com/automazeio/ccpm) - Project management system for Claude Code using GitHub Issues and Git worktrees for parallel agent execution.
+- [cloudflare/moltworker](https://github.com/cloudflare/moltworker) - Run OpenClaw, (formerly Moltbot, formerly Clawdbot) on Cloudflare Workers.
 
 ## Video and Audio
 
@@ -67,7 +68,6 @@ Here's how it works:
 - [microsoft/amplifier](https://github.com/microsoft/amplifier)
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
 - [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid) - hello.
-- [567-labs/instructor](https://github.com/567-labs/instructor) - structured outputs for llms.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-02-02*
+📊 *Last edited: 2026-02-03*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
