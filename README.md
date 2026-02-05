@@ -59,7 +59,6 @@ Here's how it works:
 - [FFmpeg/FFmpeg](https://github.com/FFmpeg/FFmpeg) - Mirror of https://git.ffmpeg.org/ffmpeg.git.
 - [Zulko/moviepy](https://github.com/Zulko/moviepy) - Video editing with Python.
 - [pytube/pytube](https://github.com/pytube/pytube) - A lightweight, dependency-free Python library (and command-line utility) for downloading YouTube Videos.
-- [shamspias/YouTubeVideoSegmentDownloader](https://github.com/shamspias/YouTubeVideoSegmentDownloader) - YouTubeVideoSegmentDownloader is a Python tool to download and extract specific segments from YouTube videos.
 
 ## Other
 
@@ -70,6 +69,7 @@ Here's how it works:
 - [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid) - hello.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
+- [gavrielc/nanoclaw](https://github.com/gavrielc/nanoclaw) - My personal Claude assistant that runs in Apple containers. Lightweight, secure, and built to be understood and customized for your own needs.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-02-04*
+📊 *Last edited: 2026-02-05*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
