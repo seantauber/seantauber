@@ -69,7 +69,7 @@ Here's how it works:
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
 - [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid) - hello.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
-- [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp)
+- [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-02-17*
+📊 *Last edited: 2026-02-18*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
