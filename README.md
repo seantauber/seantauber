@@ -8,12 +8,12 @@ This GitHub landing page is **automatically updated every day by AI** to showcas
 
 Here's how it works:
 
-1. **Automated Updates**: The repository list you see below is automatically updated daily using GitHub Actions that I've set up to run the AI pipeline.
-2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
+1. **Automated Updates**: The repository list you see below is automatically updated daily using GitHub Actions that I've set up to run the AI pipeline. 
+2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world. 
 3. **AI-Powered Organization**: An AI model (GPT-4o) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
 4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo, and it will automatically be categorized and added to this document. When I remove a repo from my starred list, the AI automatically removes it from this page.
 
-**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this page and how to group my starred repos into those categories. It also reassesses and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what categories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM.
+**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this page and how to group my starred repos into those categories. It also reassesses and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what categories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM. 
 
 ## 📚 Table of Contents
 
@@ -104,7 +104,7 @@ This project automatically updates the README with your GitHub starred repositor
    - PAT: A GitHub Personal Access Token with appropriate permissions.
 
 5. Update the script:
-   In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username.
+   In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username. 
 
 6. Configure the GitHub Action:
    The workflow is already set up in .github/workflows/update-readme.yml.
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-03-07*
+📊 *Last edited: 2026-03-08*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
