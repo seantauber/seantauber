@@ -13,7 +13,7 @@ Here's how it works:
 3. **AI-Powered Organization**: An AI model (GPT-4o) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
 4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo, and it will automatically be categorized and added to this document. When I remove a repo from my starred list, the AI automatically removes it from this page.
 
-**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this page and how to group my starred repos into those categories. It also reassesses and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what categories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM. 
+**Why use AI for this?**: The key thing that the LLM-based solution is doing is dynamically deciding what categories should exist on this page and how to group my starred repos into those categories. It also reassesses and changes the categories and groupings over time as the starred repos change. It does all of this without the need for me to decide in advance what categories it should consider or to pre-train the model on categories. Implementing this algorithm is extremely simple compared to implementing a solution with a more traditional ML/AI approach that doesn't have the NLP reasoning capabilities of an LLM.
 
 ## 📚 Table of Contents
 
@@ -37,8 +37,8 @@ Here's how it works:
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - Ship AI Agents to Google Cloud in minutes, not months. Production-ready templates with built-in CI/CD, evaluation, and observability.
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - Claude Code Skills and 500+ agent skills from official dev teams and the community, compatible with Codex, Antigravity, Gemini CLI, Cursor and others.
-- [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
-- [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
+- [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail and other messaging apps,, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
+- [contains-studio/agents](https://github.com/contains-studio/agents) - sharing current agents in use.
 
 ## Developer Tools
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-03-12*
+📊 *Last edited: 2026-03-13*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
