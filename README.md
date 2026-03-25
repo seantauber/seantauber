@@ -36,9 +36,10 @@ Here's how it works:
 - [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) - This repository delivers end-to-end, code-first tutorials covering every layer of production-grade GenAI agents, guiding you from spark to scale with proven patterns and reusable blueprints for real-world launches.
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - Ship AI Agents to Google Cloud in minutes, not months. Production-ready templates with built-in CI/CD, evaluation, and observability.
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
-- [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - Claude Code Skills and 700+ agent skills from official dev teams and the community, compatible with Codex, Antigravity, Gemini CLI, Cursor and others.
-- [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
-- [contains-studio/agents](https://github.com/contains-studio/agents) - sharing current agents in use.
+- [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - Claude Code Skills and 700+ agent skills from official dev teams and the community, compatible with Codex, Antigravity, Gemini CLI, Cursor, and others.
+- [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
+- [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
+- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
 
 ## Developer Tools
 
@@ -61,13 +62,12 @@ Here's how it works:
 
 ## Other
 
-- [steipete/mcporter](https://github.com/steipete/mcporter) - Call MCPs via TypeScript, masquerading as simple TypeScript API. Or package them as cli.
+- [steipete/mcporter](https://github.com/steipete/mcporter) - Call MCPs via TypeScript, masquerading as simple TypeScript API. Or package them as CLI.
 - [scottvr/gtrsnipe](https://github.com/scottvr/gtrsnipe) - Guttersnipe - convert from MIDI to ASCII tab (and abc, vex, or back again).
 - [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu) - Official repository for DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research.
 - [microsoft/amplifier](https://github.com/microsoft/amplifier)
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
-- [NEWBIE0413/gemini-gpt-hybrid](https://github.com/NEWBIE0413/gemini-gpt-hybrid) - Hello.
 - [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-03-24*
+📊 *Last edited: 2026-03-25*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
