@@ -40,7 +40,6 @@ Here's how it works:
 - [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
 - [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
-- [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) - Delivering end-to-end, code-first tutorials for production-grade GenAI agents.
 
 ## Developer Tools
 
@@ -142,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-03-27*
+📊 *Last edited: 2026-03-28*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
