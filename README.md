@@ -8,8 +8,8 @@ This GitHub landing page is **automatically updated every day by AI** to showcas
 
 Here's how it works:
 
-1. **Automated Updates**: The repository list you see below is automatically updated daily using GitHub Actions that I've set up to run the AI pipeline. 
-2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world. 
+1. **Automated Updates**: The repository list you see below is automatically updated daily using GitHub Actions that I've set up to run the AI pipeline.
+2. **Starred Repositories**: The content is based on my GitHub starred repositories, reflecting my current interests and valuable finds in the tech world.
 3. **AI-Powered Organization**: An AI model (GPT-4o) is used to categorize and organize the repositories, ensuring that the list remains well-structured and informative.
 4. **Minimal Manual Intervention**: Once set up, this page requires little to no manual updating. All I need to do is star a new repo, and it will automatically be categorized and added to this document. When I remove a repo from my starred list, the AI automatically removes it from this page.
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-04-04*
+📊 *Last edited: 2026-04-05*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
