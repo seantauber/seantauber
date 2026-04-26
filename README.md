@@ -39,7 +39,7 @@ Here's how it works:
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
 - [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
 - [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
-- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
+- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents, and a message gateway, it handles different levels of tasks that could take minutes to hours.
 
 ## Developer Tools
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-04-25*
+📊 *Last edited: 2026-04-26*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
