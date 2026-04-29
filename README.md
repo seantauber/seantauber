@@ -37,7 +37,7 @@ Here's how it works:
 - [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
 - [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
-- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents, and a message gateway, it handles different levels of tasks that could take minutes to hours.
+- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and a message gateway, it handles different levels of tasks that could take minutes to hours.
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
 - [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - Ship AI Agents to Google Cloud in minutes, not months. Production-ready templates with built-in CI/CD, evaluation, and observability.
 
@@ -68,7 +68,6 @@ Here's how it works:
 - [microsoft/amplifier](https://github.com/microsoft/amplifier)
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
-- [google/langextract](https://github.com/google/langextract) - A Python library for extracting structured information from unstructured text using LLMs with precise source grounding and interactive visualization.
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -141,6 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-04-28*
+📊 *Last edited: 2026-04-29*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
