@@ -39,7 +39,6 @@ Here's how it works:
 - [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and a message gateway, it handles different levels of tasks that could take minutes to hours.
 - [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
-- [GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) - Ship AI Agents to Google Cloud in minutes, not months. Production-ready templates with built-in CI/CD, evaluation, and observability.
 
 ## Developer Tools
 
@@ -70,6 +69,7 @@ Here's how it works:
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
+- [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) - 🕷️ An adaptive Web Scraping framework that handles everything from a single request to a full-scale crawl!
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -104,7 +104,7 @@ This project automatically updates the README with your GitHub starred repositor
    - PAT: A GitHub Personal Access Token with appropriate permissions.
 
 5. Update the script:
-   In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username. 
+   In the update_readme.py script located in the scripts/ directory, replace "YourGitHubUsername" with your actual GitHub username.
 
 6. Configure the GitHub Action:
    The workflow is already set up in .github/workflows/update-readme.yml.
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-05-04*
+📊 *Last edited: 2026-05-05*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
