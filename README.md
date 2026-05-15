@@ -38,7 +38,6 @@ Here's how it works:
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
 - [nanocoai/nanoclaw](https://github.com/nanocoai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and a message gateway, it handles different levels of tasks that could take minutes to hours.
-- [ByteDance-Seed/m3-agent](https://github.com/ByteDance-Seed/m3-agent)
 
 ## Developer Tools
 
@@ -70,6 +69,7 @@ Here's how it works:
 - [nikhilvallishayee/universal-pattern-space](https://github.com/nikhilvallishayee/universal-pattern-space) - Pattern Space: Where Minds Dance Together.
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 - [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) - 🕷️ An adaptive Web Scraping framework that handles everything from a single request to a full-scale crawl!
+- [anthropics/claude-for-legal](https://github.com/anthropics/claude-for-legal) - A suite of plugins for legal workflows.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-05-14*
+📊 *Last edited: 2026-05-15*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
