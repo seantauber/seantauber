@@ -38,6 +38,7 @@ Here's how it works:
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
 - [nanocoai/nanoclaw](https://github.com/nanocoai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and a message gateway, it handles different levels of tasks that could take minutes to hours.
+- [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) - Persistent memory for AI coding agents based on real-world benchmarks.
 
 ## Developer Tools
 
@@ -53,7 +54,6 @@ Here's how it works:
 ## MLOps & AI Infrastructure
 
 - [cloudflare/moltworker](https://github.com/cloudflare/moltworker) - Run OpenClaw, (formerly Moltbot, formerly Clawdbot) on Cloudflare Workers.
-- [automazeio/ccpm](https://github.com/automazeio/ccpm) - Project management skill system for Agents that uses GitHub Issues and Git worktrees for parallel agent execution.
 
 ## Video and Audio
 
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-05-18*
+📊 *Last edited: 2026-05-19*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
