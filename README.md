@@ -98,7 +98,7 @@ This project automatically updates the README with your GitHub starred repositor
    ```
 
 4. Set up GitHub secrets:
-   Go to your GitHub repository settings, and under Secrets and variables > Actions, create the following secrets:
+   Go to your GitHub repository settings, and under Secrets and Variables > Actions, create the following secrets:
    - GITHUB_TOKEN: Your personal access token for GitHub API.
    - OPENAI_API_KEY: Your API key for OpenAI (if applicable for LLM updates).
    - PAT: A GitHub Personal Access Token with appropriate permissions.
@@ -141,6 +141,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-06-03*
+📊 *Last edited: 2026-06-04*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
