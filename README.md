@@ -32,7 +32,7 @@ Here's how it works:
 - [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) - The agent that grows with you
 - [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) - A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.
 - [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) - #1 Persistent memory for AI coding agents based on real-world benchmarks.
-- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.
+- [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
 - [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
 - [nanocoai/nanoclaw](https://github.com/nanocoai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, and other messaging apps, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
 - [Ido-Levi/Hephaestus](https://github.com/Ido-Levi/Hephaestus) - Semi-Structured Agentic Framework. Workflows build themselves as agents discover what needs to be done, not what you predicted upfront.
@@ -76,6 +76,7 @@ Here's how it works:
 This project automatically updates the README with your GitHub starred repositories using a Python script and GitHub Actions.
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/your-username/github-genai-list.git  
    cd github-genai-list
@@ -83,12 +84,14 @@ This project automatically updates the README with your GitHub starred repositor
 
 2. Set up your environment:
    Ensure you have Python 3.x installed. You can check your version with:
+
    ```
    python --version
    ```
 
 3. Install dependencies:
    First, make sure pip is up-to-date:
+
    ```
    python -m pip install --upgrade pip
    ```
@@ -141,6 +144,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-06-15*
+📊 *Last edited: 2026-06-16*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
