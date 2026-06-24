@@ -39,6 +39,7 @@ Here's how it works:
 - [wshobson/agents](https://github.com/wshobson/agents) - Multi-harness agentic plugin marketplace for Claude Code, Codex CLI, Cursor, OpenCode, GitHub Copilot, and Gemini CLI.
 - [inkeep/agents](https://github.com/inkeep/agents) - Create AI Agents in a No-Code Visual Builder or TypeScript SDK with full 2-way sync. For shipping AI assistants and multi-agent AI workflows.
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
+- [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
 
 ## Developer Tools
 
@@ -67,7 +68,6 @@ Here's how it works:
 - [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu) - Official repository for DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research.
 - [microsoft/amplifier](https://github.com/microsoft/amplifier)
 - [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
-- [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
 - [photon-hq/advanced-imessage-kit](https://github.com/photon-hq/advanced-imessage-kit) - The Typescript SDK for Next Level iMessage Automation.
 - [photon-hq/imessage-kit](https://github.com/photon-hq/imessage-kit) - A type-safe, elegant iMessage SDK for macOS with zero dependencies.
 
@@ -144,6 +144,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-06-23*
+📊 *Last edited: 2026-06-24*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
