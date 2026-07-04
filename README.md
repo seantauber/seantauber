@@ -35,11 +35,9 @@ Here's how it works:
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
 - [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use
 - [nanocoai/nanoclaw](https://github.com/nanocoai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, and Gmail, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
-- [Ido-Levi/Hephaestus](https://github.com/Ido-Levi/Hephaestus) - Semi-Structured Agentic Framework. Workflows build themselves as agents discover what needs to be done, not what you predicted upfront.
-- [wshobson/agents](https://github.com/wshobson/agents) - Multi-harness agentic plugin marketplace for Claude Code, Codex CLI, Cursor, OpenCode, GitHub Copilot, and Gemini CLI.
-- [inkeep/agents](https://github.com/inkeep/agents) - Create AI Agents in a No-Code Visual Builder or TypeScript SDK with full 2-way sync. For shipping AI assistants and multi-agent AI workflows.
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
 - [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
+- [google/agents-cli](https://github.com/google/agents-cli) - The CLI and skills that turn any coding assistant into an expert at creating, evaluating, and deploying AI agents on Google Cloud.
 
 ## Developer Tools
 
@@ -66,10 +64,12 @@ Here's how it works:
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 - [scottvr/gtrsnipe](https://github.com/scottvr/gtrsnipe) - Guttersnipe - convert from MIDI to ASCII tab (and abc, vex, or back again).
 - [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu) - Official repository for DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research.
-- [microsoft/amplifier](https://github.com/microsoft/amplifier)
-- [SamsungSAILMontreal/TinyRecursiveModels](https://github.com/SamsungSAILMontreal/TinyRecursiveModels)
 - [photon-hq/advanced-imessage-kit](https://github.com/photon-hq/advanced-imessage-kit) - The Typescript SDK for Next Level iMessage Automation.
 - [photon-hq/imessage-kit](https://github.com/photon-hq/imessage-kit) - A type-safe, elegant iMessage SDK for macOS with zero dependencies.
+- [google/skills](https://github.com/google/skills) - Agent Skills for Google products and technologies.
+- [mattpocock/skills](https://github.com/mattpocock/skills) - Skills for Real Engineers. Straight from my .claude directory.
+- [obra/superpowers](https://github.com/obra/superpowers) - An agentic skills framework & software development methodology that works.
+- [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) - Production-grade engineering skills for AI coding agents.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -144,6 +144,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-07-03*
+📊 *Last edited: 2026-07-04*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
