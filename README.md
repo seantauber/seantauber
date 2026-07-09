@@ -38,6 +38,7 @@ Here's how it works:
 - [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) - A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.
 - [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
 - [google/agents-cli](https://github.com/google/agents-cli) - The CLI and skills that turn any coding assistant into an expert at creating, evaluating, and deploying AI agents on Google Cloud.
+- [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) - Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.
 
 ## Developer Tools
 
@@ -67,7 +68,6 @@ Here's how it works:
 - [openclaw/mcporter](https://github.com/openclaw/mcporter) - Call MCPs via TypeScript, masquerading as simple TypeScript API. Or package them as CLI.
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 - [scottvr/gtrsnipe](https://github.com/scottvr/gtrsnipe) - Guttersnipe - convert from MIDI to ASCII tab (and abc, vex, or back again).
-- [rlresearch/dr-tulu](https://github.com/rlresearch/dr-tulu) - Official repository for DR Tulu: Reinforcement Learning with Evolving Rubrics for Deep Research.
 - [photon-hq/advanced-imessage-kit](https://github.com/photon-hq/advanced-imessage-kit) - The Typescript SDK for Next Level iMessage Automation.
 - [photon-hq/imessage-kit](https://github.com/photon-hq/imessage-kit) - A type-safe, elegant iMessage SDK for macOS with zero dependencies.
 
@@ -144,6 +144,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-07-08*
+📊 *Last edited: 2026-07-09*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
