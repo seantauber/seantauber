@@ -67,8 +67,8 @@ Here's how it works:
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
 - [koala73/worldmonitor](https://github.com/koala73/worldmonitor) - Real-time global intelligence dashboard. AI-powered news aggregation, geopolitical monitoring, and infrastructure tracking in a unified situational awareness interface.
 - [photon-hq/flux](https://github.com/photon-hq/flux) - An open-source CLI for deploying LangChain agents to iMessage in seconds.
-- [andrewyng/openworker](https://github.com/andrewyng/openworker) - OpenWorker project repository
-- [PriorLabs/TabPFN](https://github.com/PriorLabs/TabPFN) - ⚡ TabPFN: Foundation Model for Tabular Data ⚡
+- [andrewyng/openworker](https://github.com/andrewyng/openworker) - OpenWorker project repository.
+- [PriorLabs/TabPFN](https://github.com/PriorLabs/TabPFN) - ⚡ TabPFN: Foundation Model for Tabular Data ⚡.
 - [google-research/tabfm](https://github.com/google-research/tabfm) - TabFM (Tabular Foundation Model) is a pretrained tabular foundation model developed by Google Research for tabular data regression and classification.
 
 ## How to Implement This Landing Page On Your Own GitHub
@@ -144,6 +144,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-07-28*
+📊 *Last edited: 2026-07-29*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
