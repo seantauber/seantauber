@@ -20,7 +20,6 @@ Here's how it works:
 - [Artificial Intelligence & AI Agents](#artificial-intelligence--ai-agents)
 - [Developer Tools](#developer-tools)
 - [MLOps & AI Infrastructure](#mlops--ai-infrastructure)
-- [Video and Audio](#video-and-audio)
 - [Other](#other)
 - [How to Implement This Landing Page On Your Own GitHub](#how-to-implement-this-landing-page-on-your-own-github)
 - [🌟 Contributing](#-contributing)
@@ -51,10 +50,6 @@ Here's how it works:
 
 - [cloudflare/moltworker](https://github.com/cloudflare/moltworker) - Run OpenClaw, (formerly Moltbot, formerly Clawdbot) on Cloudflare Workers.
 
-## Video and Audio
-
-- [remotion-dev/remotion](https://github.com/remotion-dev/remotion) - 🎥 Make videos programmatically with React.
-
 ## Other
 
 - [andrewyng/openworker](https://github.com/andrewyng/openworker) - OpenWorker project repository.
@@ -70,6 +65,7 @@ Here's how it works:
 - [block/buzz](https://github.com/block/buzz) - A hive mind communication platform.
 - [openclaw/mcporter](https://github.com/openclaw/mcporter) - Call MCPs via TypeScript, masquerading as simple TypeScript API. Or package them as CLI.
 - [excalidraw/excalidraw-mcp](https://github.com/excalidraw/excalidraw-mcp) - Fast and streamable Excalidraw MCP App.
+- [kaishi00/hermes-conduit](https://github.com/kaishi00/hermes-conduit) - Conduit — native SwiftUI iOS client for Hermes Agent.
 
 ## How to Implement This Landing Page On Your Own GitHub
 
@@ -144,6 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-08-09*
+📊 *Last edited: 2026-08-10*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
