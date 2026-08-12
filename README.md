@@ -30,7 +30,7 @@ Here's how it works:
 - [livekit/agents](https://github.com/livekit/agents) - A framework for building realtime voice AI agents 🤖🎙️📹
 - [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) - The agent that grows with you
 - [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) - A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.
-- [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) - #1 Persistent memory for AI coding agents based on real-world benchmarks
+- [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) - Persistent memory for AI coding agents based on real-world benchmarks
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
 - [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use
 - [nanocoai/nanoclaw](https://github.com/nanocoai/nanoclaw) - A lightweight alternative to OpenClaw that runs in containers for security. Connects to WhatsApp, Telegram, Slack, Discord, Gmail, has memory, scheduled jobs, and runs directly on Anthropic's Agents SDK.
@@ -140,6 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-08-11*
+📊 *Last edited: 2026-08-12*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
