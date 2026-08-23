@@ -39,7 +39,7 @@ Here's how it works:
 - [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) - A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.
 - [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) - Persistent memory for AI coding agents based on real-world benchmarks.
 - [bytedance/deer-flow](https://github.com/bytedance/deer-flow) - An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skills, subagents, and message gateway, it handles different levels of tasks that could take minutes to hours.
-- [contains-studio/agents](https://github.com/contains-studio/agents) - Sharing current agents in use.
+- [SylphAI-Inc/atskills](https://github.com/SylphAI-Inc/atskills) - The @skills protocol: use any SKILL.md by path, save it into .atskills/, auto-trigger it with one line. Reference implementation + integration guide for any agent.
 
 ## Developer Tools
 
@@ -140,6 +140,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ---
 
-📊 *Last edited: 2026-08-22*
+📊 *Last edited: 2026-08-23*
 
 🔗 Connect with me on [LinkedIn](https://www.linkedin.com/in/taubersean)
